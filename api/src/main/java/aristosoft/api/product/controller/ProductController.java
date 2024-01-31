@@ -1,0 +1,204 @@
+package aristosoft.api.product.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import aristosoft.api.product.model.*;
+import aristosoft.api.product.service.ProductService;
+import aristosoft.api.response.*;
+
+@RestController
+@RequestMapping("/api/v1/product")
+public class ProductController {
+
+    @Autowired
+    private ProductService service;
+
+    @GetMapping("/list")
+    public ResponseEntity<Page<ProductDto>> getAll(Pageable pageable) {
+        Page<ProductDto> pagina = service.getAll(pageable);
+        if (pagina != null && pagina.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else if (pagina != null) {
+            return ResponseEntity.ok(pagina);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    @GetMapping("/public/list")
+    public ResponseEntity<Page<ProductDto>> getAllInStock(Pageable pageable) {
+        Page<ProductDto> pagina = service.getAllInStock(pageable);
+        if (pagina != null && pagina.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else if (pagina != null) {
+            return ResponseEntity.ok(pagina);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    @GetMapping("/{idProducto}")
+    public ResponseEntity<Respuesta> getById(@PathVariable("idProducto") Integer idProduct) {
+
+        Respuesta response = service.getById(idProduct);
+
+        if (response.getType() == RespuestaType.SUCCESS) {
+            return ResponseEntity.ok(Respuesta.builder()
+                    .content(response.getContent())
+                    .build());
+        } else {
+            return ResponseEntity.badRequest()
+                    .body(Respuesta.builder().type(response.getType())
+                            .message(response.getMessage())
+                            .build());
+        }
+    }
+
+    @GetMapping("/public/{idProducto}")
+    public ResponseEntity<Respuesta> getByIdInStock(@PathVariable("idProducto") Integer idProduct) {
+
+        Respuesta response = service.getByIdInStock(idProduct);
+
+        if (response.getType() == RespuestaType.SUCCESS) {
+            return ResponseEntity.ok(Respuesta.builder()
+                    .content(response.getContent())
+                    .build());
+        } else {
+            return ResponseEntity.badRequest()
+                    .body(Respuesta.builder().type(response.getType())
+                            .message(response.getMessage())
+                            .build());
+        }
+    }
+
+    @PostMapping("/save")
+    public ResponseEntity<Respuesta> save(
+            @RequestParam("categoria") String fkCategory,
+            @RequestParam("empleado") String fkCreator,
+            @RequestParam("nombre") String name,
+            @RequestParam("descripcion") String description,
+            @RequestParam("precio") String price,
+            @RequestParam("stock") String stock,
+            @RequestParam(name = "img1", required = false) MultipartFile img1,
+            @RequestParam(name = "img2", required = false) MultipartFile img2,
+            @RequestParam(name = "img3", required = false) MultipartFile img3) {
+
+        ProductRequest request = ProductRequest.builder()
+                .fkCategory(Integer.parseInt(fkCategory))
+                .fkCreator(Integer.parseInt(fkCreator))
+                .name(name)
+                .description(description)
+                .price(Double.parseDouble(price))
+                .stock(Integer.parseInt(stock))
+                .build();
+
+        Respuesta response = service.save(request, img1, img2, img3);
+
+        if (response.getType() == RespuestaType.SUCCESS) {
+            return ResponseEntity.ok(Respuesta.builder()
+                    .message(response.getMessage())
+                    .build());
+        } else {
+            return ResponseEntity.badRequest()
+                    .body(Respuesta.builder().type(response.getType())
+                            .message(response.getMessage())
+                            .build());
+        }
+    }
+
+    @PatchMapping("/update")
+    public ResponseEntity<Respuesta> update(
+            @RequestParam("idProducto") String idProduct,
+            @RequestParam("categoria") String fkCategory,
+            @RequestParam("empleado") String fkCreator,
+            @RequestParam("nombre") String name,
+            @RequestParam("descripcion") String description,
+            @RequestParam("precio") String price,
+            @RequestParam("stock") String stock) {
+
+        ProductRequest request = ProductRequest.builder()
+                .idProduct(Integer.parseInt(idProduct))
+                .fkCategory(Integer.parseInt(fkCategory))
+                .fkCreator(Integer.parseInt(fkCreator))
+                .name(name)
+                .description(description)
+                .price(Double.parseDouble(price))
+                .stock(Integer.parseInt(stock))
+                .build();
+
+        Respuesta response = service.update(request);
+
+        if (response.getType() == RespuestaType.SUCCESS) {
+            return ResponseEntity.ok(Respuesta.builder()
+                    .message(response.getMessage())
+                    .build());
+        } else {
+            return ResponseEntity.badRequest()
+                    .body(Respuesta.builder().type(response.getType())
+                            .message(response.getMessage())
+                            .build());
+        }
+    }
+
+    @DeleteMapping("/{idProducto}")
+    public ResponseEntity<Respuesta> delete(@PathVariable("idProducto") Integer idProduct) {
+
+        Respuesta response = service.delete(idProduct);
+
+        if (response.getType() == RespuestaType.SUCCESS) {
+            return ResponseEntity.ok(Respuesta.builder()
+                    .message(response.getMessage())
+                    .build());
+        } else {
+            return ResponseEntity.badRequest()
+                    .body(Respuesta.builder().type(response.getType())
+                            .message(response.getMessage())
+                            .build());
+        }
+    }
+
+    @PatchMapping("/updateImage")
+    public ResponseEntity<Respuesta> updateImage(
+            @RequestParam("idProducto") String idProduct,
+            @RequestParam(name = "img1", required = false) MultipartFile img1,
+            @RequestParam(name = "img2", required = false) MultipartFile img2,
+            @RequestParam(name = "img3", required = false) MultipartFile img3) {
+
+        Respuesta response = service.updateImage(Integer.parseInt(idProduct), img1, img2, img3);
+
+        if (response.getType() == RespuestaType.SUCCESS) {
+            return ResponseEntity.ok(Respuesta.builder()
+                    .message(response.getMessage())
+                    .build());
+        } else {
+            return ResponseEntity.badRequest()
+                    .body(Respuesta.builder().type(response.getType())
+                            .message(response.getMessage())
+                            .build());
+        }
+    }
+
+    @PatchMapping("/updateStatus")
+    public ResponseEntity<Respuesta> updateStatus(
+            @RequestParam("idProducto") String idProduct,
+            @RequestParam("estado") String estado) {
+
+        Respuesta response = service.updateStatus(Integer.parseInt(idProduct), estado);
+
+        if (response.getType() == RespuestaType.SUCCESS) {
+            return ResponseEntity.ok(Respuesta.builder()
+                    .message(response.getMessage())
+                    .build());
+        } else {
+            return ResponseEntity.badRequest()
+                    .body(Respuesta.builder().type(response.getType())
+                            .message(response.getMessage())
+                            .build());
+        }
+    }
+
+}

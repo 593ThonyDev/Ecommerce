@@ -1,0 +1,1873 @@
+{
+	"info": {
+		"_postman_id": "2da2e034-4fa9-4895-9879-7b747da10aa2",
+		"name": "Ecommerce",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29780822"
+	},
+	"item": [
+		{
+			"name": "Company",
+			"item": [
+				{
+					"name": "private",
+					"item": [
+						{
+							"name": "Update data",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "nombre",
+											"value": "Ecommerce Name",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "richardanto0726@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "clave",
+											"value": "wmsb rler xcsv naet",
+											"type": "text"
+										},
+										{
+											"key": "puerto",
+											"value": "587",
+											"type": "text"
+										},
+										{
+											"key": "host",
+											"value": "smtp.gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "telefono",
+											"value": "0987654321",
+											"type": "text"
+										},
+										{
+											"key": "direccion",
+											"value": "Direccion ecommerce",
+											"type": "text"
+										},
+										{
+											"key": "facebook",
+											"value": "Empresa FB",
+											"type": "text"
+										},
+										{
+											"key": "instagram",
+											"value": "Empresa IG",
+											"type": "text"
+										},
+										{
+											"key": "tiktok",
+											"value": "Empresa tiktok",
+											"type": "text"
+										},
+										{
+											"key": "whatsapp",
+											"value": "0987654321",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/company/update",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"company",
+										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update logo",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "logo",
+											"type": "file",
+											"src": "/D:/ThonyDev/TheThony/Perfil/Fotos/LogoIcono.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/company/updateLogo",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"company",
+										"updateLogo"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List data",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/company/list",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"company",
+										"list"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "public",
+					"item": [
+						{
+							"name": "List data",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/company/public/list",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"company",
+										"public",
+										"list"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Employe",
+			"item": [
+				{
+					"name": "private",
+					"item": [
+						{
+							"name": "Save",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "nombres",
+											"value": "Anthony",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "593thonydev@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "descripcion",
+											"value": "Hola ",
+											"type": "text"
+										},
+										{
+											"key": "telefono",
+											"value": "0987654321",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/employe/save",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"employe",
+										"save"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "idEmpleado",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "nombres",
+											"value": "Anthony Richard",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "593thonydev@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "descripcion",
+											"value": "Hola asdasd 1111111",
+											"type": "text"
+										},
+										{
+											"key": "telefono",
+											"value": "0987654321",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/employe/update",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"employe",
+										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update photo",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "idEmpleado",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "photo",
+											"type": "file",
+											"src": "/D:/ThonyDev/TheThony/Perfil/Fotos/fotoPerfil.jpg"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/employe/updatePhoto",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"employe",
+										"updatePhoto"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete by ID",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/employe/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"employe",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Listar",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/employe/list",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"employe",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List by ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/employe/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"employe",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Customer",
+			"item": [
+				{
+					"name": "private",
+					"item": [
+						{
+							"name": "Update",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "idCliente",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "nombres",
+											"value": "Anthony",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "richardanto0726@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "direccion",
+											"value": "Direccion 1111111",
+											"type": "text"
+										},
+										{
+											"key": "telefono",
+											"value": "0987654321",
+											"type": "text"
+										},
+										{
+											"key": "pais",
+											"value": "Colombia",
+											"type": "text"
+										},
+										{
+											"key": "codigoPostal",
+											"value": "111111",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/customer/update",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"customer",
+										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update photo",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "idCliente",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "photo",
+											"type": "file",
+											"src": "/D:/ThonyDev/TheThony/Perfil/Fotos/fondoPantalla.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/customer/updatePhoto",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"customer",
+										"updatePhoto"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete by ID",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/customer/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"customer",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "public",
+					"item": [
+						{
+							"name": "Listar",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/customer/list",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"customer",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List by ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/customer/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"customer",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Save",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "nombres",
+											"value": "Anthony Pérez",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "anthonyp.soft@gmail.com",
+											"type": "text"
+										},
+										{
+											"key": "direccion",
+											"value": "Quito",
+											"type": "text"
+										},
+										{
+											"key": "telefono",
+											"value": "0987654321",
+											"type": "text"
+										},
+										{
+											"key": "pais",
+											"value": "Ecuador",
+											"type": "text"
+										},
+										{
+											"key": "codigoPostal",
+											"value": "170702",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/customer/save",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"customer",
+										"save"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "anthonyp.soft@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "b48a25c0-7374-4c5a-b2e6-b2478893d40a",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Restore Password",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "richardanto0726@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "richardanto0726@gmail.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/auth/restorePassword",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"restorePassword"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "Restore password",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "idUsuario",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/usuario/restorePassword",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"usuario",
+								"restorePassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update password",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "idUsuario",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "b48a25c0-7374-4c5a-b2e6-b2478893d40a",
+									"type": "text"
+								},
+								{
+									"key": "newPassword",
+									"value": "admin",
+									"type": "text"
+								},
+								{
+									"key": "newPasswordRepit",
+									"value": "admin",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/usuario/auth/updatePassword",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"usuario",
+								"auth",
+								"updatePassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Admin",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "idUsuario",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "Administrador",
+									"type": "text"
+								},
+								{
+									"key": "usuEmail",
+									"value": "richardanto0726@gmail.com",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/api/v1/usuario/updateAdmin",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"v1",
+								"usuario",
+								"updateAdmin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Estado",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQWRtaW5pc3RyYWRvciIsInVzZXJuYW1lIjoiMTcyMzM4MjU5MiIsInN1YiI6IjE3MjMzODI1OTIiLCJpYXQiOjE3MDA5MjgzNTgsImV4cCI6MTcwMTAxNDc1OH0.g_Api5BE0HwcnylqAw71iADTkXqVSg1C1qrugz0nG-Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "idUsuario",
+									"value": "1",
+									"type": "text"
+								},
+								{
+									"key": "estado",
+									"value": "Online",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/api/v1/usuario/updateEstado",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"v1",
+								"usuario",
+								"updateEstado"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Save",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJyb2xlIjoiQWRtaW5pc3RyYWRvciIsInVzZXJuYW1lIjoiMTcyMzM4MjU5MiIsInN1YiI6IjE3MjMzODI1OTIiLCJpYXQiOjE3MDA5MjgzNTgsImV4cCI6MTcwMTAxNDc1OH0.g_Api5BE0HwcnylqAw71iADTkXqVSg1C1qrugz0nG-Y",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "username",
+									"value": "1234567897",
+									"type": "text"
+								},
+								{
+									"key": "role",
+									"value": "Creador",
+									"type": "text"
+								},
+								{
+									"key": "usuNombre",
+									"value": "Anthony",
+									"type": "text"
+								},
+								{
+									"key": "usuApellido",
+									"value": "Pérez",
+									"type": "text"
+								},
+								{
+									"key": "usuDescripcion",
+									"value": "Hola soy Anthony",
+									"type": "text"
+								},
+								{
+									"key": "usuTelefono",
+									"value": "654321",
+									"type": "text"
+								},
+								{
+									"key": "usuEmail",
+									"value": "richardanto0726@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "usuImg",
+									"type": "file",
+									"src": "/D:/ThonyDev/TheThony/Perfil/Fotos/fondoPantalla3.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost/api/v1/usuario/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"path": [
+								"api",
+								"v1",
+								"usuario",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar ID",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/usuario/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"usuario",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar page",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/usuario/list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"usuario",
+								"list"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Category Products",
+			"item": [
+				{
+					"name": "private",
+					"item": [
+						{
+							"name": "List",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/category/list",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"category",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get by ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/category/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"category",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Save",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "nombre",
+											"value": "Categoria 1",
+											"type": "text"
+										},
+										{
+											"key": "photo",
+											"type": "file",
+											"src": "/D:/ThonyDev/TheThony/Perfil/Fotos/img.jpg"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/category/save",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"category",
+										"save"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "idCategoria",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "nombre",
+											"value": "Categoria 1 actualizada",
+											"type": "text"
+										},
+										{
+											"key": "photo",
+											"type": "file",
+											"src": "/D:/ThonyDev/TheThony/Perfil/Fotos/fondoPantalla4.jpg"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/category/update",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"category",
+										"update"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Product",
+			"item": [
+				{
+					"name": "private",
+					"item": [
+						{
+							"name": "Update",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "idProducto",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "categoria",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "empleado",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "nombre",
+											"value": "Producto 1",
+											"type": "text"
+										},
+										{
+											"key": "precio",
+											"value": "10",
+											"type": "text"
+										},
+										{
+											"key": "stock",
+											"value": "100",
+											"type": "text"
+										},
+										{
+											"key": "descripcion",
+											"value": "Para ver television",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/product/update",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"product",
+										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Images",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "idProducto",
+											"value": "4",
+											"type": "text"
+										},
+										{
+											"key": "img1",
+											"type": "file",
+											"src": "/D:/ThonyDev/TheThony/Perfil/Fotos/imgfondo.jpg"
+										},
+										{
+											"key": "img2",
+											"type": "file",
+											"src": "/D:/ThonyDev/TheThony/Perfil/Fotos/imgfondo.jpg",
+											"disabled": true
+										},
+										{
+											"key": "img3",
+											"type": "file",
+											"src": "/D:/ThonyDev/TheThony/Perfil/Fotos/imgfondo.jpg",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/product/updateImage",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"product",
+										"updateImage"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Save",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "categoria",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "empleado",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "nombre",
+											"value": "Producto 1",
+											"type": "text"
+										},
+										{
+											"key": "precio",
+											"value": "10",
+											"type": "text"
+										},
+										{
+											"key": "stock",
+											"value": "100",
+											"type": "text"
+										},
+										{
+											"key": "img1",
+											"type": "file",
+											"src": "/D:/ThonyDev/TheThony/Perfil/Fotos/fondoPantalla.png"
+										},
+										{
+											"key": "img2",
+											"type": "file",
+											"src": "/D:/ThonyDev/TheThony/Perfil/Fotos/fondoPantalla.png"
+										},
+										{
+											"key": "img3",
+											"type": "file",
+											"src": "/D:/ThonyDev/TheThony/Perfil/Fotos/fondoPantalla.png"
+										},
+										{
+											"key": "descripcion",
+											"value": "Para comer",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/product/save",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"product",
+										"save"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/product/list",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"product",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get by ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/product/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"product",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete by Id",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/product/3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"product",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update status",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "idProducto",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "estado",
+											"value": "OFFLINE",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/product/updateStatus",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"product",
+										"updateStatus"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "public",
+					"item": [
+						{
+							"name": "List in Stock",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/product/public/list",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"product",
+										"public",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get by id - Stock",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/product/public/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"product",
+										"public",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Order",
+			"item": [
+				{
+					"name": "private",
+					"item": [
+						{
+							"name": "List",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/order/list",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"order",
+										"list"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "List by ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/order/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"order",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Search by CODE",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/order/code/0f42c115-8899-4d9f-8085-3ad050cfbab7",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"order",
+										"code",
+										"0f42c115-8899-4d9f-8085-3ad050cfbab7"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Save",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "cliente",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "direccion",
+											"value": "Direccion Cliente",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "anthonyp.soft@gmail.com",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/order/save",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"order",
+										"save"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "idOrden",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "cliente",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "total",
+											"value": "10.0",
+											"type": "text"
+										},
+										{
+											"key": "direccion",
+											"value": "Direccion Cliente",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "anthonyp.soft@gmail.com",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/order/update",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"order",
+										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Status",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "idOrden",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "estado",
+											"value": "PAYMENT_FAILTURE",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/order/updateStatus",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"order",
+										"updateStatus"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete by ID",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/order/5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"order",
+										"5"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Order Details",
+			"item": [
+				{
+					"name": "private",
+					"item": [
+						{
+							"name": "Get",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/orderDetail/list/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"orderDetail",
+										"list",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Save",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "idOrden",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "idProducto",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "cantidad",
+											"value": "2",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/orderDetail/save",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"orderDetail",
+										"save"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update",
+							"request": {
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "idOrden",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "idProducto",
+											"value": "1",
+											"type": "text"
+										},
+										{
+											"key": "cantidad",
+											"value": "3",
+											"type": "text"
+										},
+										{
+											"key": "idDetail",
+											"value": "10",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/v1/orderDetail/update",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"orderDetail",
+										"update"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/v1/orderDetail/10",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"v1",
+										"orderDetail",
+										"10"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
