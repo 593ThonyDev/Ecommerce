@@ -26,7 +26,7 @@ const TextArea: FC<InputFieldProps> = ({
       {label && (
         <label
           htmlFor={id}
-          className={`ml-2 font-normal text-sm text-gray-400 dark:text-white/60`}
+          className={`font-normal text-sm text-primary-700/70 ml-2`}
         >
           {label}
         </label>
@@ -36,7 +36,7 @@ const TextArea: FC<InputFieldProps> = ({
         disabled={disabled}
         id={id}
         placeholder={placeholder}
-        className={"focus:ring-0 mt-0 flex w-full border-none bg-gray-100 dark:bg-obscuro-normal dark:border-none text-gray-600 dark:text-white/60  items-center justify-center rounded-2xl p-4 text-sm outline-none"}
+        className={"focus:ring-0 bg-primary-100/50 text-black-600 mt-0 flex w-full border-none   items-center justify-center rounded-2xl p-4 text-sm outline-none"}
         rows={rows}
         onChange={onChange}
       />

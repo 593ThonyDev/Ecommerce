@@ -1,9 +1,9 @@
 import { RiCloseFill, RiMenuFill, RiShoppingCartFill } from "react-icons/ri"
 import { Link, useLocation } from "react-router-dom"
-import { PATH_BLOG, PATH_HOME, PATH_LOGIN, PATH_NOSOTROS, PATH_PRODUCTOS } from "../../routes/public/Paths"
+import { PATH_BLOG, PATH_HOME, PATH_LOGIN, PATH_NOSOTROS, PATH_PRODUCTOS } from "../../../routes/public/Paths"
 import { Dialog } from "@headlessui/react"
 import { useState } from "react"
-import DropDownUser from "../dropdown/DropDownUser"
+import DropDownUser from "../../dropdown/DropDownUser"
 
 const Navbar = () => {
 
@@ -59,13 +59,13 @@ const Navbar = () => {
 
             <Dialog as="div" className=" bg-black-100" open={shopOpen} onClose={() => setShopOpen(false)}>
                 <div className="fixed inset-0 z-50 backdrop-blur-sm" tabIndex={-1}></div>
-                <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto lg:border-l md:border-primary-100 md:border-l border-primary-100 bg-primary-50 px-6 py-3 sm:max-w-sm">
+                <Dialog.Panel className="shadow-2xl lg:rounded-s-3xl md:rounded-s-3xl fixed inset-y-0 right-0 z-50 w-full overflow-y-auto lg:border-l md:border-primary-800/35 lg:bg-white md:border-l border-primary-100 bg-primary-50 px-6 py-3 sm:max-w-sm">
                     <div className="flex items-center justify-between">
                         <div className="uppercase text-black-500 font-black text-2xl pt-1">
                             Orden de compras
                         </div>
                         <span
-                            className="-m-2.5 rounded-full p-2.5 font-bold bg-primary-100 hover:bg-primary-200/50 text-black-300"
+                            className="-m-2.5 rounded-full p-2.5 font-bold md:bg-white md:hover:bg-black-100 bg-primary-100 hover:bg-primary-200/50 text-black-300"
                             onClick={() => setShopOpen(false)}
                             tabIndex={0}
                         >

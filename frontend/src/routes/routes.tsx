@@ -1,6 +1,7 @@
 import { FC, LazyExoticComponent, ReactNode, lazy } from "react";
 import { PATHS_PUBLIC } from "./public/PathsPublic";
 import { PATH_LOGIN, PATH_REGISTER } from "./public/Paths";
+import { PATHS_ADMIN } from "./private/PathsAdmin";
 
 interface LayoutComponentProps {
     children: ReactNode;
@@ -35,5 +36,10 @@ export const routes: RouteProps[] = [
             },
         ]
     },
-    PATHS_PUBLIC
+    PATHS_PUBLIC,
+    PATHS_ADMIN,
+    {
+        path: '*',
+        element: lazy(async () => await import("../pages/error/NotFound")),
+    }
 ];

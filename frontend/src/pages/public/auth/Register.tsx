@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom"
 import { PATH_HOME, PATH_LOGIN } from "../../../routes/public/Paths"
-import InputFieldAlt from "../../../components/fields/InputFieldAlt"
+import InputField from "../../../components/fields/InputField"
 import AuthImg from "../../../assets/auth.png";
 import Footer from "../../../components/footer/Footer";
-import TextAreaAlt from "../../../components/fields/TextAreaAlt";
+import TextArea from "../../../components/fields/TextArea";
 
 const Register = () => {
     return (
@@ -20,53 +20,44 @@ const Register = () => {
                                     REGISTRATE
                                 </h4>
                                 <div className="grid lg:grid-cols-2 md:grid-cols-2 gap-x-3">
-                                    <InputFieldAlt
-                                        mode='text'
-                                        extra="mb-3"
+                                    <InputField
+                                        mode='text' 
                                         label="Nombres*"
                                         placeholder="Ingrese sus nombres"
                                         type="text"
                                     />
-
-                                    <InputFieldAlt
+                                    <InputField
                                         mode='text'
-                                        extra="mb-3"
                                         label="Apellidos*"
                                         placeholder="Ingrese sus Apellidos"
                                         type="text"
                                     />
-                                    <InputFieldAlt
+                                    <InputField
                                         mode='email'
-                                        extra="mb-3"
                                         label="Email*"
                                         placeholder="Ingrese su email"
                                         type="text"
                                     />
-
-                                    <InputFieldAlt
+                                    <InputField
                                         mode='tel'
-                                        extra="mb-3"
                                         label="Telefono*"
                                         placeholder="Ingrese su telefono"
                                         type="text"
                                     />
-                                    <InputFieldAlt
+                                    <InputField
                                         mode='text'
-                                        extra="mb-3"
                                         label="Pais*"
                                         placeholder="Ingrese su pais de residencia"
                                         type="text"
                                     />
-
-                                    <InputFieldAlt
+                                    <InputField
                                         mode='numeric'
-                                        extra="mb-3"
                                         label="Codigo postal*"
                                         placeholder="Ingrese su codigo postal"
                                         type="text"
                                     />
                                 </div>
-                                <TextAreaAlt
+                                <TextArea
                                     label="Direccion del domicilio"
                                     placeholder={"Avenida siempre viva 123"}
                                     rows={3} />

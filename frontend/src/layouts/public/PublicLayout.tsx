@@ -1,8 +1,8 @@
 import Footer from "../../components/footer/Footer"
-import Navbar from "../../components/navbar/Navbar"
-import { LayoutPropos } from "../LayoutProps"
+import Navbar from "../../components/navbar/public/Navbar"
+import { LayoutProps } from "../LayoutProps"
 
-const PublicLayout = ({ children }: LayoutPropos) => {
+const PublicLayout = ({ children }: LayoutProps) => {
   return (
     <div>
       <Navbar/>

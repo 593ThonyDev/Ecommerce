@@ -1,6 +1,7 @@
 import { ChangeEvent, FC } from "react";
 
 interface InputFieldProps {
+  mode?: "search" | "text" | "none" | "tel" | "url" | "email" | "numeric" | "decimal" | undefined;
   label?: string;
   id?: string;
   extra?: string;
@@ -14,6 +15,7 @@ interface InputFieldProps {
 }
 
 const InputField: FC<InputFieldProps> = ({
+  mode,
   label,
   id,
   extra,
@@ -30,13 +32,14 @@ const InputField: FC<InputFieldProps> = ({
       {label && (
         <label
           htmlFor={id}
-          className={` font-normal text-sm text-gray-400 dark:text-white/60 ${variant === "auth" ? "ml-1.5 font-medium" : "ml-1.5 font-bold"
+          className={` font-normal text-sm text-primary-700/70  ${variant === "auth" ? "ml-1.5 font-medium" : "ml-1.5 font-bold"
             }`}
         >
           {label}
         </label>
       )}
       <input
+        inputMode={`${mode || "text"}`}
         autoComplete="false"
         value={value}
         disabled={disabled}
@@ -45,7 +48,7 @@ const InputField: FC<InputFieldProps> = ({
         accept={accept}
         placeholder={placeholder}
         onChange={onChange}
-        className={`focus:ring-0 mt-0 flex w-full border-none bg-gray-100 lg:bg-obscuro-nomal dark:bg-obscuro-normal dark:border-none text-gray-600 dark:text-white/60  items-center justify-center rounded-2xl p-4 text-sm outline-none`
+        className={`focus:ring-0 mt-0 flex w-full border-none bg-primary-100/50 text-black-600 items-center justify-center rounded-2xl p-4 text-sm outline-none`
         }
       />
     </div>

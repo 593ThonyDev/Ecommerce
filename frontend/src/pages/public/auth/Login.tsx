@@ -1,8 +1,9 @@
 import { Link } from "react-router-dom"
 import { PATH_HOME, PATH_REGISTER, RESTORE_PASSWORD } from "../../../routes/public/Paths"
-import InputFieldAlt from "../../../components/fields/InputFieldAlt"
+import InputField from "../../../components/fields/InputField"
 import AuthImg from "../../../assets/auth.png";
 import Footer from "../../../components/footer/Footer";
+import { PATH_ADMIN_HOME } from "../../../routes/private/PrivatePaths";
 
 const Login = () => {
     return (
@@ -18,7 +19,7 @@ const Login = () => {
                                 <h4 className="mb-14 mt-0 text-4xl text-center font-bold text-primary-400 ">
                                     INICIAR SESION
                                 </h4>
-                                <InputFieldAlt
+                                <InputField
                                     mode='email'
                                     variant="auth"
                                     extra="mb-3 pt-6"
@@ -28,7 +29,7 @@ const Login = () => {
                                     type="text"
                                 />
 
-                                <InputFieldAlt
+                                <InputField
                                     mode='text'
                                     extra="mb-3"
                                     label="Contraseña*"
@@ -36,9 +37,12 @@ const Login = () => {
                                     id="password"
                                     type="password"
                                 />
-                                <button className=" w-full uppercase py-2 mt-7 px-4 rounded-xl bg-primary-400 border-transparent text-white text-md mr-4 hover:bg-primary-500 font-bold">
-                                    Ingresar
-                                </button>
+                                <div className="w-full flex justify-center text-center">
+
+                                    <Link to={PATH_ADMIN_HOME} className="w-full uppercase py-2 mt-7 px-4 rounded-xl bg-primary-400 border-transparent text-white text-md hover:bg-primary-500 font-bold">
+                                        Ingresar
+                                    </Link>
+                                </div>
 
                                 <div className="mt-20 lg:mt-12 flex items-center justify-center px-2 pt-6 pb-5">
                                     <Link to={PATH_REGISTER} className="text-primary-300 hover:text-primary-400">

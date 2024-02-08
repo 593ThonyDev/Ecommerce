@@ -19,7 +19,7 @@ const Home = () => {
                     </p>
                     <div className="flex mt-8">
                         <Link to={PATH_PRODUCTOS} className="uppercase py-2 px-4 rounded-xl bg-warning-400 border-transparent text-white text-md mr-4 hover:bg-warning-500 font-bold">
-                            Empieza a comprar
+                            Ver Productos
                         </Link>
                         <Link to={PATH_NOSOTROS} className="uppercase py-2 px-4 rounded-xl bg-transparent border-2 border-warning-400 text-warning-400 text-md hover:border-warning-500 hover:text-warning-500 font-bold">
                             Conocenos
