@@ -6,7 +6,6 @@ import DropDownUser from "../../dropdown/DropDownUser"
 import { PATH_ADMIN_ABOUT, PATH_ADMIN_COMPANY, PATH_ADMIN_HOME, PATH_CATEGORIA_PRODUCTOS_ADMIN, PATH_CLIENTES_ADMIN, PATH_EMPLEADOS_ADMIN, PATH_ORDERS_ADMIN, PATH_PRODUCTOS_ADMIN } from "../../../routes/private/PrivatePaths"
 
 const NavbarAdmin = () => {
-
     const [menuOpen, setMenuOpen] = useState(false);
 
     const navigation = [
@@ -47,6 +46,7 @@ const NavbarAdmin = () => {
             href: PATH_ADMIN_ABOUT
         },
     ];
+
     return (
         <header className="h-16 sm:h-16 flex items-center z-30 w-full sticky top-0 bg-primary-50 lg:bg-white border-b border-primary-100">
             <div className="container mx-auto lg:px-6 md:px-2 px-1 flex items-center justify-between">
@@ -61,15 +61,21 @@ const NavbarAdmin = () => {
                 </div>
 
                 <div className="flex items-center">
-                    <div className=" z-50 relative inline-flex items-center px-3 text-sm font-medium text-center text-black-300 rounded-lg">
+                    <div className="z-50 relative inline-flex items-center px-3 text-sm font-medium text-center text-black-300 rounded-lg">
                         <DropDownUser />
                     </div>
                 </div>
             </div>
 
-            <Dialog as="div" className=" bg-black-100 " open={menuOpen} onClose={() => setMenuOpen(false)}>
-                <div className="fixed inset-0 z-50 backdrop-blur-sm" tabIndex={-1}></div>
-                <Dialog.Panel className="fixed lg:rounded-r-3xl md:rounded-r-3xl inset-y-0 left-0 z-50 w-full overflow-y-auto md:border-r lg:border-r md:bg-white lg:bg-white md:border-primary-800/20 md:border-l border-primary-100 bg-primary-50 lg:shadow-2xl px-6 py-3 sm:max-w-sm">
+            <Dialog as="div"
+                open={menuOpen}
+                onClose={() => setMenuOpen(false)}
+                className="bg-black-100 "
+            >
+                <div tabIndex={-1}
+                    className="fixed inset-0 z-50 backdrop-blur-sm" />
+                <Dialog.Panel
+                    className={`fixed inset-y-0 ${menuOpen ? 'left-0' : '-right-full'} z-50 w-full overflow-y-auto bg-primary-50 lg:bg-white border-r border-primary-100 lg:shadow-2xl px-6 py-3 sm:max-w-sm transition-transform duration-1000 ease-in-out`}>
                     <div className="flex items-center justify-between">
                         <div className="uppercase text-black-500 font-black text-3xl">
                             Menu
@@ -90,9 +96,7 @@ const NavbarAdmin = () => {
                                         onClick={() => setMenuOpen(false)}
                                         key={item.name}
                                         to={item.href}
-
-                                        className={`-mx-auto block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-center text-primary-300 bg-white lg:bg-primary-50/80 lg:hover:bg-primary-100/60  ${location.pathname === item.href ? 'text-green-500' : 'text-primary-200'
-                                            } `}
+                                        className={`block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-center text-primary-300 bg-white lg:bg-primary-50/80 lg:hover:bg-primary-100/60 transition-colors duration-300 ${location.pathname === item.href ? 'text-green-500' : 'text-primary-200'}`}
                                     >
                                         {item.name}
                                     </Link>

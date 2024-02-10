@@ -7,6 +7,7 @@ import { PATH_PRODUCTOS_ADMIN } from "../../../routes/private/PrivatePaths";
 import NotFoundAdmin from "../../error/NotFoundAdmin";
 import { Product } from "./model/Product";
 import { formatDate } from "../../../functions/Funtions";
+import LoaderProductView from "./components/LoaderProductView";
 
 const ProductView = () => {
 
@@ -55,7 +56,7 @@ const ProductView = () => {
           }
         });
         setLoading(false);
-      }, 500);
+      }, 800);
     } catch (error) {
       setLoading(false);
     }
@@ -74,9 +75,7 @@ const ProductView = () => {
   return (
     <div className="flex">
       {loading ? (
-        <div>
-          Cargando
-        </div>
+        <LoaderProductView/>
       ) : (
         formData.name?.replace(/\s+/g, '-') === name ?
           <div className="w-full">
@@ -88,7 +87,7 @@ const ProductView = () => {
                     <div className="sticky top-0 z-10 overflow-hidden ">
                       <div className="flex justify-center">
                         <div className="relative w-full h-80">
-                          <img src={(selectedImage || "https://" + formData.img1) ?? "https://" + formData.img1} alt=""
+                          <img loading="lazy" src={(selectedImage || "https://" + formData.img1) ?? "https://" + formData.img1} alt=""
                             className="w-full h-full rounded-3xl" />
                         </div>
                       </div>
@@ -97,7 +96,7 @@ const ProductView = () => {
                           <div
                             className={`block rounded-3xl ${selectedImage === "https://" + formData.img1 ? 'border border-primary-300' : 'border-primary-100/60 border'}`}
                             onClick={() => formData.img1 && handleClick("https://" + formData.img1)}>
-                            <img src={formData.img1 ? "https://" + formData.img1 : ""} alt=""
+                            <img loading="lazy" src={formData.img1 ? "https://" + formData.img1 : ""} alt=""
                               className="object-cover w-full h-32 rounded-3xl " />
                           </div>
                         </div>
@@ -105,7 +104,7 @@ const ProductView = () => {
                           <div
                             className={`block rounded-3xl ${selectedImage === "https://" + formData.img2 ? 'border border-primary-300' : 'border-primary-100/60 border'}`}
                             onClick={() => formData.img2 && handleClick("https://" + formData.img2)}>
-                            <img src={formData.img2 ? "https://" + formData.img2 : ""} alt=""
+                            <img loading="lazy" src={formData.img2 ? "https://" + formData.img2 : ""} alt=""
                               className="object-cover w-full h-32 rounded-3xl " />
                           </div>
                         </div>
@@ -113,13 +112,11 @@ const ProductView = () => {
                           <div
                             className={`block rounded-3xl ${selectedImage === "https://" + formData.img3 ? 'border border-primary-300' : 'border-primary-100/60 border'}`}
                             onClick={() => formData.img3 && handleClick("https://" + formData.img3)}>
-                            <img src={formData.img3 ? "https://" + formData.img3 : ""} alt=""
+                            <img loading="lazy" src={formData.img3 ? "https://" + formData.img3 : ""} alt=""
                               className="object-cover w-full h-32 rounded-3xl " />
                           </div>
                         </div>
                       </div>
-
-
                     </div>
                   </div>
                   <div className="w-full px-4 md:w-1/2 grid">
@@ -219,9 +216,7 @@ const ProductView = () => {
                           </div>
                         </li>
                         <p className=" text-justify text-black-500 dark:text-gray-400 pl-8">
-                          Lorem ipsum dolor sit amet consectetur, adipisicing elit. Repudiandae placeat ea eligendi
-                          modi laudantium provident eius sequi tempora nihil, quidem repellendus fuga distinctio
-                          facilis maxime corrupti minima, odio nobis repellat!
+                          {formData.description}
                         </p>
                       </div>
                     </div>

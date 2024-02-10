@@ -12,7 +12,7 @@ public interface EmployeService {
 
     Respuesta getById(Integer idEmploye);
 
-    Respuesta save(Employe request);
+    Respuesta save(Employe request, MultipartFile photo);
 
     Respuesta update(Employe request);
 

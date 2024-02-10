@@ -45,6 +45,7 @@ const InputField: FC<InputFieldProps> = ({
         disabled={disabled}
         type={type}
         id={id}
+        name={id}
         accept={accept}
         placeholder={placeholder}
         onChange={onChange}

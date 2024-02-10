@@ -6,6 +6,7 @@ import axios from "axios";
 import { API_URL } from "../../../functions/ApiConst";
 import { motion } from "framer-motion";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
+import LoaderList from "./components/LoaderList";
 
 const ProductList = () => {
 
@@ -69,39 +70,29 @@ const ProductList = () => {
     return (
         <>
             {isLoading ? (
-                <>
+                <div className="  flex w-full justify-center">
                     <motion.div
                         initial={{ opacity: 0.5 }}
                         animate={{ opacity: 0.5 }}
                         transition={{ duration: 0.5 }}
-                        className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-1 gap-4 w-full">
+                        className="grid w-full justify-items-center lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-4 pb-4">
                         {
-                            [...Array(9)].map((_, index) => (
-                                <div key={index} className="flex border border-primary-500/30  bg-white  flex-col justify-between w-full sm-w-96 h-48 bg-center text-primary-800 overflow-hidden cursor-pointer bg-cover rounded-xl">
-                                    <div className="animate-pulse flex justify-between items-center pr-4 pt-3 pb-8">
-                                        <div className={`animate-pulse bg-green-400/40  backdrop-blur-md text-white bg-opacity-95  flex items-center text-xs rounded-xl ml-auto px-7 py-2.5`} />
-                                    </div>
-
-                                    <div className="animate-pulse rounded-r-xl p-1 py-3 flex flex-col mr-4 mb-3 bg-primary-300/50 dark:bg-white/5 backdrop-blur-md border border-primary-500/30 ">
-                                        <div className="text-xl font-bold w-28 pb-1 mt-1 py-2 rounded-md text-white line-clamp-1 px-4  bg-primary-500/20 mb-4 mr-1" />
-                                        <div className="text-white-75 rounded-md mr-1 text-sm line-clamp-2 py-1 pb-1 bg-primary-500/20   mb-2" />
-                                        <div className="text-white-75 rounded-md mr-1 text-sm line-clamp-2 py-1 pb-1 bg-primary-500/20   mb-2" />
-                                    </div>
-                                </div>
+                            [...Array(12)].map((_, index) => (
+                                <LoaderList key={index} />
                             ))
                         }
                     </motion.div>
-                </>
+                </div>
             ) : (
                 <div>
-                    < div className="grid  lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-4 pb-4 " >
+                    < div className="grid lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-4 pb-4 " >
                         {
                             data.map(product => (
                                 <div className="relative  flex w-full max-w-xs flex-col overflow-hidden rounded-2xl bg-white border border-primary-100"
                                     key={product.idProduct}>
                                     <Link to={PATH_PRODUCTO_ADMIN_ID + product.idProduct + "/" + product.name?.replace(/\s+/g, '-')}
                                         className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-2xl justify-center">
-                                        <img className="object-cover bg-primary-50 backdrop-blur-md" src={"https://" + product.img1} alt="product image" />
+                                        <img loading="lazy" className="object-cover bg-primary-50 backdrop-blur-md" src={"https://" + product.img1} alt="product image" />
                                         <span className={`absolute top-0 right-0 m-2 rounded-full backdrop-blur-md px-2 text-center text-lg text-white ${product.status === "ONLINE" ? "bg-success-500/50" : ""} ${product.status === "CREATED" ? "bg-warning-500/50" : ""} ${product.status === "OFFLINE" ? "bg-danger-500/50" : ""}`}>
                                             {product.status}
                                         </span>
@@ -115,15 +106,15 @@ const ProductList = () => {
                                         </Link>
                                         <h5 className="flex justify-between text-md tracking-tight text-center text-primary-500 pt-1">
                                             <span className="text-black-600 font-semibold">Categoria:</span>
-                                            <span className="text-black-500 ">{product.category?.name}</span>
+                                            <span className="text-black-500 line-clamp-1">{product.category?.name}</span>
                                         </h5>
                                         <h5 className="flex justify-between text-md tracking-tight text-center text-primary-500">
                                             <span className="text-black-600 font-semibold">Stock:</span>
-                                            <span className="text-black-500">{product.stock} unidades</span>
+                                            <span className="text-black-500 clamp-1">{product.stock} unidades</span>
                                         </h5>
                                         <h5 className="flex justify-between text-md tracking-tight text-center text-primary-500">
                                             <span className="text-black-600 font-semibold">Valor:</span>
-                                            <span className="text-success-500 font-semibold">USD {product.price}</span>
+                                            <span className="text-success-500 font-semibold clamp-1">USD {product.price}</span>
                                         </h5>
                                     </div>
                                 </div>

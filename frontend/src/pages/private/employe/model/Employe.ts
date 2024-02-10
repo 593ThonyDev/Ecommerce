@@ -1,9 +1,11 @@
 export interface Employe {
-    idEmploye: number
-    created?: string
-    fullName?: string
-    email?: string
-    description?: string
-    phone?: string
-    photo?: string
+    idEmploye: number;
+    names?: string;
+    created?: string;
+    lastName?: string;
+    fullName?: string;
+    email: string;
+    description: string;
+    phone: string;
+    photo?: File;
 }

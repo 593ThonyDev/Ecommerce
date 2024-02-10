@@ -75,7 +75,8 @@ public class EmployeController {
             @RequestParam("nombres") String fullName,
             @RequestParam("email") String email,
             @RequestParam("descripcion") String description,
-            @RequestParam("telefono") String phone) {
+            @RequestParam("telefono") String phone,
+            @RequestParam(name = "photo", required = false) MultipartFile photo) {
 
         Employe employe = Employe.builder()
                 .fullName(fullName)
@@ -84,7 +85,7 @@ public class EmployeController {
                 .phone(phone)
                 .build();
 
-        Respuesta response = service.save(employe);
+        Respuesta response = service.save(employe, photo);
 
         if (response.getType() == RespuestaType.SUCCESS) {
             return ResponseEntity.ok(Respuesta.builder()

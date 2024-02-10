@@ -1,13 +1,18 @@
-import { Toaster } from "react-hot-toast"
-import { BrowserRouter, Routes } from "react-router-dom"
-import { renderRoutes } from "./routes"
-import { routes } from "./routes/routes"
-import Loader from "./loaders/Loader"
-import { Transition } from "@headlessui/react"
-import { useEffect, useState } from "react"
+import { Toaster } from "react-hot-toast";
+import { BrowserRouter, Routes } from "react-router-dom";
+import { renderRoutes } from "./routes";
+import { routes } from "./routes/routes";
+import Loader from "./loaders/Loader";
+import { Transition } from "@headlessui/react";
+import { useEffect, useState } from "react";
+import { useToasterPosition } from "./components/toast/toast";
+
+
 
 function App() {
+  
   const [isLoading, setIsLoading] = useState(true);
+  const toasterPosition = useToasterPosition();
 
   useEffect(() => {
     setTimeout(() => {
@@ -29,10 +34,10 @@ function App() {
         <Loader />
       </Transition>
 
-      <Toaster />
+      <Toaster position={toasterPosition} />
       <Routes>{renderRoutes(routes)}</Routes>
     </BrowserRouter>
   )
 }
 
-export default App
+export default App;

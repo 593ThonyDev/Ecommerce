@@ -8,7 +8,7 @@ interface InputFieldProps {
   placeholder: string;
   disabled?: boolean;
   rows: number; // Asegúrate de que rows sea de tipo number
-  onChange?: (event: ChangeEvent<HTMLTextAreaElement>) => void;
+  onChange?: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
 }
 
 const TextArea: FC<InputFieldProps> = ({
@@ -35,6 +35,7 @@ const TextArea: FC<InputFieldProps> = ({
         value={value}
         disabled={disabled}
         id={id}
+        name={id}
         placeholder={placeholder}
         className={"focus:ring-0 bg-primary-100/50 text-black-600 mt-0 flex w-full border-none   items-center justify-center rounded-2xl p-4 text-sm outline-none"}
         rows={rows}

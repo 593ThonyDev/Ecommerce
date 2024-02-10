@@ -29,7 +29,7 @@ public class Employe {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Column(name = "fullname")
     String fullName;
-   
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Column(name = "email")
     String email;

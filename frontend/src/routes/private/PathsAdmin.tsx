@@ -73,6 +73,5 @@ export const PATHS_ADMIN = {
             path: PATH_ADMIN_HOME + "/*",
             element: lazy(async () => await import("../../pages/error/NotFoundAdmin")),
         },
-
     ]
 }

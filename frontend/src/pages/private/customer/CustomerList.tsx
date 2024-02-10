@@ -2,12 +2,12 @@ import { Link } from "react-router-dom";
 import { PATH_CLIENTE_ADMIN_ID } from "../../../routes/private/PrivatePaths";
 import { useEffect, useState } from "react";
 import { API_URL } from "../../../functions/ApiConst";
-import { motion } from "framer-motion";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { formatDate } from "../../../functions/Funtions";
 import { Customer } from "./model/Customer";
 import customerPhoto from "../../../assets/cliente.png"
 import axios from "axios";
+import LoaderList from "./components/LoaderList";
 
 const CustomerList = () => {
 
@@ -47,7 +47,7 @@ const CustomerList = () => {
                 }
             }
 
-        }, 2000);
+        }, 800);
     };
 
     const totalPages = Math.ceil(totalItems / 12);
@@ -72,27 +72,13 @@ const CustomerList = () => {
         <>
             {isLoading ? (
                 <>
-                    <motion.div
-                        initial={{ opacity: 0.5 }}
-                        animate={{ opacity: 0.5 }}
-                        transition={{ duration: 0.5 }}
-                        className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-1 gap-4 w-full">
+                    <div className="grid lg:grid-cols-2 gap-2 w-full">
                         {
-                            [...Array(9)].map((_, index) => (
-                                <div key={index} className="flex border border-primary-500/30  bg-white  flex-col justify-between w-full sm-w-96 h-48 bg-center text-primary-800 overflow-hidden cursor-pointer bg-cover rounded-xl">
-                                    <div className="animate-pulse flex justify-between items-center pr-4 pt-3 pb-8">
-                                        <div className={`animate-pulse bg-green-400/40  backdrop-blur-md text-white bg-opacity-95  flex items-center text-xs rounded-xl ml-auto px-7 py-2.5`} />
-                                    </div>
-
-                                    <div className="animate-pulse rounded-r-xl p-1 py-3 flex flex-col mr-4 mb-3 bg-primary-300/50 dark:bg-white/5 backdrop-blur-md border border-primary-500/30 ">
-                                        <div className="text-xl font-bold w-28 pb-1 mt-1 py-2 rounded-md text-white line-clamp-1 px-4  bg-primary-500/20 mb-4 mr-1" />
-                                        <div className="text-white-75 rounded-md mr-1 text-sm line-clamp-2 py-1 pb-1 bg-primary-500/20   mb-2" />
-                                        <div className="text-white-75 rounded-md mr-1 text-sm line-clamp-2 py-1 pb-1 bg-primary-500/20   mb-2" />
-                                    </div>
-                                </div>
+                            [...Array(12)].map((_, index) => (
+                                <LoaderList key={index} />
                             ))
                         }
-                    </motion.div>
+                    </div>
                 </>
             ) : (
                 <div className="w-full">
@@ -101,10 +87,10 @@ const CustomerList = () => {
                             data.map(customer => (
                                 <div>
 
-                                    <Link to={PATH_CLIENTE_ADMIN_ID + customer.idCustomer+"/" + customer.fullName?.replace(/\s+/g, '-')} className="flex h-fit items-start justify-between cursor-pointer bg-white hover:rounded-xl rounded-xl" key={customer.idCustomer}>
-                                        <div className="flex items-center gap-3 p-3 w-full rounded-xl hover:bg-black-100/50">
+                                    <Link to={PATH_CLIENTE_ADMIN_ID + customer.idCustomer + "/" + customer.fullName?.replace(/\s+/g, '-')} className="flex h-fit items-start justify-between cursor-pointer bg-white hover:rounded-xl rounded-xl" key={customer.idCustomer}>
+                                        <div className="flex items-center gap-3 p-3 w-full rounded-xl hover:bg-black-50/50">
                                             <div className="relative h-16 max-h-16 w-16 items-start justify-start rounded-full">
-                                                <img src={customer.photo ? "https://" + customer.photo : customerPhoto} className="h-16 max-h-16 max-w-16 w-16 rounded-full" />
+                                                <img src={customer.photo ? "https://" + customer.photo : customerPhoto} className="h-16 max-h-16 max-w-16 w-16 rounded-full border border-primary-100" />
                                             </div>
                                             <div className="lg:flex lg:justify-between grid">
                                                 <div className="grid">
@@ -156,8 +142,7 @@ const CustomerList = () => {
                                         <div
                                             onClick={() => handlePageChange(currentPage - 1)}
                                             className={`cursor-pointer p-2 text-center 
-                                                ${currentPage === 0 ? 'bg-primary-500/30' : 'bg-primary-500/30'}
-                                                 hover:bg-primary-200  rounded-xl hover:text-primary-500/50 text-white `}
+                                                ${currentPage === 0 ? 'bg-primary-500/30' : 'bg-primary-500/30'} hover:bg-primary-200  rounded-xl hover:text-primary-500/50 text-white `}
                                         >
                                             <FaAngleLeft className=" text-2xl" />
                                         </div>
@@ -165,9 +150,8 @@ const CustomerList = () => {
                                             <div
                                                 key={page}
                                                 onClick={() => page === -1 ? handlePageChange(0) : handlePageChange(page)}
-                                                className={`cursor-pointer p-2 px-4 text-center 
-                                                    ${page === -1 ? 'bg-primary-300  hover:bg-primary-300' : (currentPage === page ? 'bg-primary-800/30 text-white font-semibold' : 'bg-primary-100 hover:bg-primary-200/70 ')}
-                                                   rounded-xl `}
+                                                className={`cursor-pointer p-2 rounded-xl px-4 text-center 
+                                                    ${page === -1 ? 'bg-primary-300  hover:bg-primary-300' : (currentPage === page ? 'bg-primary-800/30 text-white font-semibold' : 'bg-primary-100 hover:bg-primary-200/70 ')}rounded-xl `}
                                             >
                                                 {page === -1 ? "1" : page + 1}
                                             </div>

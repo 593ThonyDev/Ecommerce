@@ -1,5 +1,6 @@
 package aristosoft.api.employe.service;
 
+import java.io.IOException;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,7 @@ public class EmployeServiceImpl implements EmployeService {
     }
 
     @Override
-    public Respuesta save(Employe employe) {
+    public Respuesta save(Employe employe, MultipartFile photo) {
 
         if (employe.getFullName().isEmpty()) {
             return Respuesta.builder()
@@ -74,6 +75,7 @@ public class EmployeServiceImpl implements EmployeService {
                     .message("Debe tener una descripcion")
                     .build();
         }
+
         if (employe.getPhone().isEmpty()) {
             return Respuesta.builder()
                     .type(RespuestaType.WARNING)
@@ -81,23 +83,55 @@ public class EmployeServiceImpl implements EmployeService {
                     .build();
         }
 
-        employe.setCreated(employe.getFecha());
-        repository.save(employe);
-
+        if (photo.isEmpty()) {
+            return Respuesta.builder()
+                    .type(RespuestaType.WARNING)
+                    .message("Debe agregar una foto de perfil")
+                    .build();
+        }
         
-        // Enviar al email mensaje de creacion de usuario
-        User user = User.builder()
-                .role(Role.ADMIN)
-                .usuEmail(employe.getEmail())
-                .username(employe.getEmail())
-                .build();
+        Optional<Employe> optional = repository.findByEmail(employe.getEmail());
+        
+        if (optional.isPresent()) {
+            return Respuesta.builder()
+                    .type(RespuestaType.WARNING)
+                    .message("No se pudo agregar el empleado")
+                    .build();
+        }
+        
+        try {
 
-        userService.register(user);
+            User user = User.builder()
+                    .role(Role.EMPLOYE)
+                    .usuEmail(employe.getEmail())
+                    .username(employe.getEmail())
+                    .build();
 
-        return Respuesta.builder()
-                .type(RespuestaType.SUCCESS)
-                .message("Registro guardado con exito")
-                .build();
+            Respuesta respuestaUsuario = userService.register(user);
+
+            if (respuestaUsuario.getType() == RespuestaType.SUCCESS) {
+
+                employe.setCreated(employe.getFecha());
+                employe.setPhoto(upload.uploadImage(photo, "Employe"));
+                repository.save(employe);
+
+                return Respuesta.builder()
+                        .type(RespuestaType.SUCCESS)
+                        .message("Empleado registrado con exito")
+                        .build();
+            } else {
+                return Respuesta.builder()
+                        .type(RespuestaType.WARNING)
+                        .message("No se pudo agregar el empleado")
+                        .build();
+            }
+
+        } catch (IOException e) {
+            return Respuesta.builder()
+                    .type(RespuestaType.WARNING)
+                    .message("No se pudo agregar el empleado")
+                    .build();
+        }
     }
 
     @Override
@@ -189,23 +223,23 @@ public class EmployeServiceImpl implements EmployeService {
     public Respuesta updatePhoto(Integer idEmploye, MultipartFile photo) {
         try {
             Optional<Employe> optional = repository.findById(idEmploye);
-    
+
             if (optional.isPresent()) {
                 Employe employe = optional.get();
-    
+
                 if (employe != null) {
                     String existingPhoto = employe.getPhoto();
                     System.out.println(existingPhoto);
-    
+
                     if (existingPhoto != null && !existingPhoto.isEmpty()) {
                         // Eliminar la foto existente antes de subir la nueva
                         upload.deleteFile(existingPhoto);
                     }
-    
+
                     // Subir la nueva foto y guardar en la base de datos
                     employe.setPhoto(upload.uploadImage(photo, "Employe"));
                     repository.save(employe);
-    
+
                     return Respuesta.builder()
                             .message("Foto actualizada con éxito")
                             .type(RespuestaType.SUCCESS)
@@ -222,7 +256,7 @@ public class EmployeServiceImpl implements EmployeService {
                         .type(RespuestaType.WARNING)
                         .build();
             }
-    
+
         } catch (Exception e) {
             e.printStackTrace(); // Imprimir la traza de la excepción para obtener más detalles
             return Respuesta.builder()
@@ -231,6 +265,5 @@ public class EmployeServiceImpl implements EmployeService {
                     .build();
         }
     }
-    
 
 }

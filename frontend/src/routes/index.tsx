@@ -1,5 +1,5 @@
-import { Route, Outlet } from "react-router-dom"
-import { Suspense, Fragment } from "react"
+import { Route, Outlet } from "react-router-dom";
+import { Suspense, Fragment } from "react";
 import { RouteProps } from "./routes";
 import Loader from "../loaders/Loader";
 

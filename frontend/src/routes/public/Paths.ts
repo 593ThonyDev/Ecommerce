@@ -1,6 +1,6 @@
 export const PATH_HOME = "/";
 export const PATH_LOGIN = "/auth/login";
-export const PATH_REGISTER = "/auth/register";
+export const PATH_REGISTER = "/auth/sign-in";
 export const RESTORE_PASSWORD = "/auth/restorePassword";
 
 export const PATH_NOSOTROS = "/nosotros";
