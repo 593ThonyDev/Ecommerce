@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import aristosoft.api.cloudinary.employe.FileEmploye;
 import aristosoft.api.employe.model.Employe;
+import aristosoft.api.employe.model.EmployeDto;
 import aristosoft.api.employe.repository.EmployeRepository;
 import aristosoft.api.response.*;
 import aristosoft.api.user.model.*;
@@ -53,6 +54,26 @@ public class EmployeServiceImpl implements EmployeService {
     }
 
     @Override
+    public Respuesta getByEmail(String email) {
+        Optional<Employe> employe = repository.findByEmail(email);
+        if (!employe.isPresent()) {
+            return Respuesta.builder()
+                    .type(RespuestaType.WARNING)
+                    .message("Registro no encontrado")
+                    .build();
+        }
+        EmployeDto dto = EmployeDto.builder()
+                .idEmploye(employe.get().getIdEmploye())
+                .fullName(employe.get().getFullName())
+                .photo(employe.get().getPhoto())
+                .build();
+        return Respuesta.builder()
+                .type(RespuestaType.SUCCESS)
+                .content(dto)
+                .build();
+    }
+
+    @Override
     public Respuesta save(Employe employe, MultipartFile photo) {
 
         if (employe.getFullName().isEmpty()) {
@@ -89,16 +110,16 @@ public class EmployeServiceImpl implements EmployeService {
                     .message("Debe agregar una foto de perfil")
                     .build();
         }
-        
+
         Optional<Employe> optional = repository.findByEmail(employe.getEmail());
-        
+
         if (optional.isPresent()) {
             return Respuesta.builder()
                     .type(RespuestaType.WARNING)
                     .message("No se pudo agregar el empleado")
                     .build();
         }
-        
+
         try {
 
             User user = User.builder()

@@ -12,6 +12,8 @@ public interface EmployeService {
 
     Respuesta getById(Integer idEmploye);
 
+    Respuesta getByEmail(String email);
+
     Respuesta save(Employe request, MultipartFile photo);
 
     Respuesta update(Employe request);

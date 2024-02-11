@@ -1,6 +1,5 @@
 package aristosoft.api.response;
 
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import javax.persistence.EnumType;
@@ -15,15 +14,15 @@ public class Respuesta {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String token;
-   
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String id;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Object content;
-    
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
-    private Object userDetails;   
+    private Object userDetails;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String message;

@@ -16,10 +16,13 @@ import org.springframework.stereotype.Service;
 
 import aristosoft.api.auth.jwt.JwtService;
 import aristosoft.api.email.EmailSender;
+import aristosoft.api.employe.model.Employe;
+import aristosoft.api.employe.model.EmployeDto;
+import aristosoft.api.employe.service.EmployeService;
 import aristosoft.api.response.Respuesta;
 import aristosoft.api.response.RespuestaType;
 import aristosoft.api.user.model.*;
-import aristosoft.api.user.model.dto.UsuarioDto;
+import aristosoft.api.user.model.dto.UsuarioLogin;
 import aristosoft.api.user.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -33,6 +36,7 @@ public class AuthServiceImpl implements AuthService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager auth;
+    private final EmployeService empService;
 
     @Override
     public Respuesta login(String userName, String password) {
@@ -50,18 +54,64 @@ public class AuthServiceImpl implements AuthService {
 
             String token = jwtService.getToken(user);
 
-            UsuarioDto dto = UsuarioDto.builder()
-                    .idUsuario(usuario.getIdUsuario())
-                    .Estado(usuario.getEstado().toString())
-                    .role(usuario.getRole().toString())
-                    .username(userName)
-                    .build();
+            Respuesta empRespuesta = empService.getByEmail(userName);
 
-            return Respuesta.builder()
-                    .token(token)
-                    .type(RespuestaType.SUCCESS)
-                    .userDetails(dto)
-                    .build();
+            if (usuario.getRole() == Role.EMPLOYE||usuario.getRole() == Role.ADMINISTRATOR) {
+
+                EmployeDto employeDto = (EmployeDto) empRespuesta.getContent();
+                Employe employe = Employe.builder()
+                        .idEmploye(employeDto.getIdEmploye())
+                        .photo(employeDto.getPhoto())
+                        .fullName(employeDto.getFullName())
+                        .build();
+
+                UsuarioLogin userLogin = UsuarioLogin.builder()
+                        .idUser(usuario.getIdUsuario())
+                        .idEmploye(usuario.getIdUsuario())
+                        .status(usuario.getEstado().toString())
+                        .role(usuario.getRole().toString())
+                        .username(userName)
+                        .photo(employe.getPhoto())
+                        .fullName(employe.getFullName())
+                        .build();
+
+                return Respuesta.builder()
+                        .token(token)
+                        .userDetails(userLogin)
+                        .type(RespuestaType.SUCCESS)
+                        .build();
+            }
+
+            else if (usuario.getRole() == Role.CUSTOMER) {
+
+                EmployeDto employeDto = (EmployeDto) empRespuesta.getContent();
+                Employe employe = Employe.builder()
+                        .idEmploye(employeDto.getIdEmploye())
+                        .photo(employeDto.getPhoto())
+                        .fullName(employeDto.getFullName())
+                        .build();
+
+                UsuarioLogin userLogin = UsuarioLogin.builder()
+                        .idUser(usuario.getIdUsuario())
+                        .idEmploye(usuario.getIdUsuario())
+                        .status(usuario.getEstado().toString())
+                        .role(usuario.getRole().toString())
+                        .username(userName)
+                        .photo(employe.getPhoto())
+                        .fullName(employe.getFullName())
+                        .build();
+
+                return Respuesta.builder()
+                        .token(token)
+                        .userDetails(userLogin)
+                        .type(RespuestaType.SUCCESS)
+                        .build();
+            } else {
+                return Respuesta.builder()
+                        .type(RespuestaType.WARNING)
+                        .message("Credenciales incorrectas")
+                        .build();
+            }
 
         } catch (DisabledException ex) {
             return Respuesta.builder().type(RespuestaType.WARNING)
