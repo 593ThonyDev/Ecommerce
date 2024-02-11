@@ -5,7 +5,7 @@ import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import { formatDate } from "../../../functions/Funtions";
 import { Employe } from "./model/Employe";
 import LoaderList from "./components/LoaderList";
-import { getAllEmployes } from "./api/EmployeApi";
+import { getAllEmployes } from "./model/EmployeApi";
 
 const EmployeList = () => {
 

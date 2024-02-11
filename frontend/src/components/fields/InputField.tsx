@@ -11,6 +11,7 @@ interface InputFieldProps {
   variant?: string;
   disabled?: boolean;
   accept?: string;
+  readOnly?: boolean;
   onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -25,6 +26,7 @@ const InputField: FC<InputFieldProps> = ({
   variant,
   disabled,
   accept,
+  readOnly,
   onChange
 }) => {
   return (
@@ -49,6 +51,7 @@ const InputField: FC<InputFieldProps> = ({
         accept={accept}
         placeholder={placeholder}
         onChange={onChange}
+        readOnly={readOnly}
         className={`focus:ring-0 mt-0 flex w-full border-none bg-primary-100/50 text-black-600 items-center justify-center rounded-2xl p-4 text-sm outline-none`
         }
       />

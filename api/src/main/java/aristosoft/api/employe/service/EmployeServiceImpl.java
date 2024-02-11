@@ -241,7 +241,7 @@ public class EmployeServiceImpl implements EmployeService {
                     repository.save(employe);
 
                     return Respuesta.builder()
-                            .message("Foto actualizada con éxito")
+                            .message("Imagen actualizada con éxito")
                             .type(RespuestaType.SUCCESS)
                             .build();
                 } else {

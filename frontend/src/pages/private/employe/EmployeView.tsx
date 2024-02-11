@@ -9,7 +9,8 @@ import { BiCamera } from 'react-icons/bi'
 import { Employe } from './model/Employe'
 import DropdownItem, { Dropdown } from '../../../components/dropdown/DropDownOptions'
 import { LoaderView } from './components/LoaderView'
-import { getEmployeById } from './api/EmployeApi'
+import { getEmployeById, updateEmployePhoto } from './model/EmployeApi'
+import toast from 'react-hot-toast'
 
 const EmployeView = () => {
 
@@ -41,6 +42,19 @@ const EmployeView = () => {
         fetchDataAndSetState();
     }, [id, name]);
 
+    // Método para actualizar la foto del empleado
+    const handleUpdatePhoto = async (photo: File) => {
+        setLoading(true);
+        const loadingToast = toast.loading('Actualizando imagen...');
+        const success = await updateEmployePhoto(formData.idEmploye.toString(), photo);
+        if (success) {
+            toast.dismiss(loadingToast);
+            const updatedData = await getEmployeById(parseInt(id?.toString() || '0'));
+            setFormData(updatedData);
+        }
+        setLoading(false);
+    };
+
     return (
         <section className="flex">
             {loading ? (
@@ -54,9 +68,11 @@ const EmployeView = () => {
                                     <div className="flex items-center justify-center">
                                         <img src={formData.photo ? "https://" + formData.photo : customerPhoto} alt=""
                                             className="relative z-40 object-cover rounded-full h-80 w-80 lg:h-96 lg:w-96 bg-primary-100" />
-                                        <div className="absolute lg:top-80 bottom-4 z-40 lg:right-28 sm:right-60 lg:py-4 rounded-full right-10 p-4  cursor-pointer bg-primary-500/40 hover:bg-primary-600/40 backdrop-blur-lg text-white">
+                                        <label htmlFor="photo" className="absolute lg:top-80 bottom-4 z-40 lg:right-28 sm:right-60 lg:py-4 rounded-full right-10 p-4  cursor-pointer bg-primary-500/40 hover:bg-primary-600/40 backdrop-blur-lg text-white">
                                             <BiCamera className='my-auto' />
-                                        </div>
+                                            {/* Manejar el evento de selección de archivo */}
+                                        </label>
+                                        <input type="file" id='photo' accept="image/*" onChange={(e) => handleUpdatePhoto(e.target.files?.[0] as File)} className="hidden" />
                                     </div>
                                 </div>
                                 <SytyleBackgroundView />

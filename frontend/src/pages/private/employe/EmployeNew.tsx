@@ -6,9 +6,9 @@ import { StyleBackground } from "./components/StyleBackground";
 import TextArea from "../../../components/fields/TextArea";
 import { useState } from "react";
 import { Employe } from "./model/Employe";
-import { saveEmploye } from "./api/EmployeApi";
 import toast from "react-hot-toast";
 import UploadPhoto from "../../../assets/UploadPhoto.png"
+import { saveOrUpdateEmploye } from "./model/EmployeApi";
 
 const EmployeNew = () => {
 
@@ -48,7 +48,7 @@ const EmployeNew = () => {
         if (camposFaltantes.length === 0) {
             const loadingToast = toast.loading('Guardando registro...');
             try {
-                const savedSuccessfully = await saveEmploye(employeData);
+                const savedSuccessfully = await saveOrUpdateEmploye(employeData);
                 if (savedSuccessfully) {
                     toast.dismiss(loadingToast);
                     navigate(PATH_EMPLEADOS_ADMIN); // Navegar al PATH_EMPLEADOS_ADMIN si se guardó correctamente
