@@ -12,6 +12,8 @@ public interface CustomerService {
 
     Respuesta getById(Integer idCustomer);
 
+    Respuesta getByEmail(String email);
+
     Respuesta save(Customer request);
 
     Respuesta update(Customer request);

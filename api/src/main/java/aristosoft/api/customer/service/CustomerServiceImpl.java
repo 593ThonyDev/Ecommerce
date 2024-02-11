@@ -53,6 +53,20 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public Respuesta getByEmail(String email) {
+        Customer customer = repository.findByEmail(email);
+        if (customer == null) {
+            return Respuesta.builder()
+                    .type(RespuestaType.WARNING)
+                    .message("Registro no encontrado")
+                    .build();
+        }
+        return Respuesta.builder()
+                .type(RespuestaType.SUCCESS)
+                .content(customer)
+                .build();
+    }
+    @Override
     public Respuesta save(Customer customer) {
 
         if (customer.getFullName().isEmpty()) {

@@ -15,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import aristosoft.api.auth.jwt.JwtService;
+import aristosoft.api.customer.model.Customer;
+import aristosoft.api.customer.service.CustomerService;
 import aristosoft.api.email.EmailSender;
 import aristosoft.api.employe.model.Employe;
 import aristosoft.api.employe.model.EmployeDto;
@@ -36,13 +38,15 @@ public class AuthServiceImpl implements AuthService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager auth;
-    private final EmployeService empService;
+    private final EmployeService employeService;
+    private final CustomerService customerService;
 
     @Override
     public Respuesta login(String userName, String password) {
         try {
             auth.authenticate(new UsernamePasswordAuthenticationToken(userName, password));
-            UserDetails user = repUsuario.findByUsername(userName).orElseThrow(null);
+            UserDetails user = repUsuario.findByUsername(userName)
+                    .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado"));
             User usuario = (User) user;
 
             if (!user.isEnabled()) {
@@ -54,10 +58,9 @@ public class AuthServiceImpl implements AuthService {
 
             String token = jwtService.getToken(user);
 
-            Respuesta empRespuesta = empService.getByEmail(userName);
+            if (usuario.getRole() == Role.EMPLOYE || usuario.getRole() == Role.ADMINISTRATOR) {
 
-            if (usuario.getRole() == Role.EMPLOYE||usuario.getRole() == Role.ADMINISTRATOR) {
-
+                Respuesta empRespuesta = employeService.getByEmail(userName);
                 EmployeDto employeDto = (EmployeDto) empRespuesta.getContent();
                 Employe employe = Employe.builder()
                         .idEmploye(employeDto.getIdEmploye())
@@ -80,25 +83,18 @@ public class AuthServiceImpl implements AuthService {
                         .userDetails(userLogin)
                         .type(RespuestaType.SUCCESS)
                         .build();
-            }
+            } else if (usuario.getRole() == Role.CUSTOMER) {
 
-            else if (usuario.getRole() == Role.CUSTOMER) {
-
-                EmployeDto employeDto = (EmployeDto) empRespuesta.getContent();
-                Employe employe = Employe.builder()
-                        .idEmploye(employeDto.getIdEmploye())
-                        .photo(employeDto.getPhoto())
-                        .fullName(employeDto.getFullName())
-                        .build();
-
+                Respuesta custRespuesta = customerService.getByEmail(userName);
+                Customer customer = (Customer) custRespuesta.getContent();
                 UsuarioLogin userLogin = UsuarioLogin.builder()
                         .idUser(usuario.getIdUsuario())
                         .idEmploye(usuario.getIdUsuario())
                         .status(usuario.getEstado().toString())
                         .role(usuario.getRole().toString())
                         .username(userName)
-                        .photo(employe.getPhoto())
-                        .fullName(employe.getFullName())
+                        .photo(customer.getPhoto())
+                        .fullName(customer.getFullName())
                         .build();
 
                 return Respuesta.builder()
@@ -109,7 +105,7 @@ public class AuthServiceImpl implements AuthService {
             } else {
                 return Respuesta.builder()
                         .type(RespuestaType.WARNING)
-                        .message("Credenciales incorrectas")
+                        .message("Cliente no encontrado")
                         .build();
             }
 
