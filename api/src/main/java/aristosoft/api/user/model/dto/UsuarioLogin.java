@@ -2,7 +2,6 @@ package aristosoft.api.user.model.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import javax.persistence.*;
 import lombok.*;
 
 @Data
@@ -11,14 +10,13 @@ import lombok.*;
 @AllArgsConstructor
 public class UsuarioLogin {
 
-
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     Integer idUser;
 
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     Integer idEmploye;
-    
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     Integer idCustomer;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
