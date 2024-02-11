@@ -3,7 +3,7 @@ import { PATH_HOME, PATH_REGISTER, RESTORE_PASSWORD } from "../../../routes/publ
 import InputField from "../../../components/fields/InputField"
 import AuthImg from "../../../assets/auth.png";
 import Footer from "../../../components/footer/Footer";
-import { PATH_ADMIN_HOME } from "../../../routes/private/PrivatePaths";
+import { PATH_ADMIN_HOME } from "../../../routes/private/admin/PrivatePaths";
 
 const Login = () => {
     return (

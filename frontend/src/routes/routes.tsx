@@ -1,7 +1,7 @@
 import { FC, LazyExoticComponent, ReactNode, lazy } from "react";
 import { PATHS_PUBLIC } from "./public/PathsPublic";
 import { PATH_LOGIN, PATH_REGISTER } from "./public/Paths";
-import { PATHS_ADMIN } from "./private/PathsAdmin";
+import { PATHS_ADMIN } from "./private/admin/PathsAdmin";
 
 interface LayoutComponentProps {
     children: ReactNode;
