@@ -1,5 +1,7 @@
 package aristosoft.api.employe.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,18 @@ public class EmployeController {
             return ResponseEntity.noContent().build();
         } else if (pagina != null) {
             return ResponseEntity.ok(pagina);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    @GetMapping("/search/{value}")
+    public ResponseEntity<List<Employe>> searchEmploye(@PathVariable("value") String value) {
+        List<Employe> list = service.findEmploye(value);
+        if (list != null && list.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else if (list != null) {
+            return ResponseEntity.ok(list);
         } else {
             return ResponseEntity.noContent().build();
         }

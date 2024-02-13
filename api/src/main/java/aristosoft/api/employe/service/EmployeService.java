@@ -1,5 +1,7 @@
 package aristosoft.api.employe.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,6 +11,8 @@ import aristosoft.api.response.Respuesta;
 public interface EmployeService {
 
     Page<Employe> getAll(Pageable pageable);
+
+    List<Employe> findEmploye(String value);
 
     Respuesta getById(Integer idEmploye);
 

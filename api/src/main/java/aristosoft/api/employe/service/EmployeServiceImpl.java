@@ -39,6 +39,15 @@ public class EmployeServiceImpl implements EmployeService {
     }
 
     @Override
+    public List<Employe> findEmploye(String value) {
+        // Concatenar el valor con los caracteres de comodín para buscar coincidencias parciales
+        String searchValue = "%" + value + "%";
+    
+        // Realizar la consulta utilizando una sola consulta JPA que busque en nombre, correo electrónico y teléfono
+        return repository.findByPartialFullNameOrPartialEmailOrPartialPhone(searchValue, searchValue, searchValue);
+    }
+    
+    @Override
     public Respuesta getById(Integer idEmploye) {
         Optional<Employe> employe = repository.findById(idEmploye);
         if (!employe.isPresent()) {
