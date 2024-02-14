@@ -1,35 +1,37 @@
-import React, { useState } from 'react';
+import { PATH_CLIENTE_ADMIN_ID } from '../../../../routes/private/admin/PrivatePaths';
+import customerPhoto from "../../../../assets/cliente.png"
 import { Dialog, Combobox } from '@headlessui/react';
-import { Link } from 'react-router-dom';
+import { searchCustomer } from './model/CustomerApi';
+import { Customer } from './model/Customer';
 import { BiSearch } from 'react-icons/bi';
-import { PATH_EMPLEADO_ADMIN_ID } from '../../../../routes/private/admin/PrivatePaths';
-import { searchEmpleado } from './model/EmployeApi';
-import { Employe } from './model/Employe';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 interface SearchDoctorProps {
     isOpen: boolean;
     onClose: () => void;
 }
 
-const SearchDoctor: React.FC<SearchDoctorProps> = ({ isOpen, onClose }) => {
+const CustomerSearch: React.FC<SearchDoctorProps> = ({ isOpen, onClose }) => {
+    
     const [searchValue, setSearchValue] = useState('');
-    const [employe, setEmploye] = useState<Employe[]>([]);
+    const [customer, setCustomer] = useState<Customer[]>([]);
 
     const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value;
         setSearchValue(value);
 
         if (value.trim() === '') {
-            setEmploye([]); // Si el valor es vacío, establece empleados como un arreglo vacío
+            setCustomer([]);
             return;
         }
 
         try {
-            const response = await searchEmpleado(value);
+            const response = await searchCustomer(value);
             if (response === null) {
-                setEmploye([]);
+                setCustomer([]);
             } else {
-                setEmploye(response);
+                setCustomer(response);
             }
         } catch (error) {
             console.error(error);
@@ -55,7 +57,7 @@ const SearchDoctor: React.FC<SearchDoctorProps> = ({ isOpen, onClose }) => {
                         onChange={handleSearchChange}
                         value={searchValue}
                         className="h-12 w-full bg-transparent text-sm text-black-800 outline-none"
-                        placeholder='Buscar empleado... '
+                        placeholder='Buscar cliente... '
                     />
                     <span
                         onClick={handleCancelClick}
@@ -69,7 +71,7 @@ const SearchDoctor: React.FC<SearchDoctorProps> = ({ isOpen, onClose }) => {
                 ) : (
                     <Combobox.Options static className="max-h-96 overflow-y-scroll scrollbar-hide text-sm p-4">
                         <>
-                            {employe.length === 0 && (
+                            {customer.length === 0 && (
                                 <Combobox.Option
                                     className="text-center text-black-500"
                                     value="no-results"
@@ -77,26 +79,26 @@ const SearchDoctor: React.FC<SearchDoctorProps> = ({ isOpen, onClose }) => {
                                     No se encontraron resultados.
                                 </Combobox.Option>
                             )}
-                            {employe.map((empleado) => (
-                                <Combobox.Option key={empleado.idEmploye} value={empleado.idEmploye}>
+                            {customer.map((customer) => (
+                                <Combobox.Option key={customer.idCustomer} value={customer.idCustomer}>
                                     {({ active }) => (
-                                        <Link to={PATH_EMPLEADO_ADMIN_ID + empleado.idEmploye + "/" + empleado.fullName?.replace(/\s+/g, '-')}>
+                                        <Link to={PATH_CLIENTE_ADMIN_ID + customer.idCustomer + "/" + customer.fullName?.replace(/\s+/g, '-')}>
                                             <div className={`flex items-center px-3  rounded-xl cursor-default ${active ? 'bg-primary-50' : ''}`}>
                                                 <div className="flex flex-col items-center justify-center  bg-primary-50 rounded-xl">
                                                     <img
                                                         className='rounded-lg max-h-12 max-w-12 h-12 w-12'
-                                                        src={`https://${empleado.photo}`}
-                                                        alt={`${empleado.fullName}`} />
+                                                        src={customer.photo ? `https://${customer.photo}` : customerPhoto}
+                                                        alt={`${customer.fullName}`} />
                                                 </div>
                                                 <div className={`px-4 py-2 grid `}>
                                                     <span className='text-black-500 font-bold'>
-                                                        {`${empleado.fullName?.toLocaleUpperCase()}`}
+                                                        {`${customer.fullName?.toLocaleUpperCase()}`}
                                                     </span>
                                                     <span className='text-black-500 line-clamp-1'>
-                                                        {`${empleado.email}`}
+                                                        {`${customer.email}`}
                                                     </span>
                                                     <span className='text-black-500 line-clamp-1'>
-                                                        {`${empleado.phone}`}
+                                                        {`${customer.phone}`}
                                                     </span>
                                                 </div>
                                             </div>
@@ -113,4 +115,4 @@ const SearchDoctor: React.FC<SearchDoctorProps> = ({ isOpen, onClose }) => {
     );
 };
 
-export default SearchDoctor;
+export default CustomerSearch;

@@ -52,6 +52,17 @@ public class CustomerServiceImpl implements CustomerService {
                 .build();
     }
 
+
+    @Override
+    public List<Customer> findCustomer(String value) {
+        // Concatenar el valor con los caracteres de comodín para buscar coincidencias parciales
+        String searchValue = "%" + value + "%";
+    
+        // Realizar la consulta utilizando una sola consulta JPA que busque en nombre, correo electrónico y teléfono
+        return repository.findByPartialFullNameOrPartialEmailOrPartialPhone(searchValue, searchValue, searchValue);
+    }
+    
+
     @Override
     public Respuesta getByEmail(String email) {
         Customer customer = repository.findByEmail(email);
@@ -66,6 +77,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .content(customer)
                 .build();
     }
+
     @Override
     public Respuesta save(Customer customer) {
 
@@ -111,9 +123,6 @@ public class CustomerServiceImpl implements CustomerService {
                     .build();
         }
 
-        customer.setCreated(customer.getFecha());
-        repository.save(customer);
-
         // Enviar al email mensaje de creacion de usuario
         User user = User.builder()
                 .role(Role.CUSTOMER)
@@ -121,12 +130,23 @@ public class CustomerServiceImpl implements CustomerService {
                 .username(customer.getEmail())
                 .build();
 
-        userService.register(user);
+        Respuesta usuario = userService.register(user);
 
-        return Respuesta.builder()
-                .type(RespuestaType.SUCCESS)
-                .message("Usuario registrado con exito")
-                .build();
+        if (usuario.getType() == RespuestaType.SUCCESS) {
+            customer.setCreated(customer.getFecha());
+            repository.save(customer);
+
+            return Respuesta.builder()
+                    .type(RespuestaType.SUCCESS)
+                    .message("Usuario registrado con exito")
+                    .build();
+
+        } else {
+            return Respuesta.builder()
+                    .type(RespuestaType.WARNING)
+                    .message("No se pudo crear al cliente")
+                    .build();
+        }
     }
 
     @Override

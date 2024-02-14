@@ -1,5 +1,7 @@
 package aristosoft.api.customer.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -9,6 +11,8 @@ import aristosoft.api.response.Respuesta;
 public interface CustomerService {
 
     Page<Customer> getAll(Pageable pageable);
+
+    List<Customer> findCustomer(String value);
 
     Respuesta getById(Integer idCustomer);
 

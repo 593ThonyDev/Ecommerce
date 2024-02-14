@@ -15,7 +15,6 @@ const EmployeNew = () => {
     const navigate = useNavigate();
 
     const [employeData, setEmployeData] = useState<Employe>({
-        idEmploye: 0,
         names: '',
         lastName: '',
         email: '',
@@ -44,14 +43,14 @@ const EmployeNew = () => {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const camposFaltantes = obtenerCamposFaltantes(employeData);
+        const camposFaltantes = validarEmpleado(employeData);
         if (camposFaltantes.length === 0) {
             const loadingToast = toast.loading('Guardando registro...');
             try {
                 const savedSuccessfully = await saveOrUpdateEmploye(employeData);
                 if (savedSuccessfully) {
                     toast.dismiss(loadingToast);
-                    navigate(PATH_EMPLEADOS_ADMIN); // Navegar al PATH_EMPLEADOS_ADMIN si se guardó correctamente
+                    navigate(PATH_EMPLEADOS_ADMIN); 
                 } else {
                     toast.dismiss(loadingToast);
                 }
@@ -65,7 +64,7 @@ const EmployeNew = () => {
     };
 
 
-    const obtenerCamposFaltantes = (employeData: Employe) => {
+    const validarEmpleado = (employeData: Employe) => {
         const camposFaltantes: string[] = [];
         if (!employeData.names) camposFaltantes.push("nombres");
         if (!employeData.lastName) camposFaltantes.push("apellidos");
@@ -100,7 +99,11 @@ const EmployeNew = () => {
                                     <BiCamera />
                                 </div>
                             </label>
-                            <input type="file" id="photoInput" accept="image/*" onChange={handlePhotoChange} style={{ display: 'none' }} />
+                            <input type="file"
+                                id="photoInput"
+                                accept="image/*"
+                                className="hidden"
+                                onChange={handlePhotoChange} />
                         </div>
                     </div>
                     <div className="grid lg:pt-4">

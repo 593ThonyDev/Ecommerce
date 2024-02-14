@@ -1,5 +1,7 @@
 package aristosoft.api.customer.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
@@ -42,6 +44,18 @@ public class CustomerController {
                     .body(Respuesta.builder().type(response.getType())
                             .message(response.getMessage())
                             .build());
+        }
+    }
+
+    @GetMapping("/search/{value}")
+    public ResponseEntity<List<Customer>> searchEmploye(@PathVariable("value") String value) {
+        List<Customer> list = service.findCustomer(value);
+        if (list != null && list.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else if (list != null) {
+            return ResponseEntity.ok(list);
+        } else {
+            return ResponseEntity.noContent().build();
         }
     }
 

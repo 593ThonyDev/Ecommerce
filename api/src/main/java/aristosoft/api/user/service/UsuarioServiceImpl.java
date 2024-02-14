@@ -65,15 +65,15 @@ public class UsuarioServiceImpl implements UsuarioService {
             });
 
             executorService.shutdown();
-            System.out.println("Usuario creado");
 
             return Respuesta.builder().type(RespuestaType.SUCCESS)
                     .message("Usuario creado con exito")
                     .build();
-
         } catch (Exception e) {
-            System.out.println("Error en crear el usuario " + e);
-            return null;
+            System.out.println("Error en crear el usuario " + e.getMessage());
+            return Respuesta.builder().type(RespuestaType.WARNING)
+                    .message("No se pudo crear al usuario")
+                    .build();
         }
     }
 

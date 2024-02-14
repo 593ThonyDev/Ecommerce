@@ -46,6 +46,9 @@ const EmployeView = () => {
     const handleUpdatePhoto = async (photo: File) => {
         setLoading(true);
         const loadingToast = toast.loading('Actualizando imagen...');
+        if (!formData.idEmploye) {
+                return;
+        }
         const success = await updateEmployePhoto(formData.idEmploye.toString(), photo);
         if (success) {
             toast.dismiss(loadingToast);

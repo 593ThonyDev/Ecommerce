@@ -2,8 +2,17 @@ import { Link } from "react-router-dom"
 import { PATH_CLIENTE_ADMIN_NEW } from "../../../../routes/private/admin/PrivatePaths"
 import { FaPlus, FaSearch } from "react-icons/fa"
 import CustomerList from "./CustomerList"
+import { useState } from "react"
+import CustomerSearch from "./CustomerSearch"
 
 const CustomerIndex = () => {
+
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+    const openSearch = () => {
+        setIsSearchOpen(true);
+    };
+
     return (
         <div className="grid lg:py-5 py-2 lg:px-32 px-3">
             <div className="flex justify-between">
@@ -22,7 +31,8 @@ const CustomerIndex = () => {
                 </div>
                 <div className="grid grid-cols-2 gap-x-1">
                     <div
-                        className="px-2 py-2 h-fit text-white bg-primary-400 rounded-xl hover:bg-primary-500">
+                        className="px-2 py-2 h-fit text-white bg-primary-400 rounded-xl hover:bg-primary-500"
+                        onClick={openSearch}>
                         <div className="flex justify-center items-center flex-nowrap">
                             <FaSearch className="w-6" />
                         </div>
@@ -36,8 +46,11 @@ const CustomerIndex = () => {
                 </div>
             </div>
             <div className="flex">
-                <CustomerList/>
+                <CustomerList />
             </div>
+            {isSearchOpen && (
+                <CustomerSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+            )}
         </div>
     )
 }

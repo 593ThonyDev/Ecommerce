@@ -1,6 +1,6 @@
 export interface Employe {
     description: string;
-    idEmploye: number;
+    idEmploye?: number;
     created?: string;
     lastName?: string;
     fullName?: string;

@@ -16,7 +16,6 @@ import lombok.*;
 public class UsuarioDto {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Column(name = "iduser")
     Integer idUsuario;

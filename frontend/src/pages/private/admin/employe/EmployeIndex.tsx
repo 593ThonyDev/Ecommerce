@@ -2,7 +2,7 @@ import { PATH_EMPLEADO_ADMIN_NEW } from "../../../../routes/private/admin/Privat
 import { FaPlus, FaSearch } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import EmployeList from "./EmployeList";
-import SearchDoctor from "./SearchEmploye";
+import EmployeSearch from "./EmployeSearch";
 import { useState } from "react";
 
 const EmployeIndex = () => {
@@ -47,7 +47,7 @@ const EmployeIndex = () => {
                 <EmployeList />
             </div>
             {isSearchOpen && (
-                <SearchDoctor isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+                <EmployeSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
             )}
         </div>
     );

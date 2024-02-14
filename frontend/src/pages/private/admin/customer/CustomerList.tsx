@@ -2,12 +2,11 @@ import { PATH_CLIENTE_ADMIN_ID } from "../../../../routes/private/admin/PrivateP
 import { formatDate } from "../../../../functions/Funtions";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
 import customerPhoto from "../../../../assets/cliente.png"
-import { API_URL } from "../../../../functions/ApiConst";
+import { getAllCustomers } from "./model/CustomerApi";
 import LoaderList from "./components/LoaderList";
 import { useEffect, useState } from "react";
 import { Customer } from "./model/Customer";
 import { Link } from "react-router-dom";
-import axios from "axios";
 
 const CustomerList = () => {
 
@@ -24,20 +23,14 @@ const CustomerList = () => {
 
     const fetchData = () => {
 
-        setIsLoading(true);
-
-        setTimeout(async () => {
+        const fetchDataAndSetState = async () => {
             try {
-                const response = await axios.get(API_URL + 'customer/list', {
-                    params: {
-                        page: currentPage,
-                        size: 12
-                    }
-                });
-                setData(response.data.content);
-                setTotalItems(response.data.totalElements);
-                setIsLoading(false);
+                setIsLoading(true);
+                const response = await getAllCustomers(currentPage, setIsLoading);
+                setData(response.content);
+                setTotalItems(response.totalElements);
             } catch (error) {
+                console.error("Error fetching data:", error);
                 setIsError(true);
                 setIsLoading(false);
                 if (error instanceof Error) {
@@ -46,8 +39,8 @@ const CustomerList = () => {
                     setErrorMessage('Error en la solicitud. Por favor, inténtalo de nuevo más tarde');
                 }
             }
-
-        }, 800);
+        };
+        fetchDataAndSetState();
     };
 
     const totalPages = Math.ceil(totalItems / 12);
