@@ -1,5 +1,7 @@
 package aristosoft.api.category.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,18 @@ public class CategoryController {
     @GetMapping("/list")
     public ResponseEntity<Page<Category>> getAll(Pageable pageable) {
         Page<Category> pagina = service.getAll(pageable);
+        if (pagina != null && pagina.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else if (pagina != null) {
+            return ResponseEntity.ok(pagina);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    @GetMapping("/search/{value}")
+    public ResponseEntity<List<Category>> findByName(@PathVariable("value")String value) {
+        List<Category> pagina = service.findByName(value);
         if (pagina != null && pagina.isEmpty()) {
             return ResponseEntity.noContent().build();
         } else if (pagina != null) {

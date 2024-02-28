@@ -1,6 +1,7 @@
 package aristosoft.api.category.service;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,15 @@ public class CategoryServiceImpl implements CategoryService {
             return null;
         }
         return pagina;
+    }
+
+    @Override
+    public List<Category> findByName(String value) {
+        List<Category> list = repository.findByPartialName(value);
+        if (list.isEmpty()) {
+            return null;
+        }
+        return list;
     }
 
     @Override
@@ -96,13 +106,6 @@ public class CategoryServiceImpl implements CategoryService {
                     .build();
         }
 
-        if (photo == null || photo.isEmpty()) {
-            return Respuesta.builder()
-                    .type(RespuestaType.WARNING)
-                    .message("Se debe agregar una imagen válida")
-                    .build();
-        }
-
         Optional<Category> optional = repository.findById(category.getIdCategory());
 
         if (!optional.isPresent()) {
@@ -113,8 +116,12 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         try {
-            upload.deleteFile(optional.get().getImg());
-            category.setImg(upload.uploadImage(photo, "CategoryProducts"));
+            if (photo != null && !photo.isEmpty()) {
+                upload.deleteFile(optional.get().getImg());
+                category.setImg(upload.uploadImage(photo, "CategoryProducts"));
+            } else {
+                category.setImg(optional.get().getImg());
+            }
             repository.save(category);
             return Respuesta.builder()
                     .type(RespuestaType.SUCCESS)

@@ -1,5 +1,5 @@
 export interface Category{
     idCategory?: number
     name?: string
-    img?: string
+    img?: File | null
 }

@@ -1,11 +1,11 @@
 import { PATH_CATEGORIA_PRODUCTO_ADMIN_ID } from "../../../../routes/private/admin/PrivatePaths";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
-import { API_URL } from "../../../../functions/ApiConst";
 import { Category } from "./model/Category";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import axios from "axios";
+import { getAllCategories } from "./model/CategoryApi";
+import LoaderList from "./components/LoaderList";
 
 const ProductCategoryList = () => {
 
@@ -20,23 +20,17 @@ const ProductCategoryList = () => {
         fetchData();
     }, [currentPage]);
 
+
     const fetchData = () => {
 
-        setIsLoading(true);
-
-        setTimeout(async () => {
+        const fetchDataAndSetState = async () => {
             try {
-                const response = await axios.get(API_URL + 'category/list', {
-                    params: {
-                        page: currentPage,
-                        size: 12
-                    }
-                });
-                setData(response.data.content);
-                setTotalItems(response.data.totalElements);
-                setIsLoading(false);
-                console.log(data)
+                setIsLoading(true);
+                const response = await getAllCategories(currentPage, setIsLoading);
+                setData(response.content);
+                setTotalItems(response.totalElements);
             } catch (error) {
+                console.error("Error fetching data:", error);
                 setIsError(true);
                 setIsLoading(false);
                 if (error instanceof Error) {
@@ -45,8 +39,8 @@ const ProductCategoryList = () => {
                     setErrorMessage('Error en la solicitud. Por favor, inténtalo de nuevo más tarde');
                 }
             }
-
-        }, 2000);
+        };
+        fetchDataAndSetState();
     };
 
     const totalPages = Math.ceil(totalItems / 12);
@@ -78,27 +72,17 @@ const ProductCategoryList = () => {
                         className="grid grid-cols-1 md:grid-cols-3 sm:grid-cols-1 gap-4 w-full">
                         {
                             [...Array(9)].map((_, index) => (
-                                <div key={index} className="flex border border-primary-500/30  bg-white  flex-col justify-between w-full sm-w-96 h-48 bg-center text-primary-800 overflow-hidden cursor-pointer bg-cover rounded-xl">
-                                    <div className="animate-pulse flex justify-between items-center pr-4 pt-3 pb-8">
-                                        <div className={`animate-pulse bg-green-400/40  backdrop-blur-md text-white bg-opacity-95  flex items-center text-xs rounded-xl ml-auto px-7 py-2.5`} />
-                                    </div>
-
-                                    <div className="animate-pulse rounded-r-xl p-1 py-3 flex flex-col mr-4 mb-3 bg-primary-300/50 dark:bg-white/5 backdrop-blur-md border border-primary-500/30 ">
-                                        <div className="text-xl font-bold w-28 pb-1 mt-1 py-2 rounded-md text-white line-clamp-1 px-4  bg-primary-500/20 mb-4 mr-1" />
-                                        <div className="text-white-75 rounded-md mr-1 text-sm line-clamp-2 py-1 pb-1 bg-primary-500/20   mb-2" />
-                                        <div className="text-white-75 rounded-md mr-1 text-sm line-clamp-2 py-1 pb-1 bg-primary-500/20   mb-2" />
-                                    </div>
-                                </div>
+                                <LoaderList key={index} />
                             ))
                         }
                     </motion.div>
                 </>
             ) : (
                 <div className=" w-full">
-                    < div className="grid lg:grid-cols-3 gap-2 w-full" >
+                    < div className="grid lg:grid-cols-3 md:grid-cols-2 gap-2 w-full" >
                         {
                             data.map(category => (
-                                <Link to={PATH_CATEGORIA_PRODUCTO_ADMIN_ID + "/" + category.idCategory} className="flex h-fit items-start justify-between cursor-pointer bg-white hover:rounded-xl rounded-xl" key={category.idCategory}>
+                                <Link to={PATH_CATEGORIA_PRODUCTO_ADMIN_ID + category.idCategory + "/" + category.name?.replace(/\s+/g, '-')} className="flex h-fit items-start justify-between cursor-pointer bg-white hover:rounded-xl rounded-xl" key={category.idCategory}>
                                     <div className="flex items-center gap-3 p-3 w-full rounded-xl hover:bg-black-100/50">
                                         <div className="relative h-16 max-h-16 w-16 items-start justify-start rounded-full">
                                             <img src={"https://" + category.img} className="h-16 max-h-16 max-w-16 w-16 rounded-xl" />

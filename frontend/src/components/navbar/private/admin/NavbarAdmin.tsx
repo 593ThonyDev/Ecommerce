@@ -86,7 +86,7 @@ const NavbarAdmin = () => {
                             Menu
                         </div>
                         <span
-                            className="-m-2.5 rounded-full p-2.5 font-bold bg-primary-100 md:bg-white md:hover:bg-black-100 lg:bg-white lg:hover:bg-black-100 hover:bg-primary-200/50 text-black-300"
+                            className="-m-2.5 rounded-full p-2.5 font-bold bg-primary-100 md:bg-white md:hover:bg-black-100 lg:bg-white lg:hover:bg-black-100 hover:bg-primary-200/50 text-black-300 outline-none"
                             onClick={() => setMenuOpen(false)}
                             tabIndex={0}
                         >

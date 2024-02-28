@@ -29,13 +29,13 @@ const Navbar = () => {
     return (
         <header className="h-16 sm:h-16 flex items-center z-30 w-full sticky top-0 bg-primary-50 border-b border-primary-100">
             <div className="container mx-auto lg:px-6 md:px-2 px-1 flex items-center justify-between">
-                <div className="flex items-center flex-row-reverse justify-center">
+                <div className="flex items-center justify-center">
+                    <div onClick={() => setMobileMenuOpen(true)} className="relative inline-flex items-center p-3 lg:hidden lg:ml-4 md:ml-2 hover:bg-black-100/50 px-3 rounded-full text-sm font-medium text-center text-black-300">
+                        <RiMenuFill className="w-6 h-6" />
+                    </div>
                     <Link to={PATH_HOME} className=" ml-1 my-auto uppercase text-black-500 font-black lg:text-3xl text-2xl">
                         Shop.ME
                     </Link>
-                    <div onClick={() => setMobileMenuOpen(true)} className="relative inline-flex items-center p-3 lg:ml-4 md:ml-2 hover:bg-black-100/50 px-3 rounded-full text-sm font-medium text-center text-black-300">
-                        <RiMenuFill className="w-6 h-6" />
-                    </div>
                 </div>
                 <div className="flex items-center">
                     <nav className=" font-poppins text-black-400 uppercase text-lg lg:flex items-center hidden">
