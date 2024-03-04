@@ -1,10 +1,13 @@
 package aristosoft.api.user.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.*;
 
 import aristosoft.api.response.Respuesta;
 import aristosoft.api.user.model.User;
 import aristosoft.api.user.model.dto.UsuarioDto;
+import aristosoft.api.user.model.dto.UsuarioViewDto;
 
 public interface UsuarioService {
 
@@ -21,5 +24,9 @@ public interface UsuarioService {
     Respuesta updateEstado(String estado, Integer idUsuario);
 
     Page<UsuarioDto> getAll(Pageable pageable);
-    
+
+    Respuesta selectUsers();
+
+    List<UsuarioViewDto> searchUser(String searchItem);
+
 }

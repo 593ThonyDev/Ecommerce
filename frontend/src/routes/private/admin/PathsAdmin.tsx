@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import { PATH_ADMIN_COMPANY, PATH_ADMIN_COMPANY_EDIT, PATH_ADMIN_HOME, PATH_CATEGORIA_PRODUCTOS_ADMIN, PATH_CATEGORIA_PRODUCTOS_ADMIN_NEW, PATH_CATEGORIA_PRODUCTO_ADMIN, PATH_CATEGORIA_PRODUCTO_ADMIN_EDIT, PATH_CLIENTES_ADMIN, PATH_CLIENTE_ADMIN, PATH_CLIENTE_ADMIN_EDIT, PATH_CLIENTE_ADMIN_NEW, PATH_EMPLEADOS_ADMIN, PATH_EMPLEADO_ADMIN, PATH_EMPLEADO_ADMIN_EDIT, PATH_EMPLEADO_ADMIN_NEW, PATH_ORDERS_ADMIN, PATH_PRODUCTOS_ADMIN, PATH_PRODUCTO_ADMIN, PATH_PRODUCTO_ADMIN_NEW } from "./PrivatePaths";
+import { PATH_ADMIN_COMPANY, PATH_ADMIN_COMPANY_EDIT, PATH_ADMIN_HOME, PATH_CATEGORIA_PRODUCTOS_ADMIN, PATH_CATEGORIA_PRODUCTOS_ADMIN_NEW, PATH_CATEGORIA_PRODUCTO_ADMIN, PATH_CATEGORIA_PRODUCTO_ADMIN_EDIT, PATH_CLIENTES_ADMIN, PATH_CLIENTE_ADMIN, PATH_CLIENTE_ADMIN_EDIT, PATH_CLIENTE_ADMIN_NEW, PATH_EMPLEADOS_ADMIN, PATH_EMPLEADO_ADMIN, PATH_EMPLEADO_ADMIN_EDIT, PATH_EMPLEADO_ADMIN_NEW, PATH_ORDERS_ADMIN, PATH_PRODUCTOS_ADMIN, PATH_PRODUCTO_ADMIN, PATH_PRODUCTO_ADMIN_NEW, PATH_USERS_ADMIN, PATH_USER_ADMIN_VIEW } from "./PrivatePaths";
 
 export const PATHS_ADMIN = {
     layout: lazy(async () => await import("../../../layouts/private/admin/AdminLayout")),
@@ -87,6 +87,16 @@ export const PATHS_ADMIN = {
             path: PATH_ORDERS_ADMIN,
             element: lazy(async () => await import("../../../pages/private/admin/order/Order")),
         },
+        // ======== User ========
+        {
+            path: PATH_USERS_ADMIN,
+            element: lazy(async () => await import("../../../pages/private/admin/user/UserIndex")),
+        },
+        {
+            path: PATH_USER_ADMIN_VIEW,
+            element: lazy(async () => await import("../../../pages/private/admin/user/UserView")),
+        },
+        // ======== Error Page admin ========
         {
             path: PATH_ADMIN_HOME + "/*",
             element: lazy(async () => await import("../../../pages/error/NotFoundAdmin")),

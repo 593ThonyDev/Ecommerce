@@ -1,9 +1,11 @@
 export interface User {
-    idUsuario: number,
-    username: string,
-    password?: string,
-    usuEmail: string,
-    created: string,
-    role: string,
-    estado: string
+    id: number,
+    iduser?: number,
+    username?: string,
+    role?: string,
+    status?: string
+    estado?: string
+    created?: string,
+    fullname?: string,
+    photo?: string,
 }

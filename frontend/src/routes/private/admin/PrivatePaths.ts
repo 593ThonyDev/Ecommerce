@@ -1,4 +1,7 @@
+//Rutas privadas para listar la gestion de las interfaces
+
 export const PATH_ADMIN_HOME = "/a";
+
 export const PATH_ADMIN_COMPANY = PATH_ADMIN_HOME + "/company"
 export const PATH_ADMIN_COMPANY_EDIT = PATH_ADMIN_HOME + "/company/edit"
 
@@ -36,12 +39,6 @@ export const PATH_CLIENTE_ADMIN_ID = PATH_ADMIN_HOME + "/customer/"
 export const PATH_CLIENTE_ADMIN_EDIT = PATH_ADMIN_HOME + "/customer/edit/:id/:name"
 export const PATH_CLIENTE_ADMIN_EDIT_ID = PATH_ADMIN_HOME + "/customer/edit/"
 
-export const PATH_USUARIOS_ADMIN = PATH_ADMIN_HOME + "/users"
-export const PATH_USUARIO_ADMIN = PATH_ADMIN_HOME + "/user/:id"
-export const PATH_USUARIO_ADMIN_ID = PATH_ADMIN_HOME + "/user/"
-export const PATH_USUARIO_ADMIN_EDIT = PATH_ADMIN_HOME + "/user/edit/:id"
-export const PATH_USUARIO_ADMIN_EDIT_ID = PATH_ADMIN_HOME + "/user/edit/"
-
 export const PATH_ORDERS_ADMIN = PATH_ADMIN_HOME + "/orders"
 export const PATH_ORDER_ADMIN = PATH_ADMIN_HOME + "/order/:id/:code"
 export const PATH_ORDER_ADMIN_ID = PATH_ADMIN_HOME + "/order/"
@@ -55,7 +52,7 @@ export const PATH_ARTICLE_ADMIN_EDIT = PATH_ADMIN_HOME + "/article/edit/:id"
 export const PATH_ARTICLE_ADMIN_EDIT_ID = PATH_ADMIN_HOME + "/article/edit/"
 
 export const PATH_USERS_ADMIN = PATH_ADMIN_HOME + "/users"
-export const PATH_USER_ADMIN_VIEW = PATH_ADMIN_HOME + "/user/:id"
+export const PATH_USER_ADMIN_VIEW = PATH_ADMIN_HOME + "/user/:iduser/:role/:id/:fullname"
 export const PATH_USER_ADMIN_VIEW_ID = PATH_ADMIN_HOME + "/user/"
 export const PATH_USER_ADMIN_EDIT = PATH_ADMIN_HOME + "/user/edit/:id"
 export const PATH_USER_ADMIN_EDIT_ID = PATH_ADMIN_HOME + "/user/edit/"

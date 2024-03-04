@@ -15,6 +15,8 @@ import aristosoft.api.email.EmailSender;
 import aristosoft.api.response.*;
 import aristosoft.api.user.model.*;
 import aristosoft.api.user.model.dto.UsuarioDto;
+import aristosoft.api.user.model.dto.UsuarioViewDto;
+import aristosoft.api.user.repository.UserViewRepository;
 import aristosoft.api.user.repository.UsuarioRepository;
 import lombok.RequiredArgsConstructor;
 
@@ -25,6 +27,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     private EmailSender emailSender;
     private final UsuarioRepository repository;
+    @Autowired
+    private UserViewRepository viewRepository;
     private final PasswordEncoder passwordEncoder;
     private final ModelMapper mapper;
 
@@ -300,6 +304,27 @@ public class UsuarioServiceImpl implements UsuarioService {
         } else {
             return null;
         }
+    }
+
+    @Override
+    public Respuesta selectUsers() {
+        List<UsuarioViewDto> lista = viewRepository.findAll();
+        if (lista.isEmpty()) {
+            return Respuesta.builder()
+                    .type(RespuestaType.WARNING)
+                    .message("No existe contenido")
+                    .build();
+        }
+
+        return Respuesta.builder()
+                .type(RespuestaType.SUCCESS)
+                .content(viewRepository.findAll())
+                .build();
+    }
+
+    @Override
+    public List<UsuarioViewDto> searchUser(String searchItem) {
+        return null;
     }
 
 }
