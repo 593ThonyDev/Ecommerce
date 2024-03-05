@@ -225,31 +225,29 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public Respuesta updateAdmin(UsuarioDto dto) {
+    public Respuesta updateRole(UsuarioDto dto) {
         Optional<User> optional = repository.findById(dto.getIdUsuario());
 
         if (optional.isPresent()) {
-
-            optional.get().setRole(Role.valueOf(dto.getRole()));
-            optional.get().setUsuEmail(dto.getUsuEmail());
-
+            optional.get().setRole(optional.get().getRole() == Role.ADMINISTRATOR ? Role.EMPLOYE : Role.ADMINISTRATOR);
             repository.save(optional.get());
 
             return Respuesta.builder()
                     .type(RespuestaType.SUCCESS)
-                    .message("Usuario actualizado con exito")
+                    .message(optional.get().getRole().toString().toLowerCase().equals("employe")
+                            ? "Rol actualizado a Empleado"
+                            : "Rol actualizado a Administrador")
                     .build();
         } else {
             return Respuesta.builder()
                     .type(RespuestaType.WARNING)
                     .message("Usuario no encontrado")
                     .build();
-
         }
     }
 
     @Override
-    public Respuesta updateEstado(String estado, Integer idUsuario) {
+    public Respuesta updateEstado(Integer idUsuario) {
 
         if (idUsuario <= 0 || idUsuario == null) {
             return Respuesta.builder()
@@ -258,33 +256,28 @@ public class UsuarioServiceImpl implements UsuarioService {
                     .build();
         }
 
-        if (estado.isEmpty() || estado == null) {
-            return Respuesta.builder()
-                    .type(RespuestaType.WARNING)
-                    .message("Debe tener el estado")
-                    .build();
-        }
-
         Optional<User> optional = repository.findById(idUsuario);
 
         if (optional.isPresent()) {
 
-            estado.toLowerCase();
-
-            if (estado.equalsIgnoreCase("online")) {
-                optional.get().setEstado(Status.ONLINE);
-            }
-
-            if (estado.equalsIgnoreCase("bloqueado")) {
-                optional.get().setEstado(Status.OFFLINE);
+            if (optional.get().getEstado() == Status.UPDATE_PASS) {
+                optional.get().setEstado(
+                        optional.get().getEstado() == Status.UPDATE_PASS ? Status.OFFLINE : Status.UPDATE_PASS);
+            } else if (optional.get().getEstado() == Status.ONLINE) {
+                optional.get().setEstado(optional.get().getEstado() == Status.ONLINE ? Status.OFFLINE : Status.ONLINE);
+            } else {
+                optional.get().setEstado(optional.get().getEstado() == Status.OFFLINE ? Status.ONLINE : Status.OFFLINE);
             }
 
             repository.save(optional.get());
 
             return Respuesta.builder()
                     .type(RespuestaType.SUCCESS)
-                    .message("Usuario " + optional.get().getEstado().toString().toLowerCase())
+                    .message("Usuario " + (optional.get().getEstado() == Status.OFFLINE
+                            ? "bloqueado con éxito"
+                            : "en línea correctamente"))
                     .build();
+
         } else {
             return Respuesta.builder()
                     .type(RespuestaType.WARNING)
@@ -324,7 +317,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public List<UsuarioViewDto> searchUser(String searchItem) {
-        return null;
+        return viewRepository.searchUser(searchItem);
     }
 
 }

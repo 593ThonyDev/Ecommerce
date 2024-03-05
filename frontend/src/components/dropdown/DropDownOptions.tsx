@@ -70,7 +70,7 @@ const DropdownItem: React.FC<DropdownItemProps> = ({ path, text, onClick }) => {
     } else {
         // Si path no tiene un valor, mostrar solo un div
         return (
-            <div className="whitespace-nowrap block px-4 py-2 text-black-400 cursor-default  hover:bg-primary-50 rounded-md" onClick={onClick}>
+            <div className="whitespace-nowrap cursor-default block px-4 py-2 text-black-500  hover:bg-black-600/10 rounded-md" onClick={onClick}>
                 {text}
             </div>
         );

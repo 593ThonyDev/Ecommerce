@@ -19,9 +19,9 @@ public interface UsuarioService {
 
     Respuesta getById(Integer idUsuario);
 
-    Respuesta updateAdmin(UsuarioDto usuarioDto);
+    Respuesta updateRole(UsuarioDto usuarioDto);
 
-    Respuesta updateEstado(String estado, Integer idUsuario);
+    Respuesta updateEstado(Integer idUsuario);
 
     Page<UsuarioDto> getAll(Pageable pageable);
 

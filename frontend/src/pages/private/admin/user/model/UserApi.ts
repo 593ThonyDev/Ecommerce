@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { User } from "./User";
 import { API_URL } from "../../../../../functions/ApiConst";
+import toast from "react-hot-toast";
 
 export const getAllUsers = async (setIsLoading: (value: boolean) => void): Promise<User[]> => {
     try {
@@ -22,4 +23,66 @@ export const getUserById = async (id: number): Promise<User> => {
     } catch (error) {
         throw error;
     }
+};
+
+export const restorePasswordById = async (idUser: string): Promise<boolean> => {
+    try {
+        const formDataToSend = new FormData();
+        formDataToSend.append("idUsuario", idUser);
+
+        const response = await axios.patch(`${API_URL}user/restorePassword`, formDataToSend);
+        const message = response.data.message;
+        toast.success(message);
+        return true;
+    } catch (error: any) {
+        const errorMessage = error.response?.data?.message || 'Error al restaurar la contraseña';
+        toast.error(errorMessage);
+        return false;
+    }
+};
+
+export const updateRoleById = async (idUser: string): Promise<boolean> => {
+    try {
+        const formDataToSend = new FormData();
+        formDataToSend.append("idUsuario", idUser);
+        const response = await axios.patch(`${API_URL}user/updateRole`, formDataToSend);
+        const message = response.data.message;
+        toast.success(message);
+        return true;
+    } catch (error: any) {
+        const errorMessage = error.response?.data?.message || 'Error al restaurar la contraseña';
+        toast.error(errorMessage);
+        return false;
+    }
+};
+
+export const updateStatusById = async (idUser: string): Promise<boolean> => {
+    try {
+        const formDataToSend = new FormData();
+        formDataToSend.append("idUsuario", idUser);
+        const response = await axios.patch(`${API_URL}user/updateStatus`, formDataToSend);
+        const message = response.data.message;
+        toast.success(message);
+        return true;
+    } catch (error: any) {
+        const errorMessage = error.response?.data?.message || 'Error al cambiar ';
+        toast.error(errorMessage);
+        return false;
+    }
+};
+
+export const searchUser = (value: string) => {
+    return axios.get(`${API_URL}user/search/${value}`)
+        .then((response) => {
+            if (response.data == null) {
+                return null;
+            } else if (response.status == 204) {
+                return null;
+            } else {
+                return response.data;
+            }
+        })
+        .catch((error) => {
+            throw error;
+        });
 };

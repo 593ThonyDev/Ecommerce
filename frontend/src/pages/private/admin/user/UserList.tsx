@@ -63,14 +63,14 @@ const UserList = () => {
                                             </div>
                                             <div className="flex">
                                                 <span className="text-black-700 font-bold pr-1 line-clamp-1">Role:</span>
-                                                <span className="text-black-500 line-clamp-1">{user.role == "CUSTOMER" ? "CLIENTE" : user.role == "EMPLOYE" ? "EMPLEADO" : "ADMINISTRADOR"}</span>
+                                                <span className="text-black-500 line-clamp-1">{user.role == "CUSTOMER" ? "Cliente" : user.role == "EMPLOYE" ? "Empleado" : "Administrador"}</span>
                                             </div>
                                             <div className="flex">
                                                 <span className="text-black-700 font-bold pr-1">Estado:</span>
                                                 <span className={` font-semibold ${user.status == "ONLINE" ? "text-success-500" :
                                                     user.status == "UPDATE_PASS" ? "text-warning-400" :
                                                         "text-danger-400"}`}>
-                                                    {user.status == "UPDATE_PASS" ? "ACTUALIZAR CLAVE  " : user.status}
+                                                    {user.status == "UPDATE_PASS" ? "Actualizar clave  " : user.status?.toLowerCase()}
                                                 </span>
                                             </div>
                                         </div>

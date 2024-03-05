@@ -24,13 +24,12 @@ BEGIN
     INNER JOIN customer ON user.email = customer.email;
 END //
 
+DROP PROCEDURE IF EXISTS searchuser;
 DELIMITER //
-
-CREATE PROCEDURE searchuser(
-    IN search_term VARCHAR(255)
-)
+CREATE PROCEDURE searchuser(IN search_term VARCHAR(255))
 BEGIN
     SELECT 
+        user.iduser,
         user.username, 
         user.role,
         user.status, 
@@ -41,8 +40,11 @@ BEGIN
     FROM user
     INNER JOIN employe ON user.email = employe.email 
     WHERE user.username LIKE CONCAT('%', search_term, '%')
+        OR employe.fullname LIKE CONCAT('%', search_term, '%')
+        OR user.email LIKE CONCAT('%', search_term, '%')
     UNION ALL
     SELECT 
+        user.iduser,
         user.username, 
         user.role,
         user.status, 
@@ -52,7 +54,8 @@ BEGIN
         customer.photo AS photo
     FROM user
     INNER JOIN customer ON user.email = customer.email 
-    WHERE customer.fullname LIKE CONCAT('%', search_term, '%');
+    WHERE customer.fullname LIKE CONCAT('%', search_term, '%')
+        OR user.username LIKE CONCAT('%', search_term, '%')
+        OR user.email LIKE CONCAT('%', search_term, '%');
 END //
-
 DELIMITER ;

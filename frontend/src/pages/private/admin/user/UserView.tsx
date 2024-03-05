@@ -1,5 +1,6 @@
 import { PATH_CLIENTE_ADMIN_EDIT_ID, PATH_EMPLEADO_ADMIN_EDIT_ID, PATH_USERS_ADMIN } from "../../../../routes/private/admin/PrivatePaths";
 import DropdownItem, { Dropdown } from "../../../../components/dropdown/DropDownOptions";
+import { getUserById, restorePasswordById, updateRoleById, updateStatusById, } from "./model/UserApi";
 import SytyleBackgroundView from "./components/SytyleBackgroundView";
 import { getCustomerById } from "../customer/model/CustomerApi";
 import { getEmployeById } from "../employe/model/EmployeApi";
@@ -11,12 +12,10 @@ import { LoaderView } from "./components/LoaderView";
 import { Employe } from "../employe/model/Employe";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { getUserById } from "./model/UserApi";
 import { User } from "./model/User";
-
 const UserView = () => {
-    const { iduser, id, role, fullname } = useParams<{ iduser: string; id: string; role: string; fullname?: string }>();
 
+    const { iduser, id, role, fullname } = useParams<{ iduser: string; id: string; role: string; fullname?: string }>();
     const parsedIdUser = iduser ? parseInt(iduser) : 0;
     const parsedId = id ? parseInt(id) : 0;
     const [loading, setLoading] = useState(true);
@@ -26,35 +25,6 @@ const UserView = () => {
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        const fetchDataAndSetState = async () => {
-            try {
-                setLoading(true);
-                const userData = await getUserById(parsedIdUser);
-                setUser(userData);
-                setTimeout(async () => {
-                    setLoading(false);
-                    if (userData.role === "CUSTOMER") {
-                        const customerData = await getCustomerById(parsedId);
-                        setCustomer(customerData);
-                        if (customerData.fullName?.replace(/\s+/g, '-') !== fullname || customerData.idCustomer !== parsedId) {
-                            setError("El nombre o el ID no coinciden con los proporcionados");
-                        }
-                    } else if (userData.role === "EMPLOYE" || userData.role === "ADMINISTRATOR") {
-                        const employeData = await getEmployeById(parsedId);
-                        setEmploye(employeData);
-                        if (employeData.fullName?.replace(/\s+/g, '-') !== fullname || employeData.idEmploye !== parsedId) {
-                            setError("El nombre o el ID no coinciden con los proporcionados");
-                        }
-                    } else {
-                        setError("El rol del usuario no es reconocido");
-                    }
-                }, 1000);
-            } catch (error) {
-                setError("Registro no encontrado");
-                setLoading(false);
-            }
-        };
-
         if (role && ["CUSTOMER", "EMPLOYE", "ADMINISTRATOR"].includes(role.toUpperCase())) {
             fetchDataAndSetState();
         } else {
@@ -63,6 +33,54 @@ const UserView = () => {
         }
 
     }, [parsedIdUser, parsedId, role, fullname]);
+
+    const fetchDataAndSetState = async () => {
+        try {
+            setLoading(true);
+            const userData = await getUserById(parsedIdUser);
+            setUser(userData);
+            setTimeout(async () => {
+                setLoading(false);
+                if (userData.role === "CUSTOMER") {
+                    const customerData = await getCustomerById(parsedId);
+                    setCustomer(customerData);
+                    if (customerData.fullName?.replace(/\s+/g, '-') !== fullname || customerData.idCustomer !== parsedId) {
+                        setError("El nombre o el ID no coinciden con los proporcionados");
+                    }
+                } else if (userData.role === "EMPLOYE" || userData.role === "ADMINISTRATOR") {
+                    const employeData = await getEmployeById(parsedId);
+                    setEmploye(employeData);
+                    if (employeData.fullName?.replace(/\s+/g, '-') !== fullname || employeData.idEmploye !== parsedId) {
+                        setError("El nombre o el ID no coinciden con los proporcionados");
+                    }
+                } else {
+                    setError("El rol del usuario no es reconocido");
+                }
+            }, 1000);
+        } catch (error) {
+            setError("Registro no encontrado");
+            setLoading(false);
+        }
+    };
+
+    const restorePassword = async () => {
+        try {
+            await restorePasswordById(parsedIdUser.toString());
+        } catch (error) {
+            console.error('Error al llamar a la función restorePassword:', error);
+        }
+    };
+
+    const updateUserRole = async () => {
+        await updateRoleById(parsedIdUser.toString());
+        fetchDataAndSetState();
+    };
+
+    const updateUserStatus = async () => {
+        await updateStatusById(parsedIdUser.toString());
+        fetchDataAndSetState();
+    };
+
 
     return (
         <div>
@@ -106,6 +124,16 @@ const UserView = () => {
                                                 </div>
                                                 <Dropdown label={'•••'}>
                                                     <DropdownItem text={'Editar cliente'} path={PATH_CLIENTE_ADMIN_EDIT_ID + customer.idCustomer + "/" + customer.fullName?.replace(/\s+/g, '-')} />
+                                                    <DropdownItem text={'Restaurar contraseña'} onClick={restorePassword} />
+                                                    <DropdownItem
+                                                        text={
+                                                            user.estado === "ONLINE" || user.estado === "UPDATE_PASS"
+                                                                ? "Bloquear usuario"
+                                                                : "Activar usuario"
+                                                        }
+                                                        onClick={updateUserStatus}
+                                                    />
+
                                                 </Dropdown>
                                             </div>
                                             <ul className="mb-10">
@@ -246,6 +274,17 @@ const UserView = () => {
                                                 </div>
                                                 <Dropdown label={'•••'}>
                                                     <DropdownItem text={'Editar empleado'} path={PATH_EMPLEADO_ADMIN_EDIT_ID + employe.idEmploye + "/" + employe.fullName?.replace(/\s+/g, '-')} />
+                                                    <DropdownItem text={'Restaurar contraseña'} onClick={restorePassword} />
+                                                    <DropdownItem text={user.role === "EMPLOYE" ? "Cambiar a Administrador" : "Cambiar a Empleado"} onClick={updateUserRole} />
+                                                    <DropdownItem
+                                                        text={
+                                                            user.estado === "ONLINE" || user.estado === "UPDATE_PASS"
+                                                                ? "Bloquear usuario"
+                                                                : "Activar usuario"
+                                                        }
+                                                        onClick={updateUserStatus}
+                                                    />
+
                                                 </Dropdown>
                                             </div>
                                             <ul className="mb-10">
