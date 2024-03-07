@@ -2,8 +2,17 @@ import { PATH_PRODUCTO_ADMIN_NEW } from "../../../../routes/private/admin/Privat
 import { FaPlus, FaSearch } from "react-icons/fa"
 import { Link } from "react-router-dom"
 import ProductList from "./ProductList"
+import { useState } from "react"
+import ProductSearch from "./ProductSearch"
 
 const ProductIndex = () => {
+
+    const [isSearchOpen, setIsSearchOpen] = useState(false);
+
+    const openSearch = () => {
+        setIsSearchOpen(true);
+    };
+
 
     return (
         <div className="grid lg:px-6 px-3">
@@ -26,6 +35,7 @@ const ProductIndex = () => {
                             </div>
                             <div className="grid grid-cols-2 gap-x-1">
                                 <div
+                                    onClick={openSearch}
                                     className="px-2 py-2 h-fit text-white bg-primary-400 rounded-xl hover:bg-primary-500">
                                     <div className="flex justify-center items-center flex-nowrap">
                                         <FaSearch className="w-6" />
@@ -40,11 +50,14 @@ const ProductIndex = () => {
                             </div>
                         </div>
                         <div className="flex justify-center pb-4">
-                            <ProductList/>
+                            <ProductList />
                         </div>
                     </div>
                 </div>
             </div>
+            {isSearchOpen && (
+                <ProductSearch isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
+            )}
         </div>
     )
 }

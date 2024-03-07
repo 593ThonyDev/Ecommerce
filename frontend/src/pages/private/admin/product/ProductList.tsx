@@ -1,12 +1,11 @@
 import { PATH_PRODUCTO_ADMIN_ID } from "../../../../routes/private/admin/PrivatePaths";
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
-import { API_URL } from "../../../../functions/ApiConst";
 import LoaderList from "./components/LoaderList";
 import { useEffect, useState } from "react";
 import { Product } from "./model/Product";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import axios from "axios";
+import { getAllProducts } from "./model/ProductApi";
 
 const ProductList = () => {
 
@@ -17,26 +16,16 @@ const ProductList = () => {
     const [isError, setIsError] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
 
+
     useEffect(() => {
-        fetchData();
-    }, [currentPage]);
-
-    const fetchData = () => {
-
-        setIsLoading(true);
-
-        setTimeout(async () => {
+        const fetchDataAndSetState = async () => {
             try {
-                const response = await axios.get(API_URL + 'product/list', {
-                    params: {
-                        page: currentPage,
-                        size: 12
-                    }
-                });
-                setData(response.data.content);
-                setTotalItems(response.data.totalElements);
-                setIsLoading(false);
+                setIsLoading(true);
+                const response = await getAllProducts(currentPage, setIsLoading);
+                setData(response.content);
+                setTotalItems(response.totalElements);
             } catch (error) {
+                console.error("Error fetching data:", error);
                 setIsError(true);
                 setIsLoading(false);
                 if (error instanceof Error) {
@@ -45,10 +34,9 @@ const ProductList = () => {
                     setErrorMessage('Error en la solicitud. Por favor, inténtalo de nuevo más tarde');
                 }
             }
-
-        }, 800);
-    };
-
+        };
+        fetchDataAndSetState();
+    }, [currentPage]);
     const totalPages = Math.ceil(totalItems / 12);
 
     const visiblePages = 12;

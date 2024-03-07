@@ -283,7 +283,6 @@ public class UsuarioServiceImpl implements UsuarioService {
                     .type(RespuestaType.WARNING)
                     .message("Usuario no encontrado")
                     .build();
-
         }
 
     }

@@ -1,9 +1,9 @@
 package aristosoft.api.product.service;
 
 import java.io.IOException;
-import java.util.Optional;
-import java.util.function.BiConsumer;
-import java.util.function.Function;
+import java.util.*;
+import java.util.function.*;
+import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +37,19 @@ public class ProductServiceImpl implements ProductService {
             return pagina.map(product -> modelMapper.map(product, ProductDto.class));
         } else {
             return Page.empty();
+        }
+    }
+
+    @Override
+    public List<ProductSearchDto> search(String searchTerm) {
+        String searchValue = "%" + searchTerm + "%";
+        List<Product> pagina = repository.findByPartialNameOrPartialDescription(searchValue, searchValue);
+        if (!pagina.isEmpty()) {
+            return pagina.stream()
+                    .map(product -> modelMapper.map(product, ProductSearchDto.class))
+                    .collect(Collectors.toList());
+        } else {
+            return null;
         }
     }
 
@@ -300,10 +313,10 @@ public class ProductServiceImpl implements ProductService {
     public Respuesta updateStatus(Integer idProduct, String status) {
         Optional<Product> optional = repository.findById(idProduct);
         if (optional.isPresent()) {
-            
+
             Product product = optional.get();
             status.toUpperCase();
-            
+
             if (status.equalsIgnoreCase("ONLINE")) {
                 product.setStatus(ProductStatus.ONLINE);
                 repository.save(product);
@@ -335,9 +348,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Respuesta updateImage(Integer idProduct, MultipartFile img1, MultipartFile img2, MultipartFile img3) {
-        
-        Optional<Product> optional = repository.findById(idProduct);    
-        
+
+        Optional<Product> optional = repository.findById(idProduct);
+
         if (img1 != null && img2 == null && img3 == null) {
             return processImage(img1, optional, Product::getImg1, Product::setImg1);
         } else if (img2 != null && img1 == null && img3 == null) {
@@ -351,7 +364,6 @@ public class ProductServiceImpl implements ProductService {
                     .build();
         }
     }
-    
 
     private Respuesta processImage(MultipartFile image, Optional<Product> optional,
             Function<Product, String> getImage,

@@ -1,5 +1,7 @@
 package aristosoft.api.product.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -11,6 +13,8 @@ public interface ProductService {
     Page<ProductDto> getAll(Pageable pageable);
 
     Page<ProductDto> getAllInStock(Pageable pageable);
+
+    List<ProductSearchDto> search(String searchTerm);
 
     Respuesta getById(Integer idProduct);
 

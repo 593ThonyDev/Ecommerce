@@ -1,5 +1,7 @@
 package aristosoft.api.product.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +26,18 @@ public class ProductController {
             return ResponseEntity.noContent().build();
         } else if (pagina != null) {
             return ResponseEntity.ok(pagina);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    @GetMapping("/search/{searchTerm}")
+    public ResponseEntity<List<ProductSearchDto>> searchProduct(@PathVariable("searchTerm") String searchTerm) {
+        List<ProductSearchDto> lista = service.search(searchTerm);
+        if (lista != null && lista.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else if (lista != null) {
+            return ResponseEntity.ok(lista);
         } else {
             return ResponseEntity.noContent().build();
         }
