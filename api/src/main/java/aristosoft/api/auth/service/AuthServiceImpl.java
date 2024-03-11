@@ -82,6 +82,7 @@ public class AuthServiceImpl implements AuthService {
                         .token(token)
                         .userDetails(userLogin)
                         .type(RespuestaType.SUCCESS)
+                        .message("Bienvenido " + employe.getFullName())
                         .build();
             } else if (usuario.getRole() == Role.CUSTOMER) {
 
@@ -89,7 +90,7 @@ public class AuthServiceImpl implements AuthService {
                 Customer customer = (Customer) custRespuesta.getContent();
                 UsuarioLogin userLogin = UsuarioLogin.builder()
                         .idUser(usuario.getIdUsuario())
-                        .idEmploye(usuario.getIdUsuario())
+                        .idCustomer(customer.getIdCustomer())
                         .status(usuario.getEstado().toString())
                         .role(usuario.getRole().toString())
                         .username(userName)
@@ -100,6 +101,7 @@ public class AuthServiceImpl implements AuthService {
                 return Respuesta.builder()
                         .token(token)
                         .userDetails(userLogin)
+                        .message("Bienvenido " + customer.getFullName())
                         .type(RespuestaType.SUCCESS)
                         .build();
             } else {

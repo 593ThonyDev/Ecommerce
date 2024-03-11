@@ -20,16 +20,16 @@ const ProductView = () => {
     stock: 0,
     price: 0,
     name: "",
-    img1: "",
-    img2: "",
-    img3: "",
+    img1: undefined,
+    img2: undefined,
+    img3: undefined,
     description: "",
     status: "",
     created: "",
     category: {
       idCategory: 0,
       name: "",
-      img: ""
+      img: undefined
     }
   });
 

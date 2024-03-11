@@ -96,9 +96,20 @@ const ProductSearch: React.FC<SearchProps> = ({ isOpen, onClose }) => {
                                                     <span className='text-black-500 line-clamp-1'>
                                                         {`${product.description}`}
                                                     </span>
-                                                    <span className='text-black-500 line-clamp-1'>
-                                                        {`${product.status}`}
-                                                    </span>
+                                                    <div className='flex'>
+                                                        <div className="flex mr-3">
+                                                            <span className="text-black-700 font-bold pr-1">Estado:</span>
+                                                            <span className={` line-clamp-1 lowercase font-semibold ${product.status == "ONLINE" ? "text-success-500" :
+                                                                product.status == "UPDATE_PASS" ? "text-warning-400" :
+                                                                    "text-danger-400"}`}>
+                                                                {product.status == "UPDATE_PASS" ? "Actualizar clave" : product.status}
+                                                            </span>
+                                                        </div>
+                                                        <div className="flex">
+                                                            <span className="text-black-700 font-bold pr-1 line-clamp-1">Stock:</span>
+                                                            <span className="text-black-500 line-clamp-1">{product.stock}</span>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </Link>

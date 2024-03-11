@@ -1,11 +1,31 @@
-import { Link } from "react-router-dom"
-import { PATH_HOME, PATH_REGISTER, RESTORE_PASSWORD } from "../../../routes/public/Paths"
-import InputField from "../../../components/fields/InputField"
+import { FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { PATH_HOME, PATH_REGISTER, RESTORE_PASSWORD } from "../../../routes/public/Paths";
+import InputField from "../../../components/fields/InputField";
 import AuthImg from "../../../assets/auth.png";
 import Footer from "../../../components/footer/Footer";
-import { PATH_ADMIN_HOME } from "../../../routes/private/admin/PrivatePaths";
+import { AuthByUsernamePassword } from "./model/AuthApi";
+import toast from "react-hot-toast";
 
 const Login = () => {
+
+    const navigate = useNavigate();
+
+    const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
+
+        event.preventDefault();
+        const formData = new FormData(event.currentTarget);
+        const username = formData.get("username") as string;
+        const password = formData.get("password") as string;
+
+        try {
+            await AuthByUsernamePassword({ username, password }, navigate);
+        } catch (error) {
+            toast.error("Error en realizar tu peticion")
+        }
+
+    }
+
     return (
         <main className={`mx-auto`}>
             <div className="relative flex">
@@ -19,31 +39,30 @@ const Login = () => {
                                 <h4 className="mb-14 mt-0 text-4xl text-center font-bold text-primary-400 ">
                                     INICIAR SESION
                                 </h4>
-                                <InputField
-                                    mode='email'
-                                    variant="auth"
-                                    extra="mb-3 pt-6"
-                                    label="Usuario*"
-                                    placeholder="Ingrese su usuario o cedula"
-                                    id="email"
-                                    type="text"
-                                />
-
-                                <InputField
-                                    mode='text'
-                                    extra="mb-3"
-                                    label="Contraseña*"
-                                    placeholder="Ingrese su contraseña"
-                                    id="password"
-                                    type="password"
-                                />
-                                <div className="w-full flex justify-center text-center">
-
-                                    <Link to={PATH_ADMIN_HOME} className="w-full uppercase py-2 mt-7 px-4 rounded-xl bg-primary-400 border-transparent text-white text-md hover:bg-primary-500 font-bold">
-                                        Ingresar
-                                    </Link>
-                                </div>
-
+                                <form onSubmit={handleLogin} autoComplete="false" className="w-full">
+                                    <InputField
+                                        mode='email'
+                                        variant="auth"
+                                        extra="mb-3 pt-6"
+                                        label="Usuario*"
+                                        placeholder="Ingrese su usuario o cedula"
+                                        id="username"
+                                        type="text"
+                                    />
+                                    <InputField
+                                        mode='text'
+                                        extra="mb-3"
+                                        label="Contraseña*"
+                                        placeholder="Ingrese su contraseña"
+                                        id="password"
+                                        type="password"
+                                    />
+                                    <div className="w-full flex justify-center text-center">
+                                        <button type="submit" className="w-full uppercase py-2 mt-7 px-4 rounded-xl bg-primary-400 border-transparent text-white text-md hover:bg-primary-500 font-bold">
+                                            Ingresar
+                                        </button>
+                                    </div>
+                                </form>
                                 <div className="mt-20 lg:mt-12 flex items-center justify-center px-2 pt-6 pb-5">
                                     <Link to={PATH_REGISTER} className="text-primary-300 hover:text-primary-400">
                                         ¿No tienes una cuenta? <span className=" font-bold"> Registrate</span>
@@ -56,20 +75,15 @@ const Login = () => {
                                 </div>
                             </div>
                         </div>
-                        <div
-                            className="absolute right-0 hidden h-full min-h-screen md:block lg:w-[45vw] 2xl:w-[55vw]"
-                        >
-                            <div
-                                className="absolute flex h-full w-full items-end justify-center bg-cover bg-center lg:rounded-bl-[120px] xl:rounded-bl-[200px]"
-                                style={{ backgroundImage: `url(${AuthImg})` }}
-                            />
+                        <div className="absolute right-0 hidden h-full min-h-screen md:block lg:w-[45vw] 2xl:w-[55vw]">
+                            <div className="absolute flex h-full w-full items-end justify-center bg-cover bg-center lg:rounded-bl-[120px] xl:rounded-bl-[200px]" style={{ backgroundImage: `url(${AuthImg})` }} />
                         </div>
                     </div>
                 </div>
             </div>
             <Footer />
         </main>
-    )
-}
+    );
+};
 
-export default Login
+export default Login;

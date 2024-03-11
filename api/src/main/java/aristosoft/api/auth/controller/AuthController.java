@@ -31,6 +31,7 @@ public class AuthController {
         if (response.getType() == RespuestaType.SUCCESS) {
             return ResponseEntity.ok(Respuesta.builder()
                     .userDetails(response.getUserDetails())
+                    .message(response.getMessage())
                     .token(response.getToken())
                     .build());
         } else {

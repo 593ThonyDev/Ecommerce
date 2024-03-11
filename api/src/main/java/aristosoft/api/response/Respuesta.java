@@ -13,6 +13,9 @@ import lombok.*;
 public class Respuesta {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
+    private String message;
+    
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String token;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -23,9 +26,6 @@ public class Respuesta {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Object userDetails;
-
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    private String message;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String status;
