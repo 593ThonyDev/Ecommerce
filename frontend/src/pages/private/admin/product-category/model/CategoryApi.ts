@@ -86,15 +86,20 @@ export const saveOrUpdateProductCategory = async (category: Category, idCategory
 };
 
 export const searchCategoryProduct = (value: string) => {
+    if (!value.trim()) {
+        return null;
+    }
+    
     setToken();
     return axios.get(`${API_URL}category/search/${value}`)
         .then((response) => {
-            if (response.data == null) {
-                return null;
-            } else if (response.status == 204) {
-                return null;
+            if (response.data && response.data.length > 0) {
+                return response.data.map((category: any) => ({
+                    idCategory: category.idCategory.toString(),
+                    categoryName: category.name || ''
+                }));
             } else {
-                return response.data;
+                return null; // Si no hay resultados, devolvemos null
             }
         })
         .catch((error) => {

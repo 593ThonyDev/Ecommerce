@@ -101,6 +101,7 @@ public class ProductController {
             @RequestParam(name = "img2", required = false) MultipartFile img2,
             @RequestParam(name = "img3", required = false) MultipartFile img3) {
 
+        System.out.println("esta es la categoria " + fkCategory);
         ProductRequest request = ProductRequest.builder()
                 .fkCategory(Integer.parseInt(fkCategory))
                 .fkCreator(Integer.parseInt(fkCreator))

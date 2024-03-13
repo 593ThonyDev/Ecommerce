@@ -1,12 +1,13 @@
-import { RiCloseFill, RiMenuFill, RiShoppingCartFill } from "react-icons/ri"
-import { Link, useLocation } from "react-router-dom"
 import { PATH_BLOG, PATH_HOME, PATH_LOGIN, PATH_NOSOTROS, PATH_PRODUCTOS } from "../../../routes/public/Paths"
+import { RiCloseFill, RiMenuFill, RiShoppingCartFill } from "react-icons/ri"
+import DropDownCustomer from "../../dropdown/DropDownCustomer"
+import { Link, useLocation } from "react-router-dom"
 import { Dialog } from "@headlessui/react"
 import { useState } from "react"
-import DropDownUser from "../../dropdown/DropDownUser"
+import { getToken } from "../../../functions/AuthApi"
+import { APP_NAME } from "../../../functions/ApiConst"
 
 const Navbar = () => {
-
     const navigation = [
         {
             name: 'Productos',
@@ -34,27 +35,30 @@ const Navbar = () => {
                         <RiMenuFill className="w-6 h-6" />
                     </div>
                     <Link to={PATH_HOME} className=" ml-1 my-auto uppercase text-black-500 font-black lg:text-3xl text-2xl">
-                        Shop.ME
+                        {APP_NAME}
                     </Link>
                 </div>
                 <div className="flex items-center">
                     <nav className=" font-poppins text-black-400 uppercase text-lg lg:flex items-center hidden">
-                        <Link to={PATH_PRODUCTOS} className="py-2 px-6 flex">
-                            Productos
-                        </Link>
-                        <Link to={PATH_NOSOTROS} className="py-2 px-6 flex">
-                            Nosotros
-                        </Link>
-                        <Link to={PATH_BLOG} className="py-2 px-6 flex">
-                            Blog informativo
-                        </Link>
+                        {navigation.map((item) => (
+                            <Link key={item.name} to={item.href} className="py-2 px-6 flex">
+                                {item.name}
+                            </Link>
+                        ))}
                     </nav>
-                    <button type="button" onClick={() => setShopOpen(true)} className="relative inline-flex items-center p-2  text-sm font-medium text-center text-primary-300">
-                        <RiShoppingCartFill className="w-8 h-8" />
-                        <div className="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-danger-300  rounded-full -top-0 -end-2">0</div>
-                    </button>
                     <div className=" z-50 relative inline-flex items-center px-3 text-sm font-medium text-center text-success-200 rounded-lg">
-                        <DropDownUser />
+                        {!!getToken() ? (
+                            <button type="button"
+                                onClick={() => setShopOpen(true)}
+                                className="relative inline-flex items-center p-2  text-sm font-medium text-center text-primary-300">
+                                <RiShoppingCartFill className="w-8 h-8" />
+                                <div className="absolute inline-flex items-center justify-center w-6 h-6 text-xs font-bold text-white bg-danger-300  rounded-full -top-0 -end-2">0</div>
+                            </button>) : <Link
+                                className="uppercase py-2 px-3 rounded-full bg-primary-400 border-transparent text-white text-md hover:bg-primary-500 font-bold"
+                                to={PATH_LOGIN}>
+                            Iniciar sesion
+                        </Link>}
+                        <DropDownCustomer />
                     </div>
 
                 </div>
@@ -86,7 +90,7 @@ const Navbar = () => {
                 <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto lg:border-l md:border-primary-100 md:border-l border-primary-100 bg-primary-50 px-6 py-3 sm:max-w-sm">
                     <div className="flex items-center justify-between">
                         <div className="uppercase text-black-500 font-black lg:text-3xl text-2xl pt-1">
-                            Menu
+                            Menú
                         </div>
                         <span
                             className="-m-2.5 rounded-full p-2.5 font-bold bg-primary-100 hover:bg-primary-200/50 text-black-300"
@@ -119,7 +123,7 @@ const Navbar = () => {
                                     className="block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-primary-300 hover:text-primary-300 bg-white  "
                                     tabIndex={0}
                                 >
-                                    Iniciar Sesion
+                                    Iniciar sesión
                                 </Link>
                             </div>
                         </div>

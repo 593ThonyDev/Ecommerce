@@ -1,17 +1,20 @@
-import { PATH_PRODUCTOS_ADMIN } from "../../../../routes/private/admin/PrivatePaths";
-import InputField from "../../../../components/fields/InputField";
-import TextArea from "../../../../components/fields/TextArea";
-import imgProduct from "../../../../assets/UploadPhoto.png"
-import { saveOrUpdateProduct } from "./model/ProductApi";
+import React, { useState } from 'react';
+import { saveProduct } from "./model/ProductApi";
 import { Link, useNavigate } from "react-router-dom";
 import { BiCamera } from "react-icons/bi";
 import { Product } from "./model/Product";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { getFullName } from "../../../../functions/AuthApi";
+import DropDownSearchData from "./DropDownSearchData";
+import { PATH_PRODUCTOS_ADMIN } from "../../../../routes/private/admin/PrivatePaths";
+import InputField from "../../../../components/fields/InputField";
+import TextArea from "../../../../components/fields/TextArea";
+import imgProduct from "../../../../assets/UploadPhoto.png";
 
 const ProductNew = () => {
     const navigate = useNavigate();
-
+    const fullName = getFullName() || "";
+    const [selectedCategory, setSelectedCategory] = useState<string>('');
     const [productData, setProductData] = useState<Product>({
         name: "",
         price: 0,
@@ -36,18 +39,28 @@ const ProductNew = () => {
         if (file) {
             setProductData(prevState => ({
                 ...prevState,
-                [`img${imgIndex}` as keyof Product]: file  // Type assertion
+                [`img${imgIndex}` as keyof Product]: file
             }));
         }
     };
-    
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         const camposFaltantes = validarProduct(productData);
         if (camposFaltantes.length === 0) {
+            const categoryId = parseInt(selectedCategory);
+            console.log("esta es la categoria del producto " + categoryId)
+
+            if (productData.Category) {
+                productData.Category.idCategory = categoryId;
+            } else {
+                productData.Category = { idCategory: categoryId };
+            }
+
             const loadingToast = toast.loading('Guardando registro...');
             try {
-                const savedSuccessfully = await saveOrUpdateProduct(productData);
+                const savedSuccessfully = await saveProduct(productData);
+                console.log(productData)
                 if (savedSuccessfully) {
                     toast.dismiss(loadingToast);
                     navigate(PATH_PRODUCTOS_ADMIN);
@@ -55,13 +68,17 @@ const ProductNew = () => {
                     toast.dismiss(loadingToast);
                 }
             } catch (error) {
-                console.error('Error al guardar los cambios:', error);
                 toast.dismiss(loadingToast);
             }
         } else {
             toast.error(`Debe agregar ${camposFaltantes.join(", ")} del producto`);
         }
     };
+
+    const handleCategoryChange = (categoryId: string) => {
+        setSelectedCategory(categoryId);
+    };
+
 
     const validarProduct = (productData: Product) => {
         const camposFaltantes: string[] = [];
@@ -72,7 +89,7 @@ const ProductNew = () => {
         if (!productData.img1) camposFaltantes.push("foto 1");
         if (!productData.img2) camposFaltantes.push("foto 2");
         if (!productData.img3) camposFaltantes.push("foto 3");
-        if (!productData.Category?.idCategory) camposFaltantes.push("categoria");
+        if (!productData.Category) camposFaltantes.push("categoria");
         return camposFaltantes;
     };
 
@@ -90,7 +107,7 @@ const ProductNew = () => {
                     </div>
                 </div>
 
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={handleSubmit} autoComplete='false'>
                     <div className="grid">
                         <div>
                             <InputField
@@ -125,6 +142,22 @@ const ProductNew = () => {
                                 id="stock"
                                 value={productData.stock.toString()}
                                 onChange={handleChange}
+                            />
+                        </div>
+                        <div className="grid lg:grid-cols-2 gap-3 pb-3">
+                            <div className=" grid">
+                                <div className=" text-primary-700/70  text-sm">Categoria del producto</div>
+                                <DropDownSearchData
+                                    buttonText={productData.Category?.name ? productData.Category.name : "Seleccionar Categoria"}
+                                    onCategoryIdChange={handleCategoryChange}
+                                />
+                            </div>
+                            <InputField
+                                mode="text"
+                                label="Creador"
+                                id="creator"
+                                value={fullName}
+                                disabled={true}
                             />
                         </div>
                     </div>

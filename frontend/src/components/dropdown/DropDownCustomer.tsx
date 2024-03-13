@@ -1,15 +1,15 @@
 import { getFullName, getPhotoProfile, getUserName, logOutNavigate } from '../../functions/AuthApi';
+import { getTwoWords } from '../../functions/Funtions';
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getTwoWords } from '../../functions/Funtions';
 
-const DropDownAdmin = () => {
-    const navigate = useNavigate();
-    const [isOpen, setIsOpen] = useState(false);
+const DropDownCustomer = () => {
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const [isOpen, setIsOpen] = useState(false);
     const userPhoto = getPhotoProfile();
     const fullName = getFullName();
     const userName = getUserName();
+    const navigate = useNavigate();
 
     const toggleDropdown = () => {
         setIsOpen(!isOpen);
@@ -64,7 +64,7 @@ const DropDownAdmin = () => {
                         <div className="flex flex-col items-center py-3">
                             <span className="text-sm text-black-500 pb-3">{userName?.toLowerCase()}</span>
                             <img className="w-24 h-24 mb-3 rounded-full shadow-lg mt-3" src={userPhoto ? userPhoto : ""} alt="Bonnie image" />
-                            <h5 className=" text-lg text-gray-900 dark:text-white">{"¡Hola, " + getTwoWords(fullName ? fullName : "") + "!"}</h5>
+                            <h5 className="text-lg text-gray-900 dark:text-white">{"¡Hola, " + getTwoWords(fullName ? fullName : "") + "!"}</h5>
                             <div
                                 onClick={handleLogOut}
                                 className='flex w-fit border-black-300 border text-primary-400 bg-primary-100 justify-center  rounded-full px-3 py-1 cursor-pointer'
@@ -73,17 +73,22 @@ const DropDownAdmin = () => {
                             </div>
                             <div className="grid w-full p-3 gap-y-1 mt-1">
                                 <div
+                                    className='flex bg-white hover:bg-primary-50 w-full py-3 justify-center rounded-t-2xl rounded-b-md cursor-pointer'
+                                >
+                                    Hitorial de compras
+                                </div>
+                                <div
                                     onClick={handleLogOut}
-                                    className='flex bg-white hover:bg-primary-50 w-full py-3 justify-center rounded-xl cursor-pointer'
+                                    className='flex bg-white hover:bg-primary-50 w-full py-3 justify-center rounded-b-2xl rounded-t-md cursor-pointer'
                                 >
                                     Cerrar sesion
                                 </div>
                             </div>
                             <div
                                 onClick={handleLogOut}
-                                className='grid w-full font-thin justify-center rounded-md cursor-pointer'
+                                className='grid font-thin justify-center rounded-md cursor-pointer hover:underline'
                             >
-                                <div>politicas de privacidad</div>
+                                <small>Politicas de privacidad</small>
                             </div>
                         </div>
                     </div>
@@ -93,4 +98,4 @@ const DropDownAdmin = () => {
     );
 }
 
-export default DropDownAdmin;
+export default DropDownCustomer;

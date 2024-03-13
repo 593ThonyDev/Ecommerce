@@ -2,7 +2,7 @@ import { API_URL } from '../../../../../functions/ApiConst';
 import axios, { AxiosResponse } from 'axios';
 import { Product } from './Product';
 import toast from 'react-hot-toast';
-import { setToken } from '../../../../../functions/AuthApi';
+import { getCustomerOrEmploye, setToken } from '../../../../../functions/AuthApi';
 
 export const getAllProducts = async (currentPage: number, setIsLoading: (value: boolean) => void): Promise<{ content: Product[], totalElements: number }> => {
     try {
@@ -54,7 +54,7 @@ const handleResponse = async (promise: Promise<AxiosResponse>): Promise<any> => 
     }
 };
 
-export const saveOrUpdateProduct = async (product: Product, idProduct?: string): Promise<boolean> => {
+export const saveProduct = async (product: Product): Promise<boolean> => {
     try {
         setToken();
         const formDataToSend = new FormData();
@@ -63,9 +63,6 @@ export const saveOrUpdateProduct = async (product: Product, idProduct?: string):
         formDataToSend.append("precio", product.price.toString());
         formDataToSend.append("stock", product.stock.toString());
 
-        if (idProduct) {
-            formDataToSend.append("idProducto", idProduct);
-        }
         if (product.Category?.idCategory) {
             formDataToSend.append("categoria", product.Category.idCategory?.toString());
         }
@@ -84,6 +81,65 @@ export const saveOrUpdateProduct = async (product: Product, idProduct?: string):
 
         if (product.img3) {
             formDataToSend.append("img3", product.img3);
+        }
+
+        if (getCustomerOrEmploye()) {
+            const employe = getCustomerOrEmploye()?.toString();
+            if (employe) {
+                formDataToSend.append("empleado", employe);
+            }
+        }
+
+        const request = axios.post(`${API_URL}product/save`, formDataToSend);
+
+        return await handleResponse(request);
+    } catch (error) {
+        return false;
+    }
+};
+
+export const updateProduct = async (product: Product, idProduct?: string, fkCategory?: string): Promise<boolean> => {
+    try {
+        setToken();
+        const formDataToSend = new FormData();
+        formDataToSend.append("nombre", product.name);
+        formDataToSend.append("descripcion", product.description);
+        formDataToSend.append("precio", product.price.toString());
+        formDataToSend.append("stock", product.stock.toString());
+
+        if (idProduct) {
+            formDataToSend.append("idProducto", idProduct);
+        }
+
+        if (product.Category?.idCategory) {
+            formDataToSend.append("categoria", product.Category.idCategory?.toString());
+        }
+
+        if (product.created) {
+            formDataToSend.append("empleado", product.created.toString());
+        }
+
+        if (product.img1) {
+            formDataToSend.append("img1", product.img1);
+        }
+
+        if (product.img2) {
+            formDataToSend.append("img2", product.img2);
+        }
+
+        if (product.img3) {
+            formDataToSend.append("img3", product.img3);
+        }
+
+        if (fkCategory) {
+            formDataToSend.append("categoria", fkCategory);
+        }
+
+        if (getCustomerOrEmploye()) {
+            const employe = getCustomerOrEmploye()?.toString();
+            if (employe) {
+                formDataToSend.append("empleado", employe);
+            }
         }
 
         const request = idProduct ? axios.patch(`${API_URL}product/update`, formDataToSend) :

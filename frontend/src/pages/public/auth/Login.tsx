@@ -12,7 +12,6 @@ const Login = () => {
     const navigate = useNavigate();
 
     const handleLogin = async (event: FormEvent<HTMLFormElement>) => {
-
         event.preventDefault();
         const formData = new FormData(event.currentTarget);
         const username = formData.get("username") as string;

@@ -1,4 +1,4 @@
-import { saveToken, setCustomerOrEmploye, setFullName, setIdUser, setPhotoProfile } from "../../../../functions/AuthApi";
+import { saveToken, setCustomerOrEmploye, setFullName, setIdUser, setPhotoProfile, setUserName } from "../../../../functions/AuthApi";
 import { PATH_ADMIN_HOME } from "../../../../routes/private/admin/PrivatePaths";
 import { PATH_HOME } from "../../../../routes/public/Paths";
 import { API_URL } from "../../../../functions/ApiConst";
@@ -32,41 +32,63 @@ export const AuthByUsernamePassword = async (user: LoginResponse, navigate: Navi
             const userDetails = responseData.userDetails;
             user.userDetails = userDetails;
 
-            if (user.userDetails?.role === "ADMINISTRATOR") {
+            if (user.userDetails?.role === "ADMINISTRATOR" || user.userDetails?.role === "EMPLOYE") {
+
+                if (user.userDetails?.idEmploye) {
+                    setCustomerOrEmploye(user.userDetails?.idEmploye.toString())
+                }
+
+                if (user.userDetails?.fullName) {
+                    setFullName(user.userDetails?.fullName)
+                }
+
+                if (user.userDetails?.idUser) {
+                    setIdUser(user.userDetails?.idUser.toString())
+                }
+
+                if (user.userDetails?.photo) {
+                    setPhotoProfile(user.userDetails?.photo)
+                }
+
+                if (user.userDetails?.username) {
+                    setUserName(user.userDetails?.username)
+                }
+
+                if (responseData.token) {
+                    saveToken(responseData.token);
+                }
                 navigate(PATH_ADMIN_HOME);
+
             } else if (user.userDetails?.role === "CUSTOMER") {
-                navigate(PATH_ADMIN_HOME);
-            } else {
+
+                if (user.userDetails?.idCustomer) {
+                    setCustomerOrEmploye(user.userDetails?.idCustomer.toString())
+                }
+
+                if (user.userDetails?.fullName) {
+                    setFullName(user.userDetails?.fullName)
+                }
+
+                if (user.userDetails?.idUser) {
+                    setIdUser(user.userDetails?.idUser.toString())
+                }
+
+                if (user.userDetails?.username) {
+                    setUserName(user.userDetails?.username)
+                }
+
+                if (user.userDetails?.photo) {
+                    setPhotoProfile(user.userDetails?.photo)
+                }
+
+                if (responseData.token) {
+                    saveToken(responseData.token);
+                }
                 navigate(PATH_HOME);
             }
 
         } else {
             return false;
-        }
-
-        if (user.userDetails?.idCustomer) {
-            setCustomerOrEmploye(user.userDetails?.idCustomer.toString())
-        } else {
-            if (user.userDetails?.idEmploye) {
-                setCustomerOrEmploye(user.userDetails?.idEmploye.toString())
-            }
-        }
-
-
-        if (user.userDetails?.fullName) {
-            setFullName(user.userDetails?.fullName)
-        }
-
-        if (user.userDetails?.idUser) {
-            setIdUser(user.userDetails?.idUser.toString())
-        }
-
-        if (user.userDetails?.photo) {
-            setPhotoProfile(user.userDetails?.photo)
-        }
-
-        if (responseData.token) {
-            saveToken(responseData.token);
         }
 
         return true;

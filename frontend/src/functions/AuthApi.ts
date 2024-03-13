@@ -1,7 +1,8 @@
 import { NavigateFunction } from 'react-router-dom';
-import { SESSION_FULL_NAME, SESSION_ID_ADMIN_EMPLOYE_CUSTOMER, SESSION_ID_USER, SESSION_PHOTO_PROFILE, SESSION_TOKEN } from './ApiConst';
+import { SESSION_FULL_NAME, SESSION_ID_ADMIN_EMPLOYE_CUSTOMER, SESSION_ID_USER, SESSION_PHOTO_PROFILE, SESSION_TOKEN, SESSION_USER_NAME } from './ApiConst';
 import axios from 'axios';
 import { PATH_HOME } from '../routes/public/Paths';
+import toast from 'react-hot-toast';
 
 export const saveToken = (token: string): void => {
     localStorage.setItem(SESSION_TOKEN, token);
@@ -36,6 +37,14 @@ export const getIdUser = (): string | null => {
     return localStorage.getItem(SESSION_ID_USER);
 }
 
+export const setUserName = (username: string): void => {
+    localStorage.setItem(SESSION_USER_NAME, username);
+};
+
+export const getUserName = (): string | null => {
+    return localStorage.getItem(SESSION_USER_NAME);
+}
+
 export const setCustomerOrEmploye = (idCustomerAdmin: string): void => {
     localStorage.setItem(SESSION_ID_ADMIN_EMPLOYE_CUSTOMER, idCustomerAdmin);
 };
@@ -52,13 +61,17 @@ export const getFullName = (): string | null => {
     return localStorage.getItem(SESSION_FULL_NAME);
 };
 
-export const logOut = (navigate: NavigateFunction): void => {
+export const logOutNavigate = (navigate: NavigateFunction): void => {
     localStorage.removeItem(SESSION_TOKEN);
     localStorage.removeItem(SESSION_ID_USER);
-    localStorage.removeItem(SESSION_PHOTO_PROFILE);
+    localStorage.removeItem(SESSION_USER_NAME);
     localStorage.removeItem(SESSION_FULL_NAME);
+    localStorage.removeItem(SESSION_PHOTO_PROFILE);
     localStorage.removeItem(SESSION_ID_ADMIN_EMPLOYE_CUSTOMER);
-    navigate(PATH_HOME);
+    if (navigate) {
+        toast.success("Sesión cerrada con exito")
+        navigate(PATH_HOME);
+    }
 };
 
 
