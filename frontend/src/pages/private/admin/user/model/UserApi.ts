@@ -2,9 +2,11 @@ import axios, { AxiosResponse } from "axios";
 import { User } from "./User";
 import { API_URL } from "../../../../../functions/ApiConst";
 import toast from "react-hot-toast";
+import { setToken } from "../../../../../functions/AuthApi";
 
 export const getAllUsers = async (setIsLoading: (value: boolean) => void): Promise<User[]> => {
     try {
+        setToken();
         setIsLoading(true);
         await new Promise(resolve => setTimeout(resolve, 800));
         const response: AxiosResponse<{ content: User[] }> = await axios.get(API_URL + 'user/list');
@@ -18,6 +20,7 @@ export const getAllUsers = async (setIsLoading: (value: boolean) => void): Promi
 
 export const getUserById = async (id: number): Promise<User> => {
     try {
+        setToken();
         const response = await axios.get(`${API_URL}user/${id}`);
         return response.data.content;
     } catch (error) {
@@ -27,6 +30,7 @@ export const getUserById = async (id: number): Promise<User> => {
 
 export const restorePasswordById = async (idUser: string): Promise<boolean> => {
     try {
+        setToken();
         const formDataToSend = new FormData();
         formDataToSend.append("idUsuario", idUser);
 
@@ -43,6 +47,7 @@ export const restorePasswordById = async (idUser: string): Promise<boolean> => {
 
 export const updateRoleById = async (idUser: string): Promise<boolean> => {
     try {
+        setToken();
         const formDataToSend = new FormData();
         formDataToSend.append("idUsuario", idUser);
         const response = await axios.patch(`${API_URL}user/updateRole`, formDataToSend);
@@ -58,6 +63,7 @@ export const updateRoleById = async (idUser: string): Promise<boolean> => {
 
 export const updateStatusById = async (idUser: string): Promise<boolean> => {
     try {
+        setToken();
         const formDataToSend = new FormData();
         formDataToSend.append("idUsuario", idUser);
         const response = await axios.patch(`${API_URL}user/updateStatus`, formDataToSend);
@@ -72,6 +78,7 @@ export const updateStatusById = async (idUser: string): Promise<boolean> => {
 };
 
 export const searchUser = (value: string) => {
+    setToken();
     return axios.get(`${API_URL}user/search/${value}`)
         .then((response) => {
             if (response.data == null) {

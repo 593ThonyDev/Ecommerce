@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react'
 import { API_URL } from '../../../../functions/ApiConst'
 import { Company } from './model/Company'
 import SytyleBackgroundView from './components/SytyleBackgroundView'
+import { setToken } from '../../../../functions/AuthApi'
 
 const CompanyList = () => {
 
@@ -29,6 +30,7 @@ const CompanyList = () => {
 
     const fetchData = async () => {
         try {
+            setToken()
             const response = await axios.get(`${API_URL}company/list`);
             const data = response.data.content;
             setFormData({

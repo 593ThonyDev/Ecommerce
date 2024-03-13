@@ -1,12 +1,14 @@
-import axios from "axios";
-import { API_URL, SESSION_TOKEN } from "../../../../functions/ApiConst";
-import toast from "react-hot-toast";
+import { saveToken, setCustomerOrEmploye, setFullName, setIdUser, setPhotoProfile } from "../../../../functions/AuthApi";
 import { PATH_ADMIN_HOME } from "../../../../routes/private/admin/PrivatePaths";
 import { PATH_HOME } from "../../../../routes/public/Paths";
+import { API_URL } from "../../../../functions/ApiConst";
 import { NavigateFunction } from "react-router-dom";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 export const AuthByUsernamePassword = async (user: LoginResponse, navigate: NavigateFunction): Promise<boolean> => {
     try {
+
         const formDataToSend = new FormData();
 
         if (!user.username || !user.password) {
@@ -33,22 +35,45 @@ export const AuthByUsernamePassword = async (user: LoginResponse, navigate: Navi
             if (user.userDetails?.role === "ADMINISTRATOR") {
                 navigate(PATH_ADMIN_HOME);
             } else if (user.userDetails?.role === "CUSTOMER") {
-                navigate(PATH_ADMIN_HOME); // ¿Esto debería ser PATH_HOME?
+                navigate(PATH_ADMIN_HOME);
             } else {
                 navigate(PATH_HOME);
             }
+
         } else {
-            toast.error("Detalles del usuario no encontrados en la respuesta");
+            return false;
+        }
+
+        if (user.userDetails?.idCustomer) {
+            setCustomerOrEmploye(user.userDetails?.idCustomer.toString())
+        } else {
+            if (user.userDetails?.idEmploye) {
+                setCustomerOrEmploye(user.userDetails?.idEmploye.toString())
+            }
+        }
+
+
+        if (user.userDetails?.fullName) {
+            setFullName(user.userDetails?.fullName)
+        }
+
+        if (user.userDetails?.idUser) {
+            setIdUser(user.userDetails?.idUser.toString())
+        }
+
+        if (user.userDetails?.photo) {
+            setPhotoProfile(user.userDetails?.photo)
         }
 
         if (responseData.token) {
-            localStorage.setItem(SESSION_TOKEN, responseData.token);
+            saveToken(responseData.token);
         }
 
         return true;
     } catch (error: any) {
         const errorMessage = error.response?.data?.message || 'Error al realizar la operación';
         toast.error(errorMessage);
+        console.log(error)
         return false;
     }
 };

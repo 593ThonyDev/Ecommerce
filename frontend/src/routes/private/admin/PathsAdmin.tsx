@@ -1,8 +1,11 @@
 import { lazy } from "react";
 import { PATH_ADMIN_COMPANY, PATH_ADMIN_COMPANY_EDIT, PATH_ADMIN_HOME, PATH_CATEGORIA_PRODUCTOS_ADMIN, PATH_CATEGORIA_PRODUCTOS_ADMIN_NEW, PATH_CATEGORIA_PRODUCTO_ADMIN, PATH_CATEGORIA_PRODUCTO_ADMIN_EDIT, PATH_CLIENTES_ADMIN, PATH_CLIENTE_ADMIN, PATH_CLIENTE_ADMIN_EDIT, PATH_CLIENTE_ADMIN_NEW, PATH_EMPLEADOS_ADMIN, PATH_EMPLEADO_ADMIN, PATH_EMPLEADO_ADMIN_EDIT, PATH_EMPLEADO_ADMIN_NEW, PATH_ORDERS_ADMIN, PATH_PRODUCTOS_ADMIN, PATH_PRODUCTO_ADMIN, PATH_PRODUCTO_ADMIN_NEW, PATH_USERS_ADMIN, PATH_USER_ADMIN_VIEW } from "./PrivatePaths";
+import { RouteProps } from "../../routes";
 
-export const PATHS_ADMIN = {
+
+export const PATHS_ADMIN: RouteProps = {
     layout: lazy(async () => await import("../../../layouts/private/admin/AdminLayout")),
+    guard: lazy(async () => await import("../../../guards/AdministratorGuard")),
     children: [
         // ======== Inicio ========
         {
@@ -99,7 +102,7 @@ export const PATHS_ADMIN = {
         // ======== Error Page admin ========
         {
             path: PATH_ADMIN_HOME + "/*",
-            element: lazy(async () => await import("../../../pages/error/NotFoundAdmin")),
+            element: lazy(async () => await import("../../../pages/error/NotfoundAdminDefault"))
         },
     ]
 }

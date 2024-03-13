@@ -2,10 +2,12 @@ import axios, { AxiosResponse } from 'axios';
 import { toast } from 'react-hot-toast';
 import { API_URL } from '../../../../../functions/ApiConst';
 import { Customer } from './Customer';
+import { setToken } from '../../../../../functions/AuthApi';
 
 
 export const getAllCustomers = async (currentPage: number, setIsLoading: (value: boolean) => void): Promise<{ content: Customer[], totalElements: number }> => {
     try {
+        setToken();
         setIsLoading(true);
         await new Promise(resolve => setTimeout(resolve, 800));
         const response: AxiosResponse<{ content: Customer[], totalElements: number }> = await axios.get(API_URL + 'customer/list', {
@@ -24,6 +26,7 @@ export const getAllCustomers = async (currentPage: number, setIsLoading: (value:
 
 export const getCustomerById = async (id: number): Promise<Customer> => {
     try {
+        setToken();
         const response = await axios.get(`${API_URL}customer/${id}`);
         return response.data.content;
     } catch (error) {
@@ -32,6 +35,7 @@ export const getCustomerById = async (id: number): Promise<Customer> => {
 };
 
 export const searchCustomer = (value: string) => {
+    setToken();
     return axios.get(`${API_URL}customer/search/${value}`)
         .then((response) => {
             if (response.data == null) {
@@ -63,6 +67,7 @@ const handleResponse = async (promise: Promise<AxiosResponse>): Promise<any> => 
 
 export const saveOrUpdateCustomer = async (customer: Customer, idCustomer?: string): Promise<boolean> => {
     try {
+        setToken();
         const formDataToSend = new FormData();
 
 
@@ -81,13 +86,14 @@ export const saveOrUpdateCustomer = async (customer: Customer, idCustomer?: stri
 
         return await handleResponse(request);
     } catch (error) {
-        console.log("Error al crear al cliente! " +error);
+        console.log("Error al crear al cliente! " + error);
         return false;
     }
 };
 
 export const updateCustomerPhoto = async (idCustomer: string, photo: File): Promise<boolean> => {
     try {
+        setToken();
         const formDataToSend = new FormData();
         formDataToSend.append("idCliente", idCustomer);
         formDataToSend.append("photo", photo);

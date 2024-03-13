@@ -26,9 +26,9 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(authRequest -> authRequest
                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                        .antMatchers("/**").permitAll()
                         .antMatchers("/api/v1/auth/**").permitAll()
-                        .anyRequest().permitAll())
+                        .antMatchers("/api/v1/user/**").authenticated()
+                        .anyRequest().authenticated())
 
                 .headers(headers -> headers
                         .frameOptions(frameOptions -> frameOptions.disable()))

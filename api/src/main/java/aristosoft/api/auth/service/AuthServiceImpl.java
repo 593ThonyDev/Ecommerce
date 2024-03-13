@@ -70,7 +70,7 @@ public class AuthServiceImpl implements AuthService {
 
                 UsuarioLogin userLogin = UsuarioLogin.builder()
                         .idUser(usuario.getIdUsuario())
-                        .idEmploye(usuario.getIdUsuario())
+                        .idEmploye(employe.getIdEmploye())
                         .status(usuario.getEstado().toString())
                         .role(usuario.getRole().toString())
                         .username(userName)

@@ -3,11 +3,11 @@ interface LoginResponse {
     password?: string
     token?: string;
     userDetails?: {
-        iduser: number;
+        idUser: number;
         idCustomer?: number;
         idEmploye?: number;
         username: string;
-        fullname: string;
+        fullName: string;
         role: string;
         status?: string;
         photo?: string;

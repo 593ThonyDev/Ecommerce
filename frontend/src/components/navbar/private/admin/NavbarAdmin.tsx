@@ -1,5 +1,5 @@
 import { PATH_ADMIN_ABOUT, PATH_ADMIN_COMPANY, PATH_ADMIN_HOME, PATH_CATEGORIA_PRODUCTOS_ADMIN, PATH_CLIENTES_ADMIN, PATH_EMPLEADOS_ADMIN, PATH_ORDERS_ADMIN, PATH_PRODUCTOS_ADMIN, PATH_USERS_ADMIN } from "../../../../routes/private/admin/PrivatePaths"
-import DropDownUser from "../../../dropdown/DropDownUser"
+import DropDownAdmin from "../../../dropdown/DropDownAdmin"
 import { RiCloseFill, RiMenuFill } from "react-icons/ri"
 import { Dialog } from "@headlessui/react"
 import { Link } from "react-router-dom"
@@ -67,7 +67,7 @@ const NavbarAdmin = () => {
 
                 <div className="flex items-center">
                     <div className="z-50 relative inline-flex items-center px-3 text-sm font-medium text-center text-black-300 rounded-lg">
-                        <DropDownUser />
+                        <DropDownAdmin />
                     </div>
                 </div>
             </div>

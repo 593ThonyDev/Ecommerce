@@ -1,11 +1,11 @@
-import { FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import { PATH_HOME, PATH_REGISTER, RESTORE_PASSWORD } from "../../../routes/public/Paths";
 import InputField from "../../../components/fields/InputField";
-import AuthImg from "../../../assets/auth.png";
-import Footer from "../../../components/footer/Footer";
 import { AuthByUsernamePassword } from "./model/AuthApi";
+import Footer from "../../../components/footer/Footer";
+import { Link, useNavigate } from "react-router-dom";
+import AuthImg from "../../../assets/auth.png";
 import toast from "react-hot-toast";
+import { FormEvent } from "react";
 
 const Login = () => {
 

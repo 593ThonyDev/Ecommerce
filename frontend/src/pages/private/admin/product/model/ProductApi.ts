@@ -2,9 +2,11 @@ import { API_URL } from '../../../../../functions/ApiConst';
 import axios, { AxiosResponse } from 'axios';
 import { Product } from './Product';
 import toast from 'react-hot-toast';
+import { setToken } from '../../../../../functions/AuthApi';
 
 export const getAllProducts = async (currentPage: number, setIsLoading: (value: boolean) => void): Promise<{ content: Product[], totalElements: number }> => {
     try {
+        setToken();
         setIsLoading(true);
         await new Promise(resolve => setTimeout(resolve, 800));
         const response: AxiosResponse<{ content: Product[], totalElements: number }> = await axios.get(API_URL + 'product/list', {
@@ -22,6 +24,7 @@ export const getAllProducts = async (currentPage: number, setIsLoading: (value: 
 };
 
 export const searchProduct = (value: string) => {
+    setToken();
     return axios.get(`${API_URL}product/search/${value}`)
         .then((response) => {
             if (response.data == null) {
@@ -38,6 +41,7 @@ export const searchProduct = (value: string) => {
 };
 
 const handleResponse = async (promise: Promise<AxiosResponse>): Promise<any> => {
+    setToken();
     try {
         const response = await promise;
         const message = response.data.message;
@@ -52,12 +56,13 @@ const handleResponse = async (promise: Promise<AxiosResponse>): Promise<any> => 
 
 export const saveOrUpdateProduct = async (product: Product, idProduct?: string): Promise<boolean> => {
     try {
+        setToken();
         const formDataToSend = new FormData();
         formDataToSend.append("nombre", product.name);
         formDataToSend.append("descripcion", product.description);
         formDataToSend.append("precio", product.price.toString());
         formDataToSend.append("stock", product.stock.toString());
-        
+
         if (idProduct) {
             formDataToSend.append("idProducto", idProduct);
         }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import aristosoft.api.response.*;
@@ -119,6 +120,7 @@ public class UsuarioController {
         }
 
         @GetMapping("/list")
+        @Secured({"ADMINISTRATOR"})
         public ResponseEntity<Respuesta> selectUsers() {
                 Respuesta response = service.selectUsers();
                 if (response.getType() == RespuestaType.SUCCESS) {

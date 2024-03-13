@@ -2,10 +2,12 @@ import axios, { AxiosResponse } from 'axios';
 import { toast } from 'react-hot-toast';
 import { API_URL } from '../../../../../functions/ApiConst';
 import { Category } from './Category';
+import { setToken } from '../../../../../functions/AuthApi';
 
 
 export const getAllCategories = async (currentPage: number, setIsLoading: (value: boolean) => void): Promise<{ content: Category[], totalElements: number }> => {
     try {
+        setToken();
         setIsLoading(true);
         await new Promise(resolve => setTimeout(resolve, 800));
         const response: AxiosResponse<{ content: Category[], totalElements: number }> = await axios.get(API_URL + 'category/list', {
@@ -24,6 +26,7 @@ export const getAllCategories = async (currentPage: number, setIsLoading: (value
 
 export const getProductCategoryById = async (id: number): Promise<Category> => {
     try {
+        setToken();
         const response = await axios.get(`${API_URL}category/${id}`);
         return response.data.content;
     } catch (error) {
@@ -32,6 +35,7 @@ export const getProductCategoryById = async (id: number): Promise<Category> => {
 };
 
 export const searchCustomer = (value: string) => {
+    setToken();
     return axios.get(`${API_URL}category/search/${value}`)
         .then((response) => {
             if (response.data == null) {
@@ -49,6 +53,7 @@ export const searchCustomer = (value: string) => {
 
 const handleResponse = async (promise: Promise<AxiosResponse>): Promise<any> => {
     try {
+        setToken();
         const response = await promise;
         const message = response.data.message;
         toast.success(message);
@@ -63,8 +68,8 @@ const handleResponse = async (promise: Promise<AxiosResponse>): Promise<any> => 
 
 export const saveOrUpdateProductCategory = async (category: Category, idCategory?: string): Promise<boolean> => {
     try {
+        setToken();
         const form = new FormData();
-
         idCategory && form.append("idCategoria", idCategory);
         category.name && form.append("nombre", category.name);
         category.img && form.append("photo", category.img);
@@ -81,6 +86,7 @@ export const saveOrUpdateProductCategory = async (category: Category, idCategory
 };
 
 export const searchCategoryProduct = (value: string) => {
+    setToken();
     return axios.get(`${API_URL}category/search/${value}`)
         .then((response) => {
             if (response.data == null) {
