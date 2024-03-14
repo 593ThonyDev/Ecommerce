@@ -32,6 +32,7 @@ const TextArea: FC<InputFieldProps> = ({
         </label>
       )}
       <textarea
+      autoComplete="off"
         value={value}
         disabled={disabled}
         id={id}

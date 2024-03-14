@@ -1,5 +1,5 @@
 import DropdownItem, { Dropdown } from "../../../../components/dropdown/DropDownOptions"
-import { PATH_PRODUCTOS_ADMIN } from "../../../../routes/private/admin/PrivatePaths";
+import { PATH_PRODUCTOS_ADMIN, PATH_PRODUCTO_ADMIN_EDIT_ID } from "../../../../routes/private/admin/PrivatePaths";
 import LoaderProductView from "./components/LoaderProductView";
 import { formatDate } from "../../../../functions/Funtions";
 import { API_URL } from "../../../../functions/ApiConst";
@@ -8,10 +8,12 @@ import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Product } from "./model/Product";
 import axios from "axios";
+import { enabbleProductStatusById, disableProductStatusById } from "./model/ProductApi";
 
 const ProductView = () => {
 
   const { id, name } = useParams<{ id: string; name: string }>();
+  const parsedIdProduct = id ? parseInt(id) : 0;
 
   const [loading, setLoading] = useState(true);
 
@@ -28,8 +30,7 @@ const ProductView = () => {
     created: "",
     category: {
       idCategory: 0,
-      name: "",
-      img: undefined
+      name: ""
     }
   });
 
@@ -70,6 +71,16 @@ const ProductView = () => {
 
   const handleClick = (imageUrl: string) => {
     setSelectedImage(imageUrl);
+  };
+
+  const disableProductStatus = async () => {
+    await disableProductStatusById(parsedIdProduct.toString());
+    fetchData();
+  };
+
+  const enableProductStatus = async () => {
+    await enabbleProductStatusById(parsedIdProduct.toString());
+    fetchData();
   };
 
   return (
@@ -131,8 +142,20 @@ const ProductView = () => {
                         </div>
                         <div className="justify-center my-auto">
                           <Dropdown label={"•••"}>
-                            <DropdownItem text={"Editar producto"} />
-                            <DropdownItem text={"Dar de baja al producto"} />
+                            <DropdownItem path={PATH_PRODUCTO_ADMIN_EDIT_ID + formData.idProduct + "/" + formData.name?.replace(/\s+/g, '-')} text={"Editar producto"} />
+                            <DropdownItem
+                              text={
+                                formData.status === "ONLINE"
+                                  ? "Bloquear producto"
+                                  : formData.status === "CREATED" ? "Activar y publicar producto" : "Activar y publicar producto"
+                              }
+                              onClick={
+                                formData.status === "ONLINE"
+                                  ? disableProductStatus
+                                  : formData.status === "CREATED" ? enableProductStatus : enableProductStatus
+                              }
+                            />
+
                           </Dropdown>
                         </div>
                       </div>
@@ -174,7 +197,11 @@ const ProductView = () => {
                           </span>
                           <div className="flex justify-between w-full items-center">
                             <span className="text-black-700 text-lg font-semibold">Estado:</span>
-                            <span className="text-black-500 text-lg">{formData.status}</span>
+                            <span className={` font-semibold ${formData.status == "ONLINE" ? "text-success-500" :
+                              formData.status == "UPDATE_PASS" ? "text-warning-400" :
+                                "text-danger-400"}`}>
+                              {formData.status == "UPDATE_PASS" ? "Actualizar clave  " : formData.status?.toUpperCase()}
+                            </span>
                           </div>
                         </li>
                         <li className="flex mb-2 text-base text-black-800">

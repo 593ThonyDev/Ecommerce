@@ -217,35 +217,35 @@ public class ProductServiceImpl implements ProductService {
 
         if (request.getFkCategory() <= 0) {
             return Respuesta.builder()
-                    .message("")
+                    .message("Se debe agregar la categoria")
                     .type(RespuestaType.WARNING)
                     .build();
         }
 
         if (request.getDescription().isEmpty()) {
             return Respuesta.builder()
-                    .message("")
+                    .message("Agregue una descripcion")
                     .type(RespuestaType.WARNING)
                     .build();
         }
 
         if (request.getName().isEmpty()) {
             return Respuesta.builder()
-                    .message("")
+                    .message("Agrege el nombre")
                     .type(RespuestaType.WARNING)
                     .build();
         }
 
         if (request.getPrice() <= 0) {
             return Respuesta.builder()
-                    .message("")
+                    .message("Agregue el precio")
                     .type(RespuestaType.WARNING)
                     .build();
         }
 
         if (request.getStock() <= 0) {
             return Respuesta.builder()
-                    .message("")
+                    .message("Agregue el stock")
                     .type(RespuestaType.WARNING)
                     .build();
         }
@@ -310,21 +310,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Respuesta updateStatus(Integer idProduct, String status) {
+    public Respuesta disableStatus(Integer idProduct) {
         Optional<Product> optional = repository.findById(idProduct);
         if (optional.isPresent()) {
 
             Product product = optional.get();
-            status.toUpperCase();
 
-            if (status.equalsIgnoreCase("ONLINE")) {
-                product.setStatus(ProductStatus.ONLINE);
-                repository.save(product);
-                return Respuesta.builder()
-                        .message("Producto en linea")
-                        .type(RespuestaType.SUCCESS)
-                        .build();
-            } else if (status.equalsIgnoreCase("OFFLINE")) {
+            if (product.getStatus() == ProductStatus.ONLINE || product.getStatus() == ProductStatus.CREATED) {
                 product.setStatus(ProductStatus.OFFLINE);
                 repository.save(product);
                 return Respuesta.builder()
@@ -334,7 +326,36 @@ public class ProductServiceImpl implements ProductService {
             } else {
                 return Respuesta.builder()
                         .type(RespuestaType.WARNING)
-                        .message("Estado desconocido")
+                        .message("No se pudo actualizar el estado")
+                        .build();
+            }
+
+        } else {
+            return Respuesta.builder()
+                    .type(RespuestaType.WARNING)
+                    .message("El registro no existe")
+                    .build();
+        }
+    }
+
+    @Override
+    public Respuesta enableStatus(Integer idProduct) {
+        Optional<Product> optional = repository.findById(idProduct);
+        if (optional.isPresent()) {
+
+            Product product = optional.get();
+
+            if (product.getStatus() == ProductStatus.CREATED || product.getStatus() == ProductStatus.OFFLINE) {
+                product.setStatus(ProductStatus.ONLINE);
+                repository.save(product);
+                return Respuesta.builder()
+                        .message("Producto activado con exito")
+                        .type(RespuestaType.SUCCESS)
+                        .build();
+            } else {
+                return Respuesta.builder()
+                        .type(RespuestaType.WARNING)
+                        .message("No se pudo activar el producto")
                         .build();
             }
 

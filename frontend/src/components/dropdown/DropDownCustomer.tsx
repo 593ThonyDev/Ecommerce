@@ -45,7 +45,7 @@ const DropDownCustomer = () => {
                 onClick={toggleDropdown}
             >
                 {userPhoto ?
-                    <div className='flex align-middle bg-primary-100 rounded-full border border-primary-200 ml-3'>
+                    <div className='flex align-middle bg-white hover:bg-white/80 rounded-full border border-primary-100 ml-3'>
                         <div className=' my-auto px-2 lg:block hidden text-black-500'>{getTwoWords(fullName ? fullName : "")}</div>
                         <img src={userPhoto} className=' w-10 h-10 rounded-full border border-primary-200' alt="" />
                     </div>

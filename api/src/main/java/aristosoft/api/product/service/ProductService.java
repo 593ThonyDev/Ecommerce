@@ -26,7 +26,9 @@ public interface ProductService {
 
     Respuesta delete(Integer idProduct);
 
-    Respuesta updateStatus(Integer idProduct, String status);
+    Respuesta disableStatus(Integer idProduct);
+
+    Respuesta enableStatus(Integer idProduct);
 
     Respuesta updateImage(Integer idProduct, MultipartFile img1, MultipartFile img2, MultipartFile img3);
 

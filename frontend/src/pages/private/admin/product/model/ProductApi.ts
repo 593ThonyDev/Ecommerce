@@ -98,7 +98,7 @@ export const saveProduct = async (product: Product): Promise<boolean> => {
     }
 };
 
-export const updateProduct = async (product: Product, idProduct?: string, fkCategory?: string): Promise<boolean> => {
+export const updateProduct = async (product: Product): Promise<boolean> => {
     try {
         setToken();
         const formDataToSend = new FormData();
@@ -107,8 +107,8 @@ export const updateProduct = async (product: Product, idProduct?: string, fkCate
         formDataToSend.append("precio", product.price.toString());
         formDataToSend.append("stock", product.stock.toString());
 
-        if (idProduct) {
-            formDataToSend.append("idProducto", idProduct);
+        if (product.idProduct) {
+            formDataToSend.append("idProducto", product.idProduct.toString());
         }
 
         if (product.Category?.idCategory) {
@@ -119,34 +119,42 @@ export const updateProduct = async (product: Product, idProduct?: string, fkCate
             formDataToSend.append("empleado", product.created.toString());
         }
 
-        if (product.img1) {
-            formDataToSend.append("img1", product.img1);
-        }
-
-        if (product.img2) {
-            formDataToSend.append("img2", product.img2);
-        }
-
-        if (product.img3) {
-            formDataToSend.append("img3", product.img3);
-        }
-
-        if (fkCategory) {
-            formDataToSend.append("categoria", fkCategory);
-        }
-
-        if (getCustomerOrEmploye()) {
-            const employe = getCustomerOrEmploye()?.toString();
-            if (employe) {
-                formDataToSend.append("empleado", employe);
-            }
-        }
-
-        const request = idProduct ? axios.patch(`${API_URL}product/update`, formDataToSend) :
-            axios.post(`${API_URL}product/save`, formDataToSend);
+        const request = axios.patch(`${API_URL}product/update`, formDataToSend);
 
         return await handleResponse(request);
     } catch (error) {
+        return false;
+    }
+};
+
+export const disableProductStatusById = async (idUser: string): Promise<boolean> => {
+    try {
+        setToken();
+        const formDataToSend = new FormData();
+        formDataToSend.append("idProducto", idUser);
+        const response = await axios.patch(`${API_URL}product/disableStatus`, formDataToSend);
+        const message = response.data.message;
+        toast.success(message);
+        return true;
+    } catch (error: any) {
+        const errorMessage = error.response?.data?.message || 'Error al cambiar ';
+        toast.error(errorMessage);
+        return false;
+    }
+};
+
+export const enabbleProductStatusById = async (idUser: string): Promise<boolean> => {
+    try {
+        setToken();
+        const formDataToSend = new FormData();
+        formDataToSend.append("idProducto", idUser);
+        const response = await axios.patch(`${API_URL}product/enableStatus`, formDataToSend);
+        const message = response.data.message;
+        toast.success(message);
+        return true;
+    } catch (error: any) {
+        const errorMessage = error.response?.data?.message || 'Error al cambiar ';
+        toast.error(errorMessage);
         return false;
     }
 };

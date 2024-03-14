@@ -89,7 +89,6 @@ const ProductNew = () => {
         if (!productData.img1) camposFaltantes.push("foto 1");
         if (!productData.img2) camposFaltantes.push("foto 2");
         if (!productData.img3) camposFaltantes.push("foto 3");
-        if (!productData.Category) camposFaltantes.push("categoria");
         return camposFaltantes;
     };
 

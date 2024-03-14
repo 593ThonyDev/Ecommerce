@@ -138,7 +138,6 @@ public class ProductController {
         ProductRequest request = ProductRequest.builder()
                 .idProduct(Integer.parseInt(idProduct))
                 .fkCategory(Integer.parseInt(fkCategory))
-                .fkCreator(Integer.parseInt(fkCreator))
                 .name(name)
                 .description(description)
                 .price(Double.parseDouble(price))
@@ -197,12 +196,29 @@ public class ProductController {
         }
     }
 
-    @PatchMapping("/updateStatus")
-    public ResponseEntity<Respuesta> updateStatus(
-            @RequestParam("idProducto") String idProduct,
-            @RequestParam("estado") String estado) {
+    @PatchMapping("/enableStatus")
+    public ResponseEntity<Respuesta> enableStatus(
+            @RequestParam("idProducto") String idProduct) {
 
-        Respuesta response = service.updateStatus(Integer.parseInt(idProduct), estado);
+        Respuesta response = service.enableStatus(Integer.parseInt(idProduct));
+
+        if (response.getType() == RespuestaType.SUCCESS) {
+            return ResponseEntity.ok(Respuesta.builder()
+                    .message(response.getMessage())
+                    .build());
+        } else {
+            return ResponseEntity.badRequest()
+                    .body(Respuesta.builder().type(response.getType())
+                            .message(response.getMessage())
+                            .build());
+        }
+    }
+    
+    @PatchMapping("/disableStatus")
+    public ResponseEntity<Respuesta> disableStatus(
+            @RequestParam("idProducto") String idProduct) {
+
+        Respuesta response = service.disableStatus(Integer.parseInt(idProduct));
 
         if (response.getType() == RespuestaType.SUCCESS) {
             return ResponseEntity.ok(Respuesta.builder()
