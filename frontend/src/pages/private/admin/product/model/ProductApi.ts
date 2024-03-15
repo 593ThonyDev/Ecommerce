@@ -158,3 +158,29 @@ export const enabbleProductStatusById = async (idUser: string): Promise<boolean>
         return false;
     }
 };
+
+export const uploadImage = async (id: string | undefined, file: File, imageKey: "img1" | "img2" | "img3", fetchData: () => void, toast: any) => {
+    setToken();
+    if (id !== undefined) {
+      const formDataToSend = new FormData();
+      formDataToSend.append("idProducto", id);
+      formDataToSend.append(imageKey, file);
+  
+      const promise = axios.patch(`${API_URL}product/updateImage`, formDataToSend).then((response) => {
+        return response.data.message;
+      }).catch((error) => {
+        throw error.response.data.message;
+      });
+      toast.promise(
+        promise,
+        {
+          loading: 'Actualizando recurso...',
+          success: (message: any) => {
+            fetchData();
+            return message;
+          },
+          error: (errorMessage: any) => errorMessage,
+        },
+      );
+    }
+  };

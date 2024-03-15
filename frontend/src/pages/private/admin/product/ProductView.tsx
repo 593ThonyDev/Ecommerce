@@ -1,18 +1,21 @@
-import DropdownItem, { Dropdown } from "../../../../components/dropdown/DropDownOptions"
 import { PATH_PRODUCTOS_ADMIN, PATH_PRODUCTO_ADMIN_EDIT_ID } from "../../../../routes/private/admin/PrivatePaths";
+import { enabbleProductStatusById, disableProductStatusById, uploadImage } from "./model/ProductApi";
+import DropdownItem, { Dropdown } from "../../../../components/dropdown/DropDownOptions"
 import LoaderProductView from "./components/LoaderProductView";
 import { formatDate } from "../../../../functions/Funtions";
 import { API_URL } from "../../../../functions/ApiConst";
 import NotFoundAdmin from "../../../error/NotFoundAdmin";
+import { RiPencilFill } from "react-icons/ri";
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Product } from "./model/Product";
+import toast from "react-hot-toast";
 import axios from "axios";
-import { enabbleProductStatusById, disableProductStatusById } from "./model/ProductApi";
 
 const ProductView = () => {
 
   const { id, name } = useParams<{ id: string; name: string }>();
+  
   const parsedIdProduct = id ? parseInt(id) : 0;
 
   const [loading, setLoading] = useState(true);
@@ -56,6 +59,7 @@ const ProductView = () => {
             img: data.category.img
           }
         });
+        setSelectedImage("https://" + data.img1);
         setLoading(false);
       }, 800);
     } catch (error) {
@@ -83,6 +87,13 @@ const ProductView = () => {
     fetchData();
   };
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>, id: string | undefined, imageKey: "img1" | "img2" | "img3", fetchData: () => void, toast: any) => {
+    const file = event.target.files?.[0] ?? null;
+    if (file) {
+      uploadImage(id, file, imageKey, fetchData, toast);
+    }
+  };
+  
   return (
     <div className="flex">
       {loading ? (
@@ -107,6 +118,22 @@ const ProductView = () => {
                           <div
                             className={`block rounded-3xl ${selectedImage === "https://" + formData.img1 ? 'border border-primary-300' : 'border-primary-100/60 border'}`}
                             onClick={() => formData.img1 && handleClick("https://" + formData.img1)}>
+                            <div className="relative">
+                              <div className="relative z-20">
+                                <label htmlFor="fileInput1">
+                                  <div className="absolute cursor-pointer top-2 p-1 text-2xl hover:bg-primary-500/70 bg-primary-500 backdrop-blur-md text-white rounded-full right-2">
+                                    <RiPencilFill />
+                                  </div>
+                                </label>
+                              </div>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                id="fileInput1"
+                                style={{ display: 'none' }}
+                                onChange={(e) => handleFileChange(e, id, "img1", fetchData, toast)}
+                              />
+                            </div>
                             <img loading="lazy" src={formData.img1 ? "https://" + formData.img1 : ""} alt=""
                               className="object-cover w-full h-32 rounded-3xl " />
                           </div>
@@ -115,6 +142,22 @@ const ProductView = () => {
                           <div
                             className={`block rounded-3xl ${selectedImage === "https://" + formData.img2 ? 'border border-primary-300' : 'border-primary-100/60 border'}`}
                             onClick={() => formData.img2 && handleClick("https://" + formData.img2)}>
+                            <div className="relative">
+                              <div className="relative z-20">
+                                <label htmlFor="fileInput2">
+                                  <div className="absolute cursor-pointer top-2 p-1 text-2xl hover:bg-primary-500/70 bg-primary-500 backdrop-blur-md text-white rounded-full right-2">
+                                    <RiPencilFill />
+                                  </div>
+                                </label>
+                              </div>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                id="fileInput2"
+                                style={{ display: 'none' }}
+                                onChange={(e) => handleFileChange(e, id, "img2", fetchData, toast)}
+                              />
+                            </div>
                             <img loading="lazy" src={formData.img2 ? "https://" + formData.img2 : ""} alt=""
                               className="object-cover w-full h-32 rounded-3xl " />
                           </div>
@@ -123,6 +166,22 @@ const ProductView = () => {
                           <div
                             className={`block rounded-3xl ${selectedImage === "https://" + formData.img3 ? 'border border-primary-300' : 'border-primary-100/60 border'}`}
                             onClick={() => formData.img3 && handleClick("https://" + formData.img3)}>
+                            <div className="relative">
+                              <div className="relative z-20">
+                                <label htmlFor="fileInput3">
+                                  <div className="absolute cursor-pointer top-2 p-1 text-2xl hover:bg-primary-500/70 bg-primary-500 backdrop-blur-md text-white rounded-full right-2">
+                                    <RiPencilFill />
+                                  </div>
+                                </label>
+                              </div>
+                              <input
+                                type="file"
+                                accept="image/*"
+                                id="fileInput3"
+                                style={{ display: 'none' }}
+                                onChange={(e) => handleFileChange(e, id, "img1", fetchData, toast)}
+                              />
+                            </div>
                             <img loading="lazy" src={formData.img3 ? "https://" + formData.img3 : ""} alt=""
                               className="object-cover w-full h-32 rounded-3xl " />
                           </div>
