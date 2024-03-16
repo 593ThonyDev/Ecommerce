@@ -28,6 +28,8 @@ public class SecurityConfig {
                         .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
                         .antMatchers("/api/v1/auth/**").permitAll()
                         .antMatchers("/api/v1/user/**").authenticated()
+                        .antMatchers("/api/v1/category/public/**").permitAll()
+                        .antMatchers("/api/v1/product/public/**").permitAll()
                         .anyRequest().authenticated())
 
                 .headers(headers -> headers

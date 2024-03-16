@@ -42,6 +42,31 @@ public class ProductController {
             return ResponseEntity.noContent().build();
         }
     }
+   
+    @GetMapping("/public/category/{searchTerm}")
+    public ResponseEntity<Page<ProductDto>> getAllInStockByCategory(@PathVariable("searchTerm") String searchTerm, Pageable pageable) {
+        searchTerm = searchTerm.replace("-", " ");
+        Page<ProductDto> lista = service.getAllInStockByCategory(searchTerm, pageable);
+        if (lista != null && lista.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else if (lista != null) {
+            return ResponseEntity.ok(lista);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
+
+    @GetMapping("/public/search/{searchTerm}")
+    public ResponseEntity<List<ProductSearchDto>> searchProductOnline(@PathVariable("searchTerm") String searchTerm) {
+        List<ProductSearchDto> lista = service.searchOnline(searchTerm);
+        if (lista != null && lista.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else if (lista != null) {
+            return ResponseEntity.ok(lista);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
 
     @GetMapping("/public/list")
     public ResponseEntity<Page<ProductDto>> getAllInStock(Pageable pageable) {
@@ -213,7 +238,7 @@ public class ProductController {
                             .build());
         }
     }
-    
+
     @PatchMapping("/disableStatus")
     public ResponseEntity<Respuesta> disableStatus(
             @RequestParam("idProducto") String idProduct) {

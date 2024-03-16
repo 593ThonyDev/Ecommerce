@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import aristosoft.api.category.model.Category;
+import aristosoft.api.category.service.CategoryService;
 import aristosoft.api.cloudinary.product.FileProduct;
 import aristosoft.api.employe.model.EmployeDto;
 import aristosoft.api.product.model.*;
@@ -27,6 +28,8 @@ public class ProductServiceImpl implements ProductService {
     private final ModelMapper modelMapper;
 
     private final ProductRepository repository;
+    
+    private final CategoryService categoryService;
 
     private final FileProduct upload;
 
@@ -54,13 +57,34 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<ProductSearchDto> searchOnline(String searchTerm) {
+        String searchValue = "%" + searchTerm + "%";
+        List<Product> pagina = repository.findByPartialNameOrPartialDescriptionAndStatusAndStockGreaterThanEqual(searchValue, searchValue,
+                ProductStatus.ONLINE, 2);
+        if (!pagina.isEmpty()) {
+            return pagina.stream()
+                    .map(product -> modelMapper.map(product, ProductSearchDto.class))
+                    .collect(Collectors.toList());
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public Page<ProductDto> getAllInStock(Pageable pageable) {
-        Page<Product> pagina = repository.findByStatusAndStockGreaterThan(ProductStatus.ONLINE, 0, pageable);
+        Page<Product> pagina = repository.findByStatusAndStockGreaterThan(ProductStatus.ONLINE, 2, pageable);
         if (!pagina.isEmpty()) {
             return pagina.map(product -> modelMapper.map(product, ProductDto.class));
         } else {
             return Page.empty();
         }
+    }
+
+    @Override
+    public Page<ProductDto> getAllInStockByCategory(String categorySearch, Pageable pageable) {
+        Category category = categoryService.findByName(categorySearch).get(0);
+        Page<Product> page = repository.findByCategoryAndStatusAndStockGreaterThanEqual(category, ProductStatus.ONLINE, 3, pageable);
+        return page.map(product -> modelMapper.map(product, ProductDto.class));
     }
 
     @Override

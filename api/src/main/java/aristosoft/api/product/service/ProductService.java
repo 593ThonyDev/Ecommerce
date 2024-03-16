@@ -13,8 +13,12 @@ public interface ProductService {
     Page<ProductDto> getAll(Pageable pageable);
 
     Page<ProductDto> getAllInStock(Pageable pageable);
+    
+    Page<ProductDto> getAllInStockByCategory(String category,Pageable pageable);
 
     List<ProductSearchDto> search(String searchTerm);
+
+    List<ProductSearchDto> searchOnline(String searchTerm);
 
     Respuesta getById(Integer idProduct);
 

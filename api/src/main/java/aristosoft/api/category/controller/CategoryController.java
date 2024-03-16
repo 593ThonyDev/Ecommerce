@@ -31,6 +31,18 @@ public class CategoryController {
             return ResponseEntity.noContent().build();
         }
     }
+    
+    @GetMapping("/public/list")
+    public ResponseEntity<Page<Category>> getAllPublic(Pageable pageable) {
+        Page<Category> pagina = service.getAll(pageable);
+        if (pagina != null && pagina.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else if (pagina != null) {
+            return ResponseEntity.ok(pagina);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
 
     @GetMapping("/search/{value}")
     public ResponseEntity<List<Category>> findByName(@PathVariable("value")String value) {

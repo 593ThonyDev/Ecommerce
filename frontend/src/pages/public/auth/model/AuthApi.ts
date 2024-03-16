@@ -1,6 +1,6 @@
 import { saveToken, setCustomerOrEmploye, setFullName, setIdUser, setPhotoProfile, setUserName } from "../../../../functions/AuthApi";
 import { PATH_ADMIN_HOME } from "../../../../routes/private/admin/PrivatePaths";
-import { PATH_HOME } from "../../../../routes/public/Paths";
+import { PATH_PRODUCTOS } from "../../../../routes/public/Paths";
 import { API_URL } from "../../../../functions/ApiConst";
 import { NavigateFunction } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -84,7 +84,7 @@ export const AuthByUsernamePassword = async (user: LoginResponse, navigate: Navi
                 if (responseData.token) {
                     saveToken(responseData.token);
                 }
-                navigate(PATH_HOME);
+                navigate(PATH_PRODUCTOS);
             }
 
         } else {
