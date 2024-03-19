@@ -6,15 +6,12 @@ export function useToasterPosition(): ToastPosition {
 
     useEffect(() => {
         function handleResize() {
-            // Detectar el tamaño de la ventana y establecer la posición del Toaster
             if (window.innerWidth < 768) {
                 setToasterPosition('bottom-center');
             } else {
-                setToasterPosition('bottom-right');
+                setToasterPosition('top-center');
             }
         }
-
-        // Llamar a la función handleResize al cargar y al redimensionar la ventana
         handleResize();
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);

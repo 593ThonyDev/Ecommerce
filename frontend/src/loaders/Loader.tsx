@@ -2,7 +2,7 @@ import './loader.css';
 
 const Loader = () => {
     return (
-        <div className='flex justify-center items-center h-screen bg-primary-50/5 backdrop-blur-md'>
+        <div className='flex justify-center items-center sticky top-0 h-screen bg-primary-50/5 backdrop-blur-md'>
             <div className="preloader">
                 <svg className="cart" role="img" aria-label="Shopping cart line animation" viewBox="0 0 128 128" width="200px" height="128px" xmlns="http://www.w3.org/2000/svg">
                     <g fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="8">

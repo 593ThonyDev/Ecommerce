@@ -1,9 +1,5 @@
-import { ChangeEvent } from "react";
+import { Product } from "../model/Product";
 
 export interface ProductCardProps {
-    idProduct: string;
-    price: string;
-    name: string;
-    img1: string;
-    onChange?: (event: ChangeEvent<HTMLInputElement>) => void;
+    product: Product;
 }

@@ -1,17 +1,14 @@
-
-
-import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
-import productImg from "../../../../assets/NotFound.png";
 import ProductCard from "../../products/components/ProductCard";
 import { getAllProducts } from "../../products/model/ProductApi";
-import { Product } from "../../products/model/Product";
 import LoaderList from "../../products/components/LoaderList";
+import { Product } from "../../products/model/Product";
+import { useState, useEffect } from "react";
+import { motion } from "framer-motion";
 
 const ProductList = () => {
 
     const [data, setData] = useState<Product[]>([]);
-    const [currentPage, ] = useState(0);
+    const [currentPage,] = useState(0);
     const [totalItems, setTotalItems] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -41,8 +38,6 @@ const ProductList = () => {
         visiblePagesArray.unshift(-1);
     }
 
-
-
     return (
         <>
             {isLoading ? (
@@ -64,12 +59,7 @@ const ProductList = () => {
                     < div className="grid lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-4 pb-4 " >
                         {
                             data.map(product => (
-                                <ProductCard
-                                    idProduct={product.idProduct?.toString() ?? ""}
-                                    price={product.price.toString()}
-                                    name={product.name}
-                                    img1={product.img1 ? product.img1.toString() : productImg}
-                                />
+                                <ProductCard product={product} />
                             ))
                         }
                     </div >

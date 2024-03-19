@@ -34,7 +34,7 @@ export const getProductCategoryById = async (id: number): Promise<Category> => {
     }
 };
 
-export const searchCustomer = (value: string) => {
+export const searchCategoryProduct = (value: string) => {
     setToken();
     return axios.get(`${API_URL}category/search/${value}`)
         .then((response) => {
@@ -85,24 +85,3 @@ export const saveOrUpdateProductCategory = async (category: Category, idCategory
     }
 };
 
-export const searchCategoryProduct = (value: string) => {
-    if (!value.trim()) {
-        return null;
-    }
-    
-    setToken();
-    return axios.get(`${API_URL}category/search/${value}`)
-        .then((response) => {
-            if (response.data && response.data.length > 0) {
-                return response.data.map((category: any) => ({
-                    idCategory: category.idCategory.toString(),
-                    categoryName: category.name || ''
-                }));
-            } else {
-                return null; // Si no hay resultados, devolvemos null
-            }
-        })
-        .catch((error) => {
-            throw error;
-        });
-};

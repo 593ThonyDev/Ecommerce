@@ -62,7 +62,7 @@ const Login = () => {
                                         </button>
                                     </div>
                                 </form>
-                                <div className="mt-20 lg:mt-12 flex items-center justify-center px-2 pt-6 pb-5">
+                                <div className="mt-20 lg:mt-4 flex items-center justify-center px-2 pt-6 pb-5">
                                     <Link to={PATH_REGISTER} className="text-primary-300 hover:text-primary-400">
                                         ¿No tienes una cuenta? <span className=" font-bold"> Registrate</span>
                                     </Link>

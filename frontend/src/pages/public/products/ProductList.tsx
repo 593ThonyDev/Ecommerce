@@ -6,8 +6,6 @@ import { Product } from "./model/Product";
 import { motion } from "framer-motion";
 import { getAllProducts } from "./model/ProductApi";
 import ProductCard from "./components/ProductCard";
-import productImg from "../../../assets/NotFound.png";
-
 const ProductList = () => {
 
     const [data, setData] = useState<Product[]>([]);
@@ -64,7 +62,7 @@ const ProductList = () => {
                         initial={{ opacity: 0.5 }}
                         animate={{ opacity: 0.5 }}
                         transition={{ duration: 0.5 }}
-                        className="grid w-full justify-items-center lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-4 pb-4">
+                        className="grid w-full justify-items-center lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-4 py-4">
                         {
                             [...Array(12)].map((_, index) => (
                                 <LoaderList key={index} />
@@ -74,19 +72,12 @@ const ProductList = () => {
                 </div>
             ) : (
                 <div>
-                    < div className="grid lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-4 pb-4 " >
+                    < div className="grid lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-4 py-4 " >
                         {
                             data.map(product => (
-                                <ProductCard
-                                    idProduct={product.idProduct?.toString() ?? ""}
-                                    price={product.price.toString()}
-                                    name={product.name}
-                                    img1={product.img1 ? product.img1.toString() : productImg}
-                                />
+                                <ProductCard product={product} key={product.idProduct} />
                             ))
                         }
-
-
                     </div >
                     {!isError && (  // Si no hay errores, muestra información de paginación
                         <div className="bg-claro mx-auto w-full my-8">

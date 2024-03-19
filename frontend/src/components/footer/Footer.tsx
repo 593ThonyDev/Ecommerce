@@ -1,3 +1,6 @@
+import { Link } from "react-router-dom"
+import { PATH_PRODUCTOS } from "../../routes/public/Paths"
+
 const Footer = () => {
     return (
         <div className=" text-sm  text-gray-100 relative overflow-hidden bg-primary-50 border-t border-primary-100">
@@ -43,10 +46,10 @@ const Footer = () => {
                             </div>
                             <div className="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-2 justify-center lg:pt-0 pt-12">
                                 <div>
-                                    <h2 className="mb-6 text-xl font-bold uppercase text-primary-200">Recursos</h2>
-                                    <ul className=" text-primary-800 font-bold">
+                                    <h2 className="mb-6 text-xl font-bold uppercase text-primary-400">Recursos</h2>
+                                    <ul className=" text-black-300 font-bold">
                                         <li className="mb-4">
-                                            <a href="#" className="hover:underline">Productos</a>
+                                            <Link to={PATH_PRODUCTOS} className="hover:underline">Productos</Link>
                                         </li>
                                         <li>
                                             <a href="#" className="hover:underline">Nosotros</a>
@@ -54,8 +57,8 @@ const Footer = () => {
                                     </ul>
                                 </div>
                                 <div>
-                                    <h2 className="mb-6 text-xl font-bold uppercase text-primary-200">Legal</h2>
-                                    <ul className=" text-primary-800 font-bold">
+                                    <h2 className="mb-6 text-xl font-bold uppercase text-primary-400">Legal</h2>
+                                    <ul className=" text-black-300 font-bold">
                                         <li className="mb-4">
                                             <a href="#" className="hover:underline">Politicas de privacidad</a>
                                         </li>
@@ -64,7 +67,6 @@ const Footer = () => {
                                         </li>
                                     </ul>
                                 </div>
-
                             </div>
                         </div>
                     </div>

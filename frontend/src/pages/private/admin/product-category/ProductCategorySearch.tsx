@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
-import { Dialog, Combobox } from '@headlessui/react';
-import { Link } from 'react-router-dom';
-import { BiSearch } from 'react-icons/bi';
 import { PATH_CATEGORIA_PRODUCTO_ADMIN_ID } from '../../../../routes/private/admin/PrivatePaths';
-import { Category } from './model/Category';
 import { searchCategoryProduct } from './model/CategoryApi';
+import { Dialog, Combobox } from '@headlessui/react';
+import { Category } from './model/Category';
+import { BiSearch } from 'react-icons/bi';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 interface SearchProps {
     isOpen: boolean;
     onClose: () => void;

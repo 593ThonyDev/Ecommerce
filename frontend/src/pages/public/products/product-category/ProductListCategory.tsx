@@ -5,7 +5,6 @@ import { Product } from "../model/Product";
 import { motion } from "framer-motion";
 import { getAllProductsCategory } from "../model/ProductApi";
 import ProductCard from "../components/ProductCard";
-import productImg from "../../../../assets/NotFound.png";
 import { useParams } from "react-router-dom";
 import { PATH_PRODUCTOS } from "../../../../routes/public/Paths";
 import NotFoundAdmin from "../../../error/NotFoundAdmin";
@@ -73,11 +72,7 @@ const ProductListCategory = () => {
                     < div className="grid lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-4 pb-4 " >
                         {
                             data.map(product => (
-                                <ProductCard
-                                    idProduct={product.idProduct?.toString() ?? ""}
-                                    price={product.price.toString()}
-                                    name={product.name}
-                                    img1={product.img1 ? product.img1.toString() : productImg}
+                                <ProductCard product={product}                                    
                                 />
                             ))
                         }

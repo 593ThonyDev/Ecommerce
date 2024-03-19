@@ -56,7 +56,7 @@ const ProductSearch: React.FC<SearchProps> = ({ isOpen, onClose }) => {
                         onChange={handleSearchChange}
                         value={searchValue}
                         className="h-12 w-full bg-transparent text-sm text-black-800 outline-none"
-                        placeholder='Buscar producto por nombre o descripcion... '
+                        placeholder='Buscar tu producto favorito... '
                     />
                     <span
                         onClick={handleCancelClick}

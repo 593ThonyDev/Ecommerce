@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { searchCategoryProduct } from '../product-category/model/CategoryApi';
+import { searchCategoryProduct } from '../../../public/product-category/model/CategoryApi';
 
 interface Category {
     idCategory: string;

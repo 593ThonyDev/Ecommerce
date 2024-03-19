@@ -88,7 +88,7 @@ const ProductCategoryIndex = () => {
                             ))
                         }
                     </div >
-                    {isError && (  // Si hay un error, muestra un mensaje de error
+                    {isError && ( 
                         <NotFoundAdmin error='404'
                             message='Registro no encontrado'
                             link={PATH_PRODUCTOS}
