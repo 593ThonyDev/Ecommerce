@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import { PATH_BLOG, PATH_HOME, PATH_LOGIN, PATH_PRODUCTO, PATH_PRODUCTOS, PATH_PRODUCTOS_CATEGORY, PATH_REGISTER } from "./Paths";
+import { PATH_BLOG, PATH_HOME, PATH_LOGIN, PATH_PAYMENT, PATH_PRODUCTO, PATH_PRODUCTOS, PATH_PRODUCTOS_CATEGORY, PATH_REGISTER } from "./Paths";
 
 export const PATHS_PUBLIC = {
     layout: lazy(async () => await import("../../layouts/public/PublicLayout")),
@@ -22,6 +22,10 @@ export const PATHS_PUBLIC = {
             element: lazy(async () => await import("../../pages/public/products/ProductView")),
         },       
         {
+            path: PATH_PAYMENT,
+            element: lazy(async () => await import("../../pages/public/payment/PayPalPayment")),
+        },       
+        {
             path: PATH_BLOG,
             element: lazy(async () => await import("../../pages/public/blog/Blog")),
         },       
@@ -32,6 +36,10 @@ export const PATHS_PUBLIC = {
         {
             path: PATH_REGISTER,
             element: lazy(async () => await import("../../pages/public/auth/Register")),
+        },       
+        {
+            path: "*",
+            element: lazy(async () => await import("../../pages/error/NotFound")),
         },       
     ]
 }

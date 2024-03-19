@@ -5,7 +5,7 @@ import { RiShoppingCartFill, RiCloseFill } from "react-icons/ri";
 import ProductCart from "./components/ProductCart";
 import { Product } from "../products/model/Product";
 import { Link } from "react-router-dom";
-import { PATH_PRODUCTOS } from "../../../routes/public/Paths";
+import { PATH_PAYMENT, PATH_PRODUCTOS } from "../../../routes/public/Paths";
 import toast from "react-hot-toast";
 
 
@@ -126,9 +126,11 @@ const CartIndex = () => {
                                 <div className="flex pb-3">
                                     <small className="text-black-500 text-sm">Las tazas están calculadas en la orden de compra.</small>
                                 </div>
-                                <button className="w-full bg-primary-300 hover:bg-primary-400 text-white font-bold rounded-2xl py-3 uppercase text-center">
-                                    ir al checkout
-                                </button>
+                                <Link
+                                    onClick={() => setShopOpen(false)}
+                                    to={PATH_PAYMENT} className="flex justify-center w-full bg-primary-300 hover:bg-primary-400 text-white font-bold rounded-2xl py-3 uppercase text-center">
+                                    Ir al checkout
+                                </Link>
                             </div>
                         )
                         }
