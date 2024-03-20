@@ -37,7 +37,19 @@ public class OrderCustomerController {
             @RequestParam("orderCode") String orderCode,
             @RequestParam("idProduct") String idProduct,
             @RequestParam("quantity") String quantity) {
-        return null;
+
+        Respuesta response = service.addProduct(orderCode, Integer.parseInt(idProduct), Integer.parseInt(quantity));
+
+        if (response.getType() == RespuestaType.SUCCESS) {
+            return ResponseEntity.ok(Respuesta.builder()
+                    .message(response.getMessage())
+                    .build());
+        } else {
+            return ResponseEntity.badRequest()
+                    .body(Respuesta.builder().type(response.getType())
+                            .message(response.getMessage())
+                            .build());
+        }
     }
 
     @GetMapping("/getOrder/{orderCode}")

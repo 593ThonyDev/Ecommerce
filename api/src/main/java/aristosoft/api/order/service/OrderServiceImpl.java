@@ -10,11 +10,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import aristosoft.api.customer.service.CustomerService;
 import aristosoft.api.order.repository.OrderRepository;
+import aristosoft.api.orderDetail.model.OrderDetail;
+import aristosoft.api.orderDetail.repository.OrderDetailRepository;
+import aristosoft.api.product.model.Product;
+import aristosoft.api.product.service.ProductService;
 import aristosoft.api.status.OrderStatus;
 import aristosoft.api.customer.model.*;
 import aristosoft.api.order.model.*;
 import aristosoft.api.response.*;
-
 
 import lombok.RequiredArgsConstructor;
 
@@ -26,7 +29,13 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository repository;
 
     @Autowired
+    private final OrderDetailRepository detailRepository;
+
+    @Autowired
     private final CustomerService customerService;
+
+    @Autowired
+    private final ProductService productService;
 
     @Override
     public Page<Order> getAll(Pageable pageable) {
@@ -234,6 +243,85 @@ public class OrderServiceImpl implements OrderService {
                     .message("Cliente no registrado")
                     .type(RespuestaType.WARNING)
                     .build();
+        }
+    }
+
+    @Override
+    public Respuesta addProduct(String orderCode, Integer fkProduct, Integer quantity) {
+        // buscar el orderCode
+
+        Optional<Order> orderOptional = repository.findByCode(orderCode);
+        if (orderOptional.get().getStatus() != OrderStatus.CREATED) {
+            return Respuesta.builder()
+                    .message("La orden de compra ya ha sido procesada")
+                    .type(RespuestaType.WARNING)
+                    .build();
+        }
+
+        if (!orderOptional.isPresent()) {
+            return Respuesta.builder()
+                    .message("No existe la orden de compra!")
+                    .type(RespuestaType.WARNING)
+                    .build();
+        }
+
+        // Verificar el producto
+        Respuesta prodRespuesta = productService.getById(fkProduct);
+        if (prodRespuesta.getType() == RespuestaType.SUCCESS) {
+            @SuppressWarnings("unchecked")
+            Optional<Product> product = (Optional<Product>) prodRespuesta.getContent();
+            // Verificar el stock con la cantidad solicitada
+            if (quantity > product.get().getStock()) {
+                return Respuesta.builder()
+                        .message("Cantidad solicitada no disponible")
+                        .type(RespuestaType.WARNING)
+                        .build();
+            }
+
+            Optional<OrderDetail> detailOptional = detailRepository.findByOrderAndProduct(orderOptional.get(),
+                    product.get());
+            if (detailOptional.isPresent()) {
+
+                // Guardar el registro
+                OrderDetail detail = OrderDetail.builder()
+                        .idDetail(detailOptional.get().getIdDetail())
+                        .order(orderOptional.get())
+                        .product(product.get())
+                        .price(product.get().getPrice())
+                        .quantity(quantity)
+                        .preference(product.get().getDescription())
+                        .build();
+                detailRepository.save(detail);
+
+                return Respuesta.builder()
+                        .message("Cantidad del producto actualizado")
+                        .type(RespuestaType.SUCCESS)
+                        .build();
+
+            } else {
+
+                // Guardar el registro
+                OrderDetail detail = OrderDetail.builder()
+                        .order(orderOptional.get())
+                        .product(product.get())
+                        .price(product.get().getPrice())
+                        .quantity(quantity)
+                        .preference(product.get().getDescription())
+                        .build();
+                detailRepository.save(detail);
+                return Respuesta.builder()
+                        .message("Producto agregado al carrito")
+                        .type(RespuestaType.SUCCESS)
+                        .build();
+
+            }
+
+        } else {
+            return Respuesta.builder()
+                    .message("No existe el producto solicitado")
+                    .type(RespuestaType.WARNING)
+                    .build();
+
         }
     }
 

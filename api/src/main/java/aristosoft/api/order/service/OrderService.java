@@ -15,6 +15,8 @@ public interface OrderService {
 
     Respuesta createOrder(Integer idCustomer);
 
+    Respuesta addProduct(String orderCode, Integer fkProduct, Integer quantity);
+
     Respuesta updateStatus(Integer idCustomer, String status);
 
     Respuesta deleteById(Integer idOrder);

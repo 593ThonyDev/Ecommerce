@@ -54,10 +54,4 @@ public class Order {
     @Column(name = "date")
     private ZonedDateTime date;
 
-    // Método para obtener la fecha actual en la zona horaria de America/Guayaquil
-    @PrePersist
-    public void setDate() {
-        this.date = ZonedDateTime.now(ZoneId.of("America/Guayaquil"));
-    }
-    
 }
