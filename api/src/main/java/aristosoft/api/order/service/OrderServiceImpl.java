@@ -251,7 +251,9 @@ public class OrderServiceImpl implements OrderService {
         // buscar el orderCode
 
         Optional<Order> orderOptional = repository.findByCode(orderCode);
-        if (orderOptional.get().getStatus() != OrderStatus.CREATED) {
+        Order order = orderOptional.get();
+
+        if (order.getStatus() != OrderStatus.CREATED) {
             return Respuesta.builder()
                     .message("La orden de compra ya ha sido procesada")
                     .type(RespuestaType.WARNING)
@@ -268,9 +270,10 @@ public class OrderServiceImpl implements OrderService {
         // Verificar el producto
         Respuesta prodRespuesta = productService.getById(fkProduct);
         if (prodRespuesta.getType() == RespuestaType.SUCCESS) {
+
             @SuppressWarnings("unchecked")
             Optional<Product> product = (Optional<Product>) prodRespuesta.getContent();
-            // Verificar el stock con la cantidad solicitada
+
             if (quantity > product.get().getStock()) {
                 return Respuesta.builder()
                         .message("Cantidad solicitada no disponible")
@@ -278,20 +281,24 @@ public class OrderServiceImpl implements OrderService {
                         .build();
             }
 
-            Optional<OrderDetail> detailOptional = detailRepository.findByOrderAndProduct(orderOptional.get(),
-                    product.get());
+            Optional<OrderDetail> detailOptional = detailRepository.findByOrderAndProduct(order, product.get());
+
             if (detailOptional.isPresent()) {
 
-                // Guardar el registro
                 OrderDetail detail = OrderDetail.builder()
                         .idDetail(detailOptional.get().getIdDetail())
-                        .order(orderOptional.get())
+                        .order(order)
                         .product(product.get())
                         .price(product.get().getPrice())
                         .quantity(quantity)
                         .preference(product.get().getDescription())
                         .build();
+
                 detailRepository.save(detail);
+
+                // Actualizar el monto del total a pagar
+                order.setAmmount(detailRepository.calculateOrderTotal(order.getIdOrder()));
+                repository.save(order);
 
                 return Respuesta.builder()
                         .message("Cantidad del producto actualizado")
@@ -300,7 +307,6 @@ public class OrderServiceImpl implements OrderService {
 
             } else {
 
-                // Guardar el registro
                 OrderDetail detail = OrderDetail.builder()
                         .order(orderOptional.get())
                         .product(product.get())
@@ -309,6 +315,11 @@ public class OrderServiceImpl implements OrderService {
                         .preference(product.get().getDescription())
                         .build();
                 detailRepository.save(detail);
+
+                // Actualizar el monto del total a pagar
+                order.setAmmount(detailRepository.calculateOrderTotal(order.getIdOrder()));
+                repository.save(order);
+
                 return Respuesta.builder()
                         .message("Producto agregado al carrito")
                         .type(RespuestaType.SUCCESS)
@@ -323,6 +334,111 @@ public class OrderServiceImpl implements OrderService {
                     .build();
 
         }
+    }
+
+    @Override
+    public Respuesta deleteProduct(String orderCode, Integer fkProduct) {
+        // buscar el orderCode
+
+        Optional<Order> orderOptional = repository.findByCode(orderCode);
+        Order order = orderOptional.get();
+
+        if (order.getStatus() != OrderStatus.CREATED) {
+            return Respuesta.builder()
+                    .message("La orden de compra ya ha sido procesada")
+                    .type(RespuestaType.WARNING)
+                    .build();
+        }
+
+        if (!orderOptional.isPresent()) {
+            return Respuesta.builder()
+                    .message("No existe la orden de compra!")
+                    .type(RespuestaType.WARNING)
+                    .build();
+        }
+
+        // Verificar el producto
+        Respuesta prodRespuesta = productService.getById(fkProduct);
+        if (prodRespuesta.getType() == RespuestaType.SUCCESS) {
+
+            @SuppressWarnings("unchecked")
+            Optional<Product> product = (Optional<Product>) prodRespuesta.getContent();
+
+            Optional<OrderDetail> detailOptional = detailRepository.findByOrderAndProduct(order, product.get());
+
+            if (detailOptional.isPresent()) {
+
+                // Eliminar el detalle del producto por fkProduct
+                detailRepository.deleteById(detailOptional.get().getIdDetail());
+
+                // Actualizar el monto del total a pagar
+                order.setAmmount(detailRepository.calculateOrderTotal(order.getIdOrder()));
+                repository.save(order);
+
+                return Respuesta.builder()
+                        .message("Producto eliminado del carrito")
+                        .type(RespuestaType.SUCCESS)
+                        .build();
+
+            } else {
+
+                return Respuesta.builder()
+                        .message("No existe el producto en el carrito")
+                        .type(RespuestaType.WARNING)
+                        .build();
+
+            }
+
+        } else {
+            return Respuesta.builder()
+                    .message("No existe el producto solicitado")
+                    .type(RespuestaType.WARNING)
+                    .build();
+
+        }
+    }
+
+    @Override
+    public Respuesta getOrderByCode(String orderCode, Integer fkCustomer) {
+
+        Optional<Order> orderOptional = repository.findByCode(orderCode);
+
+        if (orderOptional.get().getStatus() != OrderStatus.CREATED) {
+            return Respuesta.builder()
+                    .message("La orden de compra ya ha sido procesada")
+                    .type(RespuestaType.WARNING)
+                    .build();
+        }
+
+        if (!orderOptional.isPresent()) {
+            return Respuesta.builder()
+                    .message("No existe la orden de con ese codigo")
+                    .type(RespuestaType.WARNING)
+                    .build();
+        }
+
+        if (orderOptional.get().getCustomer().getIdCustomer() != fkCustomer) {
+            return Respuesta.builder()
+                    .message("Orden de compra no disponible")
+                    .type(RespuestaType.WARNING)
+                    .build();
+        }
+
+        // Detalles de la orden para retornar
+        Order order = Order.builder()
+                .ammount(orderOptional.get().getAmmount())
+                .date(orderOptional.get().getDate())
+                .build();
+
+        List<OrderDetail> orderDetails = detailRepository
+                .findByOrder(Order.builder().idOrder(orderOptional.get().getIdOrder()).build());
+
+        return Respuesta.builder()
+                .extracontent(order)
+                .content(orderDetails)
+                .type(RespuestaType.SUCCESS)
+                .build();
+
     }
 
 }

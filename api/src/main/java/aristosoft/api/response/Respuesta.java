@@ -14,7 +14,7 @@ public class Respuesta {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String message;
-    
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private String token;
 
@@ -23,6 +23,9 @@ public class Respuesta {
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Object content;
+    
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private Object extracontent;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Object userDetails;

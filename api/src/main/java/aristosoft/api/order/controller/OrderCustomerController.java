@@ -52,12 +52,43 @@ public class OrderCustomerController {
         }
     }
 
-    @GetMapping("/getOrder/{orderCode}")
+    @PostMapping("/deleteProduct")
+    public ResponseEntity<Respuesta> deleteProduct(
+            @RequestParam("orderCode") String orderCode,
+            @RequestParam("idProduct") String idProduct) {
+
+        Respuesta response = service.deleteProduct(orderCode, Integer.parseInt(idProduct));
+
+        if (response.getType() == RespuestaType.SUCCESS) {
+            return ResponseEntity.ok(Respuesta.builder()
+                    .message(response.getMessage())
+                    .build());
+        } else {
+            return ResponseEntity.badRequest()
+                    .body(Respuesta.builder().type(response.getType())
+                            .message(response.getMessage())
+                            .build());
+        }
+    }
+
+    @GetMapping("/getOrder/{idCustomer}/{orderCode}")
     public ResponseEntity<Respuesta> getOrderDetails(
             @PathVariable("orderCode") String orderCode,
-            @RequestParam("idCustomer") String idCustomer) {
+            @PathVariable("idCustomer") String idCustomer) {
 
-        return null;
+        Respuesta response = service.getOrderByCode(orderCode, Integer.parseInt(idCustomer));
+
+        if (response.getType() == RespuestaType.SUCCESS) {
+            return ResponseEntity.ok(Respuesta.builder()
+                    .content(response.getContent())
+                    .extracontent(response.getExtracontent())
+                    .build());
+        } else {
+            return ResponseEntity.badRequest()
+                    .body(Respuesta.builder().type(response.getType())
+                            .message(response.getMessage())
+                            .build());
+        }
     }
 
     @GetMapping("/updateOrder/{orderCode}")
