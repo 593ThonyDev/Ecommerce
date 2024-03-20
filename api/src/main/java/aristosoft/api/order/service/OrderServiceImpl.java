@@ -1,16 +1,21 @@
 package aristosoft.api.order.service;
 
+import java.time.*;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
-import aristosoft.api.customer.model.CustomerDto;
-import aristosoft.api.order.model.*;
+import org.springframework.transaction.annotation.Transactional;
+import aristosoft.api.customer.service.CustomerService;
 import aristosoft.api.order.repository.OrderRepository;
-import aristosoft.api.response.*;
 import aristosoft.api.status.OrderStatus;
+import aristosoft.api.customer.model.*;
+import aristosoft.api.order.model.*;
+import aristosoft.api.response.*;
+
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -19,6 +24,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private final OrderRepository repository;
+
+    @Autowired
+    private final CustomerService customerService;
 
     @Override
     public Page<Order> getAll(Pageable pageable) {
@@ -56,98 +64,6 @@ public class OrderServiceImpl implements OrderService {
         return Respuesta.builder()
                 .type(RespuestaType.SUCCESS)
                 .content(order)
-                .build();
-    }
-
-    @Override
-    public Respuesta save(OrderRequest request) {
-        if (request.getFkCustomer() <= 0) {
-            return Respuesta.builder()
-                    .type(RespuestaType.WARNING)
-                    .message("Debe estar ligado a un cliente")
-                    .build();
-        }
-
-        if (request.getAddress().isEmpty()) {
-            return Respuesta.builder()
-                    .type(RespuestaType.WARNING)
-                    .message("La direccion esta vacia")
-                    .build();
-        }
-
-        Order order = Order.builder()
-                .customer(CustomerDto.builder().idCustomer(request.getFkCustomer()).build())
-                .code(UUID.randomUUID().toString())
-                .ammount(0.0)
-                .address(request.getAddress())
-                .email(request.getEmail())
-                .status(OrderStatus.CREATED)
-                .date(request.getFecha())
-                .build();
-
-        repository.save(order);
-
-        order.setDate(null);
-        order.setAmmount(null);
-
-        return Respuesta.builder()
-                .type(RespuestaType.SUCCESS)
-                .content(order)
-                .build();
-    }
-
-    @Override
-    public Respuesta update(OrderRequest request) {
-
-        if (request.getIdOrder() <= 0) {
-            return Respuesta.builder()
-                    .type(RespuestaType.WARNING)
-                    .message("Debe estar ligado a un cliente")
-                    .build();
-        }
-
-        if (request.getFkCustomer() <= 0) {
-            return Respuesta.builder()
-                    .type(RespuestaType.WARNING)
-                    .message("Debe estar ligado a un cliente")
-                    .build();
-        }
-
-        if (request.getAmmount() < 0) {
-            return Respuesta.builder()
-                    .type(RespuestaType.WARNING)
-                    .message("No se permiten perdidas en la compra")
-                    .build();
-        }
-
-        if (request.getAddress().isEmpty()) {
-            return Respuesta.builder()
-                    .type(RespuestaType.WARNING)
-                    .message("La direccion esta vacia")
-                    .build();
-        }
-
-        Optional<Order> optional = repository.findById(request.getIdOrder());
-        
-        if (!optional.isPresent()) {
-            return Respuesta.builder()
-                    .type(RespuestaType.WARNING)
-                    .message("El registro no existe")
-                    .build();
-        }
-
-        Order order = new Order();
-
-        optional.get().setAmmount(request.getAmmount());
-        optional.get().setAddress(request.getAddress());
-        optional.get().setEmail(request.getEmail());
-        optional.get().setDate(order.getFecha());
-        
-        repository.save(optional.get());
-
-        return Respuesta.builder()
-                .type(RespuestaType.SUCCESS)
-                .content(optional.get())
                 .build();
     }
 
@@ -236,6 +152,88 @@ public class OrderServiceImpl implements OrderService {
                         .message("No se pudo eliminar el registro")
                         .build();
             }
+        }
+    }
+
+    @Override
+    @Transactional
+    public Respuesta createOrder(Integer idCustomer) {
+
+        if (idCustomer <= 0) {
+            return Respuesta.builder()
+                    .type(RespuestaType.WARNING)
+                    .message("Debe tener un cliente")
+                    .build();
+        }
+
+        Respuesta customerResponse = customerService.getById(idCustomer);
+
+        if (customerResponse.getType() == RespuestaType.SUCCESS) {
+            @SuppressWarnings("unchecked")
+            Optional<Customer> customerOptional = (Optional<Customer>) customerResponse.getContent();
+
+            if (customerOptional.isPresent()) {
+                Customer customer = customerOptional.get();
+
+                Integer orderCount = repository.countByStatusAndCustomer(OrderStatus.CREATED,
+                        CustomerDto.builder().idCustomer(customer.getIdCustomer()).build());
+
+                if (orderCount > 1) {
+                    repository.deleteByStatusAndCustomer(OrderStatus.CREATED,
+                            CustomerDto.builder().idCustomer(customer.getIdCustomer()).build());
+                }
+
+                if (orderCount == 1) {
+                    Optional<Order> existingOrder = repository.findByStatusAndCustomer(OrderStatus.CREATED,
+                            CustomerDto.builder().idCustomer(customer.getIdCustomer()).build());
+                    if (existingOrder.isPresent()) {
+                        Order order = Order.builder()
+                                .code(existingOrder.get().getCode()).build();
+                        return Respuesta.builder()
+                                .type(RespuestaType.SUCCESS)
+                                .content(order)
+                                .build();
+                    } else {
+                        return Respuesta.builder()
+                                .message("No se encontró la orden existente para el cliente")
+                                .type(RespuestaType.WARNING)
+                                .build();
+                    }
+                } else {
+
+                    Order order = Order.builder()
+                            .customer(CustomerDto.builder().idCustomer(customer.getIdCustomer()).build())
+                            .code(UUID.randomUUID().toString())
+                            .ammount(0.0)
+                            .address(customer.getAddress())
+                            .email(customer.getEmail())
+                            .status(OrderStatus.CREATED)
+                            .date(ZonedDateTime.now(ZoneId.of("America/Guayaquil")))
+                            .build();
+
+                    order = repository.save(order);
+
+                    Order orderResponse = Order.builder()
+                            .code(order.getCode())
+                            .build();
+
+                    return Respuesta.builder()
+                            .type(RespuestaType.SUCCESS)
+                            .content(orderResponse)
+                            .build();
+                }
+
+            } else {
+                return Respuesta.builder()
+                        .message("Cliente no registrado")
+                        .type(RespuestaType.WARNING)
+                        .build();
+            }
+        } else {
+            return Respuesta.builder()
+                    .message("Cliente no registrado")
+                    .type(RespuestaType.WARNING)
+                    .build();
         }
     }
 

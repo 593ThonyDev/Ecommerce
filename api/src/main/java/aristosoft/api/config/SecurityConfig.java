@@ -17,41 +17,41 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final AuthenticationProvider authProvider;
+        private final JwtAuthenticationFilter jwtAuthenticationFilter;
+        private final AuthenticationProvider authProvider;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(authRequest -> authRequest
-                        .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                        .antMatchers("/api/v1/auth/**").permitAll()
-                        .antMatchers("/api/v1/user/**").authenticated()
-                        .antMatchers("/api/v1/category/public/**").permitAll()
-                        .antMatchers("/api/v1/product/public/**").permitAll()
-                        .anyRequest().authenticated())
+        @Bean
+        public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                http
+                                .csrf(csrf -> csrf.disable())
+                                .authorizeHttpRequests(authRequest -> authRequest
+                                                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                                                .antMatchers("/api/v1/auth/**").permitAll()
+                                                .antMatchers("/api/v1/user/**").authenticated()
+                                                .antMatchers("/api/v1/category/public/**").permitAll()
+                                                .antMatchers("/api/v1/product/public/**").permitAll()
+                                                .antMatchers("/api/v1/order/**").permitAll()
+                                                .anyRequest().authenticated())
 
-                .headers(headers -> headers
-                        .frameOptions(frameOptions -> frameOptions.disable()))
+                                .headers(headers -> headers
+                                                .frameOptions(frameOptions -> frameOptions.disable()))
 
-                .cors(cors -> {
-                    CorsConfigurationSource configurationSource = request -> {
-                        CorsConfiguration config = new CorsConfiguration();
-                        config.addAllowedOrigin("*");
-                        config.addAllowedHeader("*");
-                        config.addAllowedMethod("*");
-                        return config;
-                    };
-                    cors.configurationSource(configurationSource);
-                });
+                                .cors(cors -> {
+                                        CorsConfigurationSource configurationSource = request -> {
+                                                CorsConfiguration config = new CorsConfiguration();
+                                                config.addAllowedOrigin("*");
+                                                config.addAllowedHeader("*");
+                                                config.addAllowedMethod("*");
+                                                return config;
+                                        };
+                                        cors.configurationSource(configurationSource);
+                                });
 
-        http
-                .sessionManagement(sessionManager -> sessionManager
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authProvider)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                http.sessionManagement(sessionManager -> sessionManager
+                                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                                .authenticationProvider(authProvider)
+                                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
-        return http.build();
-    }
+                return http.build();
+        }
 }

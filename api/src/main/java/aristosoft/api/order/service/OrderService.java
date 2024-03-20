@@ -13,9 +13,7 @@ public interface OrderService {
 
     Respuesta getByCode(String code);
 
-    Respuesta save(OrderRequest request);
-
-    Respuesta update(OrderRequest request);
+    Respuesta createOrder(Integer idCustomer);
 
     Respuesta updateStatus(Integer idCustomer, String status);
 

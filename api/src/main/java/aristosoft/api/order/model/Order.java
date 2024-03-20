@@ -22,40 +22,42 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Column(name = "idorder")
-    Integer idOrder;
+    private Integer idOrder;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @ManyToOne
     @JoinColumn(name = "fkcustomer")
-    CustomerDto customer;
+    private CustomerDto customer;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Column(name = "code")
-    String code;
+    private String code;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Column(name = "ammount")
-    Double ammount;
+    private Double ammount;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Column(name = "address")
-    String address;
+    private String address;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Column(name = "email")
-    String email;
+    private String email;
 
     @Column(name = "status")
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Enumerated(EnumType.STRING)
-    OrderStatus status;
+    private OrderStatus status;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Column(name = "date")
-    ZonedDateTime date;
+    private ZonedDateTime date;
 
-    public ZonedDateTime getFecha() {
-        return ZonedDateTime.now(ZoneId.of("America/Guayaquil")); // Directly create ZonedDateTime
+    // Método para obtener la fecha actual en la zona horaria de America/Guayaquil
+    @PrePersist
+    public void setDate() {
+        this.date = ZonedDateTime.now(ZoneId.of("America/Guayaquil"));
     }
-
+    
 }
