@@ -19,7 +19,7 @@ const ProductEdit = () => {
     const [formData, setFormData] = useState<Product>({
         idProduct: 0,
         stock: 0,
-        price: 0,
+        price: "",
         name: "",
         description: "",
         status: "",
@@ -150,11 +150,11 @@ const ProductEdit = () => {
                         </div>
                         <div className="grid grid-cols-2 gap-3 pb-3">
                             <InputField
-                                mode="numeric"
+                                mode="text"
                                 label="Precio"
                                 id="price"
                                 value={formData.price.toString()}
-                                onChange={(e) => setFormData({ ...formData, price: parseInt(e.target.value) })}
+                                onChange={(e) => setFormData({ ...formData, price: e.target.value })}
                             />
                             <InputField
                                 mode="numeric"

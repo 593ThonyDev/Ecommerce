@@ -24,7 +24,7 @@ const ProductView = () => {
   const [formData, setFormData] = useState<Product>({
     idProduct: 0,
     stock: 0,
-    price: 0,
+    price: "",
     name: "",
     img1: undefined,
     img2: undefined,

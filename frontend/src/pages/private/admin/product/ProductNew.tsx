@@ -17,7 +17,7 @@ const ProductNew = () => {
     const [selectedCategory, setSelectedCategory] = useState<string>('');
     const [productData, setProductData] = useState<Product>({
         name: "",
-        price: 0,
+        price: "",
         stock: 0,
         img1: undefined,
         img2: undefined,

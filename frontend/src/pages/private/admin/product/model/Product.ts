@@ -6,7 +6,7 @@ export interface Product {
     img1?: File;
     img2?: File;
     img3?: File;
-    price: number;
+    price: string;
     stock: number;
     status?: string;
     created?: string;
