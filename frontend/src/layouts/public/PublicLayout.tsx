@@ -5,9 +5,9 @@ import { LayoutProps } from "../LayoutProps"
 const PublicLayout = ({ children }: LayoutProps) => {
   return (
     <div>
-      <Navbar/>
+      <Navbar />
       {children}
-      <Footer/>
+      <Footer />
     </div>
   )
 }

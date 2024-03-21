@@ -11,7 +11,7 @@ interface NotFoundPublicProps {
 
 const NotFoundPublic: React.FC<NotFoundPublicProps> = ({ message, link, error }) => {
     return (
-        <div className="flex h-full w-full justify-center bg-primary-50 text-center my-auto">
+        <div className="flex h-full w-full justify-center text-center my-auto">
             <div className=" mx-auto">
                 <div className='relative -bottom-16 uppercase'>
                     <span className=' text-5xl font-bold text-primary-500'>

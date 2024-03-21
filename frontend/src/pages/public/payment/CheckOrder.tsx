@@ -1,23 +1,22 @@
 import { useState, useEffect } from "react";
 import { RiShoppingCartFill } from "react-icons/ri";
 import { Link, useParams } from "react-router-dom";
-import { PATH_PRODUCTOS } from "../../../routes/public/Paths";
+import { PATH_HOME, PATH_PRODUCTOS } from "../../../routes/public/Paths";
 import toast from "react-hot-toast";
-import PaypalButton from "./PaypalButton";
 import { getCustomerOrEmploye, getToken } from "../../../functions/AuthApi";
 import NotFoundPublic from "../../error/NotFoundPublic";
-import { getOrder } from "../cart/model/CartApi";
+import { checkStatusOrder } from "../cart/model/CartApi";
 
-const CartPayment = () => {
+const checkOrder = () => {
   const { orderCode } = useParams();
   const [orderDetails, setOrderDetails] = useState<any>(null);
   const [error, setError] = useState<string>("");
 
-  const getOrderPayment = async () => {
+  const checkOrderStatus = async () => {
     try {
       const customerId = getCustomerOrEmploye();
       if (customerId && orderCode) {
-        const responseDetails = await getOrder(customerId, orderCode);
+        const responseDetails = await checkStatusOrder(customerId, orderCode);
         if (responseDetails) {
           setOrderDetails(responseDetails);
         } else {
@@ -31,7 +30,7 @@ const CartPayment = () => {
   };
 
   useEffect(() => {
-    getOrderPayment();
+    checkOrderStatus();
   }, [orderCode]);
 
   return (
@@ -52,9 +51,9 @@ const CartPayment = () => {
             </div>
             <div className="mt-4">
               {error ? (
-                <NotFoundPublic error="400"
-                  link={PATH_PRODUCTOS}
-                  message="No se pudo obtener el contenido de la orden de compra, posiblemente ya esta procesada " />
+                <NotFoundPublic error="404"
+                  link={PATH_HOME}
+                  message="No se pudo obtener el contenido de la orden de compra, posiblemente no exista!" />
               ) : (
                 <>
                   {orderDetails && orderDetails.content && orderDetails.content.length === 0 ? (
@@ -101,19 +100,13 @@ const CartPayment = () => {
                               </div>
                             </div>
                           ))}
-                          <div className="flex justify-between items-center pt-8">
-                            <span className="text-black-500 text-xl font-semibold">Total a pagar:</span>
+                          <div className="flex justify-between items-center pb-8 pt-4">
+                            <span className="text-black-500 text-xl font-semibold">Total pagado:</span>
                             <span className="text-black-800 text-xl font-semibold">${orderDetails.extracontent && orderDetails.extracontent.ammount ? `${orderDetails.extracontent.ammount.toFixed(2)}` : " 0.00"}</span>
                           </div>
-                          <div className="relative z-20">
-                            <PaypalButton
-                              totalValue={orderDetails.extracontent.ammount.toFixed(2)}
-                              invoice={"Total a pagar"}
-                              orderCode={orderCode ? orderCode : ""}
-                            />
-                          </div>
-                          <Link to={PATH_PRODUCTOS} className="flex w-full hover:bg-primary-400 bg-primary-300 items-center py-3 rounded-md text-center justify-center text-white">
-                            Agregar más productos
+                          
+                          <Link to={PATH_PRODUCTOS} className="flex w-full mt-5 uppercase font-semibold hover:bg-primary-400 bg-primary-300 items-center py-3 rounded-xl text-center justify-center text-white">
+                            Comprar mas productos
                           </Link>
                         </div>
                       )}
@@ -128,4 +121,4 @@ const CartPayment = () => {
   );
 };
 
-export default CartPayment;
+export default checkOrder;

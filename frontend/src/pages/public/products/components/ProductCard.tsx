@@ -14,12 +14,8 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
         } else {
             const orderCode = localStorage.getItem(SESSION_ORDER_CUSTOMER);
             if (orderCode && idProduct) {
-                const response = await addProduct(orderCode, idProduct);
-                if (response) {
-                    toast.success("Producto agregado con exito!")
-                } else {
-                    toast.error("Hubo un error al agregar a tu carrito")
-                }
+                await addProduct(orderCode, idProduct);
+
             }
         }
     };

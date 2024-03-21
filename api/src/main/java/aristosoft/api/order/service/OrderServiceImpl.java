@@ -431,6 +431,54 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public Respuesta getOrderByCodeSuccess(String orderCode, Integer fkCustomer) {
+
+        Optional<Order> orderOptional = repository.findByCode(orderCode);
+
+        if (orderOptional.isPresent() && orderOptional.get().getStatus() != OrderStatus.PAID) {
+            return Respuesta.builder()
+                    .message("La orden no ha sido pagada")
+                    .type(RespuestaType.WARNING)
+                    .build();
+        }
+
+        if (!orderOptional.isPresent()) {
+            return Respuesta.builder()
+                    .message("No existe la orden de con ese codigo")
+                    .type(RespuestaType.WARNING)
+                    .build();
+        }
+
+        if (orderOptional.get().getCustomer().getIdCustomer() != fkCustomer) {
+            return Respuesta.builder()
+                    .message("Orden de compra no disponible")
+                    .type(RespuestaType.WARNING)
+                    .build();
+        }
+
+        // Detalles de la orden para retornar
+        Order order = Order.builder()
+                .ammount(orderOptional.get().getAmmount())
+                .date(orderOptional.get().getDate())
+                .customer(orderOptional.get().getCustomer())
+                .code(orderOptional.get().getCode())
+                .build();
+
+        List<OrderDetail> orderDetails = detailRepository
+                .findByOrder(Order.builder().idOrder(orderOptional.get().getIdOrder()).build());
+
+        List<OrderDetailDto> orderDetailDtos = orderDetails.stream()
+                .map(orderDetail -> modelMapper.map(orderDetail, OrderDetailDto.class))
+                .collect(Collectors.toList());
+
+        return Respuesta.builder()
+                .extracontent(order)
+                .content(orderDetailDtos)
+                .type(RespuestaType.SUCCESS)
+                .build();
+    }
+
+    @Override
     public Respuesta addProduct(String orderCode, Integer fkProduct) {
         Optional<Order> orderOptional = repository.findByCode(orderCode);
 
@@ -502,5 +550,42 @@ public class OrderServiceImpl implements OrderService {
             return prodRespuesta;
         }
     }
+
+    @Override
+    public Respuesta updateStatusOrder(Integer idCustomer, String orderCode) {
+
+        Optional<Order> orderOptional = repository.findByCode(orderCode);
+
+        // Verificar si orderOptional contiene un valor
+        if (!orderOptional.isPresent()) {
+            return Respuesta.builder()
+                    .message("No existe la orden de compra!")
+                    .type(RespuestaType.WARNING)
+                    .build();
+        }
+
+        Order order = orderOptional.get();
+
+        if (order.getCustomer().getIdCustomer() == idCustomer && order.getStatus() == OrderStatus.CREATED
+                || order.getStatus() == OrderStatus.PAYMENT_FAILTURE) {
+
+            order.setStatus(OrderStatus.PAID);
+            repository.save(order);
+
+            return Respuesta.builder()
+                    .message("Compra aprobada con exito!")
+                    .type(RespuestaType.SUCCESS)
+                    .build();
+
+        } else {
+            return Respuesta.builder()
+                    .message("La orden " + orderCode + " ya ha sido procesada")
+                    .type(RespuestaType.WARNING)
+                    .build();
+        }
+
+    }
+
+
 
 }

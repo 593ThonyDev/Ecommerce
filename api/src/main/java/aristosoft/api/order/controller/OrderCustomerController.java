@@ -109,15 +109,45 @@ public class OrderCustomerController {
                             .build());
         }
     }
+    
+    @GetMapping("/check/{idCustomer}/{orderCode}")
+    public ResponseEntity<Respuesta> checkOrder(
+            @PathVariable("orderCode") String orderCode,
+            @PathVariable("idCustomer") String idCustomer) {
 
-    @GetMapping("/updateOrder/{orderCode}")
+        Respuesta response = service.getOrderByCodeSuccess(orderCode, Integer.parseInt(idCustomer));
+
+        if (response.getType() == RespuestaType.SUCCESS) {
+            return ResponseEntity.ok(Respuesta.builder()
+                    .content(response.getContent())
+                    .extracontent(response.getExtracontent())
+                    .build());
+        } else {
+            return ResponseEntity.badRequest()
+                    .body(Respuesta.builder().type(response.getType())
+                            .message(response.getMessage())
+                            .build());
+        }
+    }
+
+    @PatchMapping("/updateStatus/{orderCode}")
     public ResponseEntity<Respuesta> updateOrder(
             @PathVariable("orderCode") String orderCode,
-            @RequestParam("idCustomer") String idCustomer,
-            @RequestParam("orderStatus") String orderStatus) {
+            @RequestParam("idCustomer") String idCustomer) {
 
-        // Aqui se debe actualizar el stock de acuerdo a los datos
-        return null;
+        Respuesta response = service.updateStatusOrder(Integer.parseInt(idCustomer), orderCode);
+
+        if (response.getType() == RespuestaType.SUCCESS) {
+            return ResponseEntity.ok(Respuesta.builder()
+                    .message(response.getMessage())
+                    .extracontent(response.getExtracontent())
+                    .build());
+        } else {
+            return ResponseEntity.badRequest()
+                    .body(Respuesta.builder().type(response.getType())
+                            .message(response.getMessage())
+                            .build());
+        }
     }
 
 }

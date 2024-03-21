@@ -9,7 +9,7 @@ export function useToasterPosition(): ToastPosition {
             if (window.innerWidth < 768) {
                 setToasterPosition('bottom-center');
             } else {
-                setToasterPosition('top-center');
+                setToasterPosition('bottom-center');
             }
         }
         handleResize();

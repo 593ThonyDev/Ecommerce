@@ -1,22 +1,47 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Dialog } from "@headlessui/react";
 import { RiCloseFill, RiMenuFill } from "react-icons/ri";
 import CartIndex from "../../../pages/public/cart/CartIndex";
 import DropDownCustomer from "../../dropdown/DropDownCustomer";
-import { APP_NAME } from "../../../functions/ApiConst";
-import { getToken } from "../../../functions/AuthApi";
+import { APP_NAME, SESSION_ORDER_CUSTOMER } from "../../../functions/ApiConst";
+import { getCustomerOrEmploye, getToken } from "../../../functions/AuthApi";
 import { PATH_BLOG, PATH_HOME, PATH_LOGIN, PATH_NOSOTROS, PATH_PAYMENT_CODE, PATH_PRODUCTOS } from "../../../routes/public/Paths";
+import { createOrder } from "../../../pages/public/cart/model/CartApi";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const location = useLocation();
+
 
     const navigation = [
         { name: 'Productos', href: PATH_PRODUCTOS },
         { name: 'Nosotros', href: PATH_NOSOTROS },
         { name: 'Blog', href: PATH_BLOG }
     ];
+
+    const createNewOrder = async () => {
+        try {
+            const customerId = getCustomerOrEmploye();
+            if (customerId && getToken()) {
+                const response = await createOrder(customerId);
+                if (response && response.content && response.content.code) {
+                    const code: string = response.content.code;
+                    localStorage.setItem(SESSION_ORDER_CUSTOMER, code);
+                } else {
+                    toast.error("Error al crear la orden");
+                }
+            }
+        } catch (error) {
+            console.error('Error al crear la orden:', error);
+            toast.error("Error al crear la orden");
+        }
+    };
+
+    useEffect(() => {
+        createNewOrder();
+      }, []);
 
     return (
         <header className="h-16 sm:h-16 flex items-center z-30 w-full sticky top-0 bg-primary-50 border-b border-primary-100 outline-none">

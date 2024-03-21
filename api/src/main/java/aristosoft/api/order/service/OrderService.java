@@ -23,6 +23,10 @@ public interface OrderService {
 
     Respuesta getOrderByCode(String orderCode, Integer fkCustomer);
 
+    Respuesta getOrderByCodeSuccess(String orderCode, Integer fkCustomer);
+
     Respuesta updateStatus(Integer idCustomer, String status);
+
+    Respuesta updateStatusOrder(Integer idCustomer, String orderCode);
 
 }

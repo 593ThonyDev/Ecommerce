@@ -1,13 +1,20 @@
 import React from 'react'
 import { PayPalButtons } from '@paypal/react-paypal-js'
 import toast from 'react-hot-toast';
+import { getCustomerOrEmploye } from '../../../functions/AuthApi';
+import { updateOrderStatus } from './PaymentApi';
+import { useNavigate } from 'react-router-dom';
+import { PATH_CHECK_ORDER_CODE } from '../../../routes/public/Paths';
 
 interface PayPalButtonInterface {
     totalValue: string;
     invoice: string;
+    orderCode: string;
 }
 
 const PaypalButton: React.FC<PayPalButtonInterface> = (props) => {
+
+    const navigate = useNavigate();
     const createOrderHandler = async (data: any, actions: any) => {
         try {
             const order = await actions.order.create({
@@ -44,7 +51,15 @@ const PaypalButton: React.FC<PayPalButtonInterface> = (props) => {
             const order = await actions.order?.capture();
             console.log("order", order);
             console.log("data", data);
-            toast.success("Pago realizado con exito")
+            const idCustomer = getCustomerOrEmploye();
+            if (idCustomer) {
+                const response = await updateOrderStatus(idCustomer, props.orderCode)
+                if (response) {
+                    navigate(PATH_CHECK_ORDER_CODE + props.orderCode)
+                } else {
+                    toast.error("No se pudo actualizar en la bd")
+                }
+            }
         } catch (error: any) {
             console.error("Error al capturar el pago:", error);
             toast.error("Error al capturar el pago: " + error.message);
@@ -58,7 +73,6 @@ const PaypalButton: React.FC<PayPalButtonInterface> = (props) => {
                 onApprove={onApprove}
                 onError={onErrorHandler}
                 onCancel={onCancelHandler}
-
             />
         </div>
     )

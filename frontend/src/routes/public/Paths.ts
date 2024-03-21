@@ -13,6 +13,8 @@ export const PATH_PRODUCTO_ID = "/producto/";
 
 export const PATH_PAYMENT = "/checkout/:orderCode";
 export const PATH_PAYMENT_CODE = "/checkout/";
+export const PATH_CHECK_ORDER = "/checkOrder/:orderCode";
+export const PATH_CHECK_ORDER_CODE = "/checkOrder/";
 
 export const PATH_BLOG = "/blog";
 export const PATH_BLOG_ARTICULO = PATH_BLOG + "/articulo/:id/:descripcion";
