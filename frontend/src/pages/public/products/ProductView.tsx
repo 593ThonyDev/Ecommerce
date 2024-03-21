@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { API_URL } from "../../../functions/ApiConst";
+import { API_URL, SESSION_ORDER_CUSTOMER } from "../../../functions/ApiConst";
 import { Product } from "./model/Product";
 import { RiShoppingCartFill } from "react-icons/ri";
 import LoaderProductView from "./components/LoaderProductView";
@@ -9,6 +9,7 @@ import NotFoundAdmin from "../../error/NotFoundAdmin";
 import { PATH_PRODUCTOS } from "../../../routes/public/Paths";
 import toast from "react-hot-toast";
 import { getToken } from "../../../functions/AuthApi";
+import { addProduct } from "../cart/model/CartApi";
 
 const ProductView = () => {
 
@@ -70,52 +71,24 @@ const ProductView = () => {
     useEffect(() => {
         fetchData();
     }, [id, name]);
-    
 
-    const handleAddToCart = () => {
+    const handleAddToCart = async (idProduct: string) => {
         if (!getToken()) {
             toast.error("¡Debes iniciar sesion para agregar a tu orden de compra!");
         } else {
-            const cartItems = localStorage.getItem('cartItems');
-            if (cartItems) {
-                const parsedCartItems = JSON.parse(cartItems) as Product[];
-                const existingItem = parsedCartItems.find(item => item.idProduct === formData.idProduct);
-                if (existingItem) {
-                    toast.error("¡Este producto ya está en el carrito!");
-                    return;
+            const orderCode = localStorage.getItem(SESSION_ORDER_CUSTOMER);
+            if (orderCode && idProduct) {
+                const response = await addProduct(orderCode, idProduct);
+                if (response) {
+                    toast.success("Producto agregado con exito!")
+                } else {
+                    toast.error("Hubo un error al agregar a tu carrito")
                 }
             }
-
-            if (formData.stock > 0) {
-                toast.success("Producto agregado al carrito");
-                updateLocalStorage(formData);
-            } else {
-                toast.error("¡No hay suficiente stock disponible para agregar este producto al carrito!");
-            }
         }
     };
+    
 
-    const updateLocalStorage = (product: Product) => {
-        const cartItem = {
-            idProduct: product.idProduct,
-            name: product.name,
-            description: product.description,
-            img1: product.img1,
-            stock: product.stock,
-            quantity: 1, // Agregamos una cantidad fija de 1 unidad
-            price: product.price, // Precio por unidad del producto
-            totalPrice: product.price * 1 // Precio total inicialmente igual al precio unitario
-        };
-
-        let cartItems: Product[] = [];
-        const storedCartItems = localStorage.getItem('cartItems');
-        if (storedCartItems) {
-            cartItems = JSON.parse(storedCartItems);
-        }
-
-        cartItems.push(cartItem);
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-    };
     return (
         <div>
             {loading ? (
@@ -186,7 +159,7 @@ const ProductView = () => {
                                             </p>
                                         </div>
                                         <div
-                                            onClick={handleAddToCart}
+                                            onClick={() => handleAddToCart(formData.idProduct ? formData.idProduct.toString() : "")}
                                             className="flex items-center text-xl cursor-pointer justify-center w-full px-2.5 py-4 bg-warning-400 hover:bg-warning-500 text-white rounded-xl">
                                             <RiShoppingCartFill className="mr-4 h-6 w-8" />
                                             Agregar al carrito
