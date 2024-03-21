@@ -1,54 +1,66 @@
 import { useState, useEffect } from "react";
 import { RiShoppingCartFill } from "react-icons/ri";
-import { Product } from "../products/model/Product";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { PATH_PRODUCTOS } from "../../../routes/public/Paths";
 import toast from "react-hot-toast";
-import ProductCart from "../cart/components/ProductCart";
 import PaypalButton from "./PaypalButton";
-import { getToken } from "../../../functions/AuthApi";
+import { getCustomerOrEmploye, getToken } from "../../../functions/AuthApi";
 import NotFoundPublic from "../../error/NotFoundPublic";
+import { getOrder } from "../cart/model/CartApi";
 
-const CartIndex = () => {
-  const [cartItems, setCartItems] = useState<Product[]>([]);
 
-  useEffect(() => {
-    const storedCartItems = localStorage.getItem('cartItems');
-    if (storedCartItems) {
-      setCartItems(JSON.parse(storedCartItems));
-    }
-  }, []);
 
-  useEffect(() => {
-    const storedCartItems = localStorage.getItem('cartItems');
-    if (storedCartItems) {
-      setCartItems(JSON.parse(storedCartItems));
-    }
-  }, []);
+const CartPayment = () => {
 
-  const updateCartItemQuantity = (idProduct: string, newQuantity: number) => {
-    const updatedCartItems = cartItems.map(item => {
-      if (item.idProduct !== undefined && item.idProduct.toString() === idProduct) {
-        return { ...item, quantity: newQuantity, totalPrice: item.price * newQuantity };
+  const { orderCode } = useParams();
+
+  const [orderDetails, setOrderDetails] = useState<any>(null);
+
+  const getOrderPayment = async () => {
+    try {
+      const customerId = getCustomerOrEmploye();
+      if (customerId && orderCode) {
+        const responseDetails = await getOrder(customerId, orderCode);
+        if (responseDetails) {
+          setOrderDetails(responseDetails);
+        } else {
+          toast.error("Error al obtener los detalles de la orden");
+        }
+
       }
-      return item;
-    });
-
-    setCartItems(updatedCartItems);
-    localStorage.setItem('cartItems', JSON.stringify(updatedCartItems)); // Actualizar en localStorage
+    } catch (error) {
+      console.error('Error al crear la orden:', error);
+      toast.error("Error al crear la orden");
+    }
   };
 
-  const deleteCartItem = (idProduct: string) => {
-    const updatedCartItems = cartItems.filter(item => item.idProduct !== undefined && item.idProduct.toString() !== idProduct);
-    setCartItems(updatedCartItems);
-    toast.success("Producto eliminado del carrito")
-    localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
-  };
+  useEffect(() => {
+
+    getOrderPayment();
+
+  }, [orderCode]);
+
+  useEffect(() => {
+    getOrderPayment();
+  }, [orderCode]);
+
+  useEffect(() => {
+    const handleMouseMove = () => {
+      getOrderPayment();
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []); // Este useEffect se ejecutará solo una vez al montar el componente
+
 
   return (
     !getToken() ?
       <div className="bg-white overflow-hidden w-full">
-        <NotFoundPublic error="401" message="Debes iniciar sesion para realizar esta operacion"/>
+        <NotFoundPublic error="401" message="Debes iniciar sesion para realizar esta operacion" />
       </div>
       : (<div className="flex justify-center bg-white z-10 pb-16">
         <div className="bg-white rounded-lg overflow-hidden w-full max-w-md">
@@ -65,7 +77,7 @@ const CartIndex = () => {
               </div>
             </div>
             <div className="mt-4">
-              {cartItems.length === 0 ? (
+              {orderDetails && orderDetails.content && orderDetails.content.length === 0 ? (
                 <div className="flex flex-col items-center h-84 py-32">
                   <RiShoppingCartFill className="text-6xl text-black-400" />
                   <p className="text-black-600 mt-2">Tu carrito está vacío</p>
@@ -75,29 +87,60 @@ const CartIndex = () => {
                   </Link>
                 </div>
               ) : (
-                <div className="space-y-4 z-30 py-3">
-                  {cartItems.map(item => (
-                    <ProductCart
-                      key={item.idProduct !== undefined ? item.idProduct.toString() : ""}
-                      productName={item.name}
-                      quantity={item.quantity}
-                      stock={item.stock}
-                      totalPrice={item.totalPrice}
-                      img1={"" + item.img1}
-                      onDelete={() => deleteCartItem(item.idProduct !== undefined ? item.idProduct.toString() : "")}
-                      updateQuantity={(newQuantity: number) => updateCartItemQuantity(item.idProduct !== undefined ? item.idProduct.toString() : "", newQuantity)}
-                      idProduct={item.idProduct !== undefined ? item.idProduct.toString() : ""}
-                      onProductClick={() => { }}
-                    />
-                  ))}
-                  <div className="flex justify-between items-center pt-8">
-                    <span className="text-black-500 text-xl font-semibold">Total a pagar:</span>
-                    <span className="text-black-800 text-xl font-semibold">${cartItems.reduce((total, item) => total + item.totalPrice, 0).toFixed(2)}</span>
-                  </div>
-                  <div className="relative z-20">
-                    <PaypalButton totalValue={cartItems.reduce((total, item) => total + item.totalPrice, 0).toFixed(2)} invoice={"Total a pagar"} />
-                  </div>
-                </div>
+                <>
+                  {orderDetails && (
+                    <div className="space-y-4 z-30 py-3">
+                      {orderDetails.content.map((item: any) => (
+                        <div className="flex w-full" key={item.product.idProduct}>
+                          <div className={`rounded-3xl`}>
+
+                            <img src={"https://" + item.product.img1} alt="Product Image" className="mr-4 rounded-xl max-w-16 max-h-16 w-16 h-16 object-cover bg-primary-100 border border-primary-200" />
+                          </div>
+                          <div className="grid w-full">
+                            <div className="grid">
+                              <div
+                                className="font-semibold text-primary-600 hover:text-primary-700 line-clamp-1 uppercase">
+                                {item.product.name}
+                              </div>
+                            </div>
+                            <div className="flex justify-between -mt-1.5">
+
+                              <div className="flex justify-start">
+                                <span className="text-black-600">Precio:</span>
+                                <span className=" font-bold text-black-600 px-2"> {item.price}</span>
+                                <span className=" font-bold text-black-600"> USD</span>
+                              </div>
+                              <div className="flex justify-start">
+                                <span className="text-black-600">Cantidad:</span>
+                                <span className=" font-bold text-black-600 pl-2">{item.quantity}</span>
+                              </div>
+
+                            </div>
+                            <div className="flex justify-between -mt-1">
+                              <span className="text-black-600">Total:</span>
+                              <div className=" ml-auto flex items-center justify-center">
+                                <span className=" font-bold text-black-600">USD {item.price * item.quantity}</span>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      ))}
+                      <div className="flex justify-between items-center pt-8">
+                        <span className="text-black-500 text-xl font-semibold">Total a pagar:</span>
+                        <span className="text-black-800 text-xl font-semibold">${orderDetails.extracontent && orderDetails.extracontent.ammount ? `${orderDetails.extracontent.ammount.toFixed(2)}` : " 0.00"}</span>
+                      </div>
+
+                      <div className="relative z-20">
+                        <PaypalButton totalValue={orderDetails.extracontent.ammount.toFixed(2)} invoice={"Total a pagar"} />
+                      </div>
+
+                      <Link to={PATH_PRODUCTOS} className="flex w-full hover:bg-primary-400 bg-primary-300 items-center py-3 rounded-md text-center justify-center text-white">
+                        Agregar mas productos
+                      </Link>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>
@@ -106,4 +149,4 @@ const CartIndex = () => {
   );
 };
 
-export default CartIndex;
+export default CartPayment;

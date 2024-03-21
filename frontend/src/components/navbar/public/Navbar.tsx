@@ -6,7 +6,7 @@ import CartIndex from "../../../pages/public/cart/CartIndex";
 import DropDownCustomer from "../../dropdown/DropDownCustomer";
 import { APP_NAME } from "../../../functions/ApiConst";
 import { getToken } from "../../../functions/AuthApi";
-import { PATH_BLOG, PATH_HOME, PATH_LOGIN, PATH_NOSOTROS, PATH_PRODUCTOS } from "../../../routes/public/Paths";
+import { PATH_BLOG, PATH_HOME, PATH_LOGIN, PATH_NOSOTROS, PATH_PAYMENT_CODE, PATH_PRODUCTOS } from "../../../routes/public/Paths";
 
 const Navbar = () => {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -19,7 +19,7 @@ const Navbar = () => {
     ];
 
     return (
-        <header className="h-16 sm:h-16 flex items-center z-30 w-full sticky top-0 bg-primary-50 border-b border-primary-100">
+        <header className="h-16 sm:h-16 flex items-center z-30 w-full sticky top-0 bg-primary-50 border-b border-primary-100 outline-none">
             <div className="container mx-auto lg:px-6 md:px-2 px-1 flex items-center justify-between">
                 <div className="flex items-center justify-center">
                     <div onClick={() => setMobileMenuOpen(true)} className="relative inline-flex items-center p-3 lg:hidden lg:ml-4 md:ml-2 hover:bg-black-100/50 px-3 rounded-full text-sm font-medium text-center text-black-300">
@@ -39,8 +39,13 @@ const Navbar = () => {
                     </nav>
                     <div className="z-50 relative inline-flex items-center px-3 text-sm font-medium text-center text-success-200 rounded-lg">
                         {getToken() ? (
-                            <div className="flex justify-center mt-1">
-                                <CartIndex />
+                            <div className="flex justify-center content-center my-auto">
+                                {!location.pathname.includes(PATH_PAYMENT_CODE) ? (
+                                    <div className=" my-auto">
+                                        <CartIndex />
+                                    </div>
+                                ) : (null)
+                                }
                                 <DropDownCustomer />
                             </div>
                         ) : (
@@ -105,4 +110,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
- 

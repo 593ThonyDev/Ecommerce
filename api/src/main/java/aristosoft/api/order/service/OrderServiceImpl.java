@@ -2,7 +2,9 @@ package aristosoft.api.order.service;
 
 import java.time.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -10,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import aristosoft.api.customer.service.CustomerService;
 import aristosoft.api.order.repository.OrderRepository;
-import aristosoft.api.orderDetail.model.OrderDetail;
+import aristosoft.api.orderDetail.model.*;
 import aristosoft.api.orderDetail.repository.OrderDetailRepository;
 import aristosoft.api.product.model.Product;
 import aristosoft.api.product.service.ProductService;
@@ -36,6 +38,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private final ProductService productService;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public Page<Order> getAll(Pageable pageable) {
@@ -140,31 +145,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Respuesta deleteById(Integer idOrder) {
-        Optional<Order> optional = repository.findById(idOrder);
-        if (!optional.isPresent()) {
-            return Respuesta.builder()
-                    .type(RespuestaType.WARNING)
-                    .message("No existe el registro")
-                    .build();
-        } else {
-            try {
-                repository.deleteById(idOrder);
-                return Respuesta.builder()
-                        .type(RespuestaType.SUCCESS)
-                        .message("Registro eliminado con exito")
-                        .build();
-
-            } catch (Exception e) {
-                return Respuesta.builder()
-                        .type(RespuestaType.WARNING)
-                        .message("No se pudo eliminar el registro")
-                        .build();
-            }
-        }
-    }
-
-    @Override
     @Transactional
     public Respuesta createOrder(Integer idCustomer) {
 
@@ -247,8 +227,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Respuesta addProduct(String orderCode, Integer fkProduct, Integer quantity) {
-        // buscar el orderCode
+    public Respuesta updateProduct(String orderCode, Integer fkProduct, Integer quantity) {
 
         Optional<Order> orderOptional = repository.findByCode(orderCode);
         Order order = orderOptional.get();
@@ -338,6 +317,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Respuesta deleteProduct(String orderCode, Integer fkProduct) {
+
         // buscar el orderCode
 
         Optional<Order> orderOptional = repository.findByCode(orderCode);
@@ -372,7 +352,11 @@ public class OrderServiceImpl implements OrderService {
                 detailRepository.deleteById(detailOptional.get().getIdDetail());
 
                 // Actualizar el monto del total a pagar
-                order.setAmmount(detailRepository.calculateOrderTotal(order.getIdOrder()));
+                Double totalPagar = detailRepository.calculateOrderTotal(order.getIdOrder());
+                if (totalPagar == null) {
+                    totalPagar = 0.0;
+                }
+                order.setAmmount(totalPagar);
                 repository.save(order);
 
                 return Respuesta.builder()
@@ -403,7 +387,7 @@ public class OrderServiceImpl implements OrderService {
 
         Optional<Order> orderOptional = repository.findByCode(orderCode);
 
-        if (orderOptional.get().getStatus() != OrderStatus.CREATED) {
+        if (orderOptional.isPresent() && orderOptional.get().getStatus() != OrderStatus.CREATED) {
             return Respuesta.builder()
                     .message("La orden de compra ya ha sido procesada")
                     .type(RespuestaType.WARNING)
@@ -428,17 +412,95 @@ public class OrderServiceImpl implements OrderService {
         Order order = Order.builder()
                 .ammount(orderOptional.get().getAmmount())
                 .date(orderOptional.get().getDate())
+                .customer(orderOptional.get().getCustomer())
+                .code(orderOptional.get().getCode())
                 .build();
 
         List<OrderDetail> orderDetails = detailRepository
                 .findByOrder(Order.builder().idOrder(orderOptional.get().getIdOrder()).build());
 
+        List<OrderDetailDto> orderDetailDtos = orderDetails.stream()
+                .map(orderDetail -> modelMapper.map(orderDetail, OrderDetailDto.class))
+                .collect(Collectors.toList());
+
         return Respuesta.builder()
                 .extracontent(order)
-                .content(orderDetails)
+                .content(orderDetailDtos)
                 .type(RespuestaType.SUCCESS)
                 .build();
+    }
 
+    @Override
+    public Respuesta addProduct(String orderCode, Integer fkProduct) {
+        Optional<Order> orderOptional = repository.findByCode(orderCode);
+
+        // Verificar si orderOptional contiene un valor
+        if (!orderOptional.isPresent()) {
+            return Respuesta.builder()
+                    .message("No existe la orden de compra!")
+                    .type(RespuestaType.WARNING)
+                    .build();
+        }
+
+        Order order = orderOptional.get(); // Obtener el valor de orderOptional
+
+        if (order.getStatus() != OrderStatus.CREATED) {
+            return Respuesta.builder()
+                    .message("La orden de compra ya ha sido procesada")
+                    .type(RespuestaType.WARNING)
+                    .build();
+        }
+
+        // Verificar el producto
+        Respuesta prodRespuesta = productService.getById(fkProduct);
+        if (prodRespuesta.getType() == RespuestaType.SUCCESS) {
+
+            @SuppressWarnings("unchecked")
+            Optional<Product> product = (Optional<Product>) prodRespuesta.getContent();
+
+            if (product.isPresent()) {
+
+                Optional<OrderDetail> detailOptional = detailRepository.findByOrderAndProduct(order, product.get());
+
+                if (!detailOptional.isPresent()) {
+
+                    OrderDetail detail = OrderDetail.builder()
+                            .order(order)
+                            .product(product.get())
+                            .price(product.get().getPrice())
+                            .quantity(1)
+                            .preference(product.get().getDescription())
+                            .build();
+
+                    detailRepository.save(detail);
+
+                    // Actualizar el monto del total a pagar
+                    order.setAmmount(detailRepository.calculateOrderTotal(order.getIdOrder()));
+                    repository.save(order);
+
+                    return Respuesta.builder()
+                            .message("Producto agregado al carrito")
+                            .type(RespuestaType.SUCCESS)
+                            .build();
+
+                } else {
+
+                    return Respuesta.builder()
+                            .message("El producto ya esta agregado al carrito")
+                            .type(RespuestaType.SUCCESS)
+                            .build();
+
+                }
+            } else {
+                return Respuesta.builder()
+                        .message("No existe el producto solicitado")
+                        .type(RespuestaType.WARNING)
+                        .build();
+            }
+
+        } else {
+            return prodRespuesta;
+        }
     }
 
 }

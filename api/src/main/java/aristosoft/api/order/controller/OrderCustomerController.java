@@ -32,13 +32,32 @@ public class OrderCustomerController {
         }
     }
 
-    @PostMapping("/addProduct")
-    public ResponseEntity<Respuesta> addProduct(
+    @PostMapping("/updateProduct")
+    public ResponseEntity<Respuesta> updateProduct(
             @RequestParam("orderCode") String orderCode,
             @RequestParam("idProduct") String idProduct,
             @RequestParam("quantity") String quantity) {
 
-        Respuesta response = service.addProduct(orderCode, Integer.parseInt(idProduct), Integer.parseInt(quantity));
+        Respuesta response = service.updateProduct(orderCode, Integer.parseInt(idProduct), Integer.parseInt(quantity));
+
+        if (response.getType() == RespuestaType.SUCCESS) {
+            return ResponseEntity.ok(Respuesta.builder()
+                    .message(response.getMessage())
+                    .build());
+        } else {
+            return ResponseEntity.badRequest()
+                    .body(Respuesta.builder().type(response.getType())
+                            .message(response.getMessage())
+                            .build());
+        }
+    }
+
+    @PostMapping("/addProduct")
+    public ResponseEntity<Respuesta> addProduct(
+            @RequestParam("orderCode") String orderCode,
+            @RequestParam("idProduct") String idProduct) {
+
+        Respuesta response = service.addProduct(orderCode, Integer.parseInt(idProduct));
 
         if (response.getType() == RespuestaType.SUCCESS) {
             return ResponseEntity.ok(Respuesta.builder()

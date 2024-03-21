@@ -78,21 +78,4 @@ public class OrderController {
         }
     }
 
-    @DeleteMapping("/{idOrder}")
-    public ResponseEntity<Respuesta> delete(@PathVariable("idOrder") String idOrder) {
-
-        Respuesta response = service.deleteById(Integer.parseInt(idOrder));
-
-        if (response.getType() == RespuestaType.SUCCESS) {
-            return ResponseEntity.ok(Respuesta.builder()
-                    .message(response.getMessage())
-                    .build());
-        } else {
-            return ResponseEntity.badRequest()
-                    .body(Respuesta.builder().type(response.getType())
-                            .message(response.getMessage())
-                            .build());
-        }
-    }
-
 }

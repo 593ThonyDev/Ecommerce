@@ -1,54 +1,106 @@
-// CartIndex.tsx
 import { Dialog } from "@headlessui/react";
 import { useState, useEffect } from "react";
 import { RiShoppingCartFill, RiCloseFill } from "react-icons/ri";
-import ProductCart from "./components/ProductCart";
-import { Product } from "../products/model/Product";
 import { Link } from "react-router-dom";
-import { PATH_PAYMENT, PATH_PRODUCTOS } from "../../../routes/public/Paths";
+import { PATH_PAYMENT_CODE, PATH_PRODUCTOS, PATH_PRODUCTO_ID } from "../../../routes/public/Paths";
 import toast from "react-hot-toast";
-
-
+import { updateProduct, createOrder, deleteProduct, getOrder } from "./model/CartApi";
+import { getCustomerOrEmploye } from "../../../functions/AuthApi";
+import { BiTrash, BiMinus, BiPlus } from "react-icons/bi";
+import { SESSION_ORDER_CUSTOMER } from "../../../functions/ApiConst";
 
 const CartIndex = () => {
     const [shopOpen, setShopOpen] = useState(false);
-    const [cartItems, setCartItems] = useState<Product[]>([]);
+    const [orderCode, setOrderCode] = useState<string | null>(null);
+    const [orderDetails, setOrderDetails] = useState<any>(null);
 
-    useEffect(() => {
-        if (shopOpen) {
-            const storedCartItems = localStorage.getItem('cartItems');
-            if (storedCartItems) {
-                setCartItems(JSON.parse(storedCartItems));
+    const createNewOrder = async () => {
+        try {
+            const customerId = getCustomerOrEmploye();
+            if (customerId) {
+                const response = await createOrder(customerId);
+                if (response && response.content && response.content.code) {
+                    const code: string = response.content.code;
+                    setOrderCode(code);
+                    localStorage.setItem(SESSION_ORDER_CUSTOMER,code);
+                    const responseDetails = await getOrder(customerId, code);
+                    if (responseDetails) {
+                        setOrderDetails(responseDetails);
+                    } else {
+                        toast.error("Error al obtener los detalles de la orden");
+                    }
+                } else {
+                    toast.error("Error al crear la orden");
+                }
             }
+        } catch (error) {
+            console.error('Error al crear la orden:', error);
+            toast.error("Error al crear la orden");
+        }
+    };
+    useEffect(() => {
+
+        if (shopOpen) {
+            createNewOrder();
         }
     }, [shopOpen]);
 
-    useEffect(() => {
-        const storedCartItems = localStorage.getItem('cartItems');
-        if (storedCartItems) {
-            setCartItems(JSON.parse(storedCartItems));
+    const updateCartItemQuantity = async (idProduct: string, newQuantity: number) => {
+        console.log(newQuantity)
+        if (newQuantity <= 0) {
+            return toast.error("No se permiten valores menor a 1");
         }
-    }, []);
-
-    const updateCartItemQuantity = (idProduct: string, newQuantity: number) => {
-        const updatedCartItems = cartItems.map(item => {
-            if (item.idProduct !== undefined && item.idProduct.toString() === idProduct) {
-                return { ...item, quantity: newQuantity, totalPrice: item.price * newQuantity };
+        try {
+            if (orderCode) {
+                const sucess = await updateProduct(orderCode, idProduct, newQuantity.toString());
+                if (sucess) {
+                    const customerId = getCustomerOrEmploye();
+                    if (customerId) {
+                        const responseDetails = await getOrder(customerId, orderCode);
+                        if (responseDetails) {
+                            setOrderDetails(responseDetails);
+                        } else {
+                            toast.error("Error al obtener los detalles de la orden");
+                        }
+                    }
+                    toast.success("Carrito actualizado")
+                }
+                // Después de actualizar la cantidad, actualiza los detalles de la orden
+            } else {
+                toast.error("Código de orden inválido");
             }
-            return item;
-        });
-
-        setCartItems(updatedCartItems);
-        localStorage.setItem('cartItems', JSON.stringify(updatedCartItems)); // Actualizar en localStorage
+        } catch (error) {
+            console.error('Error al actualizar la cantidad del producto:', error);
+            toast.error("Error al actualizar la cantidad del producto");
+        }
     };
 
-    const deleteCartItem = (idProduct: string) => {
-        const updatedCartItems = cartItems.filter(item => item.idProduct !== undefined && item.idProduct.toString() !== idProduct);
-        setCartItems(updatedCartItems);
-        toast.success("Producto eliminado del carrito")
-        localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
-    };
+    const deleteCartItem = async (idProduct: string) => {
+        try {
+            if (orderCode) {
+                const success = await deleteProduct(orderCode, idProduct);
+                if (success) {
 
+                    // Después de eliminar el producto, actualiza los detalles de la orden
+                    const customerId = getCustomerOrEmploye();
+                    if (customerId) {
+                        const responseDetails = await getOrder(customerId, orderCode);
+                        if (responseDetails) {
+                            setOrderDetails(responseDetails);
+                            toast.success("Producto eliminado del carrito")
+                        } else {
+                            toast.error("Error al obtener los detalles de la orden");
+                        }
+                    }
+                }
+            } else {
+                toast.error("Código de orden inválido");
+            }
+        } catch (error) {
+            console.error('Error al eliminar el producto del carrito:', error);
+            toast.error("Error al eliminar el producto del carrito");
+        }
+    };
 
 
     return (
@@ -81,60 +133,88 @@ const CartIndex = () => {
                                     <RiCloseFill className="h-6 w-6" aria-hidden="true" />
                                 </div>
                             </div>
-                            <div className="flex flex-col gap-y-2.5">
-                                {cartItems.length === 0 ? ( // Mostrar mensaje si el carrito está vacío
-                                    null
-                                ) : (
-                                    cartItems.map(item => (
-                                        <ProductCart
-                                            key={item.idProduct !== undefined ? item.idProduct.toString() : ""}
-                                            productName={item.name}
-                                            quantity={item.quantity}
-                                            stock={item.stock}
-                                            totalPrice={item.totalPrice}
-                                            img1={"" + item.img1}
-                                            onDelete={() => deleteCartItem(item.idProduct !== undefined ? item.idProduct.toString() : "")}
-                                            updateQuantity={(newQuantity: number) => updateCartItemQuantity(item.idProduct !== undefined ? item.idProduct.toString() : "", newQuantity)}
-                                            idProduct={item.idProduct !== undefined ? item.idProduct.toString() : ""} onProductClick={() => setShopOpen(false)} />
+                            <div className="flex flex-col gap-y-3.5">
+                                {orderDetails && orderDetails.content && orderDetails.content.length > 0 ? (
+                                    orderDetails && orderDetails.content && orderDetails.content.map((item: any) => (
+                                        <div className="flex w-full" key={item.product.idProduct}>
+                                            <div className={`rounded-3xl`}>
+                                                <div className="relative">
+                                                    <div className="absolute cursor-pointer right-4 p-1 text-lg hover:bg-danger-500/70 bg-danger-300 backdrop-blur-md text-white rounded-full ">
+                                                        <BiTrash onClick={() => deleteCartItem(item.product.idProduct.toString())} />
+                                                    </div>
+                                                </div>
+                                                <img src={"https://" + item.product.img1} alt="Product Image" className="mr-4 rounded-xl max-w-16 max-h-16 w-16 h-16 object-cover bg-primary-100 border border-primary-200" />
+                                            </div>
+                                            <div className="grid w-full">
+                                                <div className="grid">
+                                                    <Link
+                                                        onClick={() => { setShopOpen(false) }}
+                                                        to={PATH_PRODUCTO_ID + item.product.idProduct + "/" + (item.product.name?.replace(/\s+/g, '-') ?? '')}
+                                                        className="font-semibold text-primary-600 hover:text-primary-700 line-clamp-1 uppercase -mt-1">
+                                                        {item.product.name}
+                                                    </Link>
+                                                </div>
+                                                <div className="flex justify-between -mt-1.5">
+
+                                                    <div className="flex justify-start">
+                                                        <span className="text-black-600">Precio:</span>
+                                                        <span className=" font-bold text-black-600 pl-2">USD {item.price }</span>
+                                                    </div>
+                                                    <div className="flex justify-start">
+                                                        <span className="text-black-600">Total:</span>
+                                                        <span className=" font-bold text-black-600 pl-2">USD {item.price * item.quantity}</span>
+                                                    </div>
+                                                </div>
+                                                <div className="flex justify-between -mt-1">
+                                                    <span className="text-black-600">Cantidad:</span>
+                                                    <div className=" ml-auto flex items-center justify-center mt-0.5">
+                                                        <div className="bg-primary-200 text-primary-500 hover:bg-primary-300 hover:text-primary-100 rounded-lg px-2 py-1" onClick={() => updateCartItemQuantity(item.product.idProduct.toString(), item.quantity - 1)}>
+                                                            <BiMinus />
+                                                        </div>
+                                                        <span className="px-2 text-black-600">{item.quantity}</span>
+                                                        <div className="bg-primary-200 text-primary-500 hover:bg-primary-300 hover:text-primary-100 rounded-lg px-2 py-1" onClick={() => updateCartItemQuantity(item.product.idProduct.toString(), item.quantity + 1)}>
+                                                            <BiPlus />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
                                     ))
-                                )
-                                }
+                                ) : (
+                                    <div className="grid justify-center items-center w-full h-fit mt-36">
+                                        <RiShoppingCartFill className="text-primary-200 h-32 w-32 mx-auto" />
+                                        <span className="text-black-300 font-bold text-xl mt-6">Tu carrito esta vacio</span>
+                                    </div>
+                                )}
                             </div>
                         </div>
-                        {cartItems.length === 0 ? ( // Mostrar mensaje si el carrito está vacío
-                            <div className="sticky top-0 lg:bg-white bg-primary-50 pb-4 z-50">
-                                <div className="flex w-full justify-center text-9xl text-black-200/60">
-                                    <RiShoppingCartFill className="" />
+                        <div className="sticky bottom-0 lg:bg-white bg-primary-50 pb-4 z-50">
+                            {orderDetails && orderDetails.extracontent && orderDetails.extracontent.ammount !== 0 ? (
+                                <div>
+                                    <div className="flex justify-between pt-3">
+                                        <span className="text-black-500 font-bold">Total a pagar:</span>
+                                        <span className="text-black-500 font-bold">
+                                            {orderDetails.extracontent && orderDetails.extracontent.ammount ? `$${orderDetails.extracontent.ammount.toFixed(2)}` : "$ 0.00"}
+                                        </span>
+                                    </div>
+                                    <div className="flex pb-3">
+                                        <small className="text-black-500 text-sm">Las tazas están calculadas en la orden de compra.</small>
+                                    </div>
+                                    <Link
+                                        onClick={() => setShopOpen(false)}
+                                        to={PATH_PAYMENT_CODE + orderCode} className="flex justify-center w-full bg-primary-300 hover:bg-primary-400 text-white font-bold rounded-2xl py-3 uppercase text-center">
+                                        Ir al checkout
+                                    </Link>
                                 </div>
-                                <div className="flex pb-10 pt-3 w-full justify-center">
-                                    <span className="text-black-500 text-lg text-center">
-                                        Tu carrito de compras esta vacio
-                                    </span>
-                                </div>
+                            ) : (
                                 <Link
                                     onClick={() => setShopOpen(false)}
-                                    to={PATH_PRODUCTOS} className="flex justify-center w-full mt-36 bg-primary-300 hover:bg-primary-400 text-white font-bold rounded-2xl py-3 uppercase text-center">
+                                    to={PATH_PRODUCTOS} className="flex justify-center w-full bg-primary-300 hover:bg-primary-400 text-white font-bold rounded-2xl py-3 uppercase text-center">
                                     Ver productos
                                 </Link>
-                            </div>
-                        ) : (
-                            <div className="sticky bottom-0 lg:bg-white bg-primary-50 pb-4 z-50">
-                                <div className="flex justify-between pt-3">
-                                    <span className="text-black-500 font-bold">Total a pagar:</span>
-                                    <span className="text-black-500 font-bold">${cartItems.reduce((total, item) => total + item.totalPrice, 0).toFixed(2)}</span>
-                                </div>
-                                <div className="flex pb-3">
-                                    <small className="text-black-500 text-sm">Las tazas están calculadas en la orden de compra.</small>
-                                </div>
-                                <Link
-                                    onClick={() => setShopOpen(false)}
-                                    to={PATH_PAYMENT} className="flex justify-center w-full bg-primary-300 hover:bg-primary-400 text-white font-bold rounded-2xl py-3 uppercase text-center">
-                                    Ir al checkout
-                                </Link>
-                            </div>
-                        )
-                        }
-
+                            )}
+                        </div>
                     </div>
                 </Dialog.Panel>
             </Dialog>

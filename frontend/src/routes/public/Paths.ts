@@ -11,7 +11,8 @@ export const PATH_PRODUCTOS_CATEGORY = "/producto/categoria/:name";
 export const PATH_PRODUCTOS_CATEGORY_NAME = "/producto/categoria/";
 export const PATH_PRODUCTO_ID = "/producto/";
 
-export const PATH_PAYMENT = "/checkout";
+export const PATH_PAYMENT = "/checkout/:orderCode";
+export const PATH_PAYMENT_CODE = "/checkout/";
 
 export const PATH_BLOG = "/blog";
 export const PATH_BLOG_ARTICULO = PATH_BLOG + "/articulo/:id/:descripcion";

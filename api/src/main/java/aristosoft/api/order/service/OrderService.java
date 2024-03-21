@@ -15,14 +15,14 @@ public interface OrderService {
 
     Respuesta createOrder(Integer idCustomer);
 
-    Respuesta addProduct(String orderCode, Integer fkProduct, Integer quantity);
+    Respuesta updateProduct(String orderCode, Integer fkProduct, Integer quantity);
+
+    Respuesta addProduct(String orderCode, Integer fkProduct);
 
     Respuesta deleteProduct(String orderCode, Integer fkProduct);
 
     Respuesta getOrderByCode(String orderCode, Integer fkCustomer);
 
     Respuesta updateStatus(Integer idCustomer, String status);
-
-    Respuesta deleteById(Integer idOrder);
 
 }

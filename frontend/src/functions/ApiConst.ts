@@ -5,5 +5,6 @@ export const SESSION_ID_USER = "ss_idus";
 export const SESSION_PHOTO_PROFILE = "ss_pt";
 export const SESSION_FULL_NAME = "ss_flnm";
 export const SESSION_USER_NAME = "ss_usnm";
+export const SESSION_ORDER_CUSTOMER = "sorcd_cd";
 export const APP_NAME = "Shop.ME"
 export const PAYPAL_ID = "AZMxeLOmT7MTDyYdCrEjZlAHNTQ4mD_tWdRACioLfOLkCE_PGz29iYWeBdU0vDxgwOuo0-qRolj_tDpX"
