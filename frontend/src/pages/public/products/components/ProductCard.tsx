@@ -27,7 +27,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                 className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-2xl"
             >
                 <img className="object-cover w-full bg-primary-50" src={"https://" + product.img1} alt="product image" />
-                <span className="absolute top-0 right-0 m-2 rounded-full bg-success-200 backdrop-blur-md px-2 text-center text-xl font-medium text-white">${product.price}</span>
+                <span className="absolute top-0 right-0 m-2 rounded-full bg-success-200 backdrop-blur-md px-2 text-center text-xl font-medium text-white">${product.price.toFixed(2)}</span>
             </Link>
             <div className="mt-4 px-5 pb-5">
                 <Link

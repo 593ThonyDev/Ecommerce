@@ -3,7 +3,7 @@ import { updateProduct } from "./model/ProductApi";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Product } from "./model/Product";
 import toast from "react-hot-toast";
-import { getFullName } from "../../../../functions/AuthApi";
+import { getFullName, setToken } from "../../../../functions/AuthApi";
 import DropDownSearchData from "./DropDownSearchData";
 import { PATH_PRODUCTOS_ADMIN } from "../../../../routes/private/admin/PrivatePaths";
 import InputField from "../../../../components/fields/InputField";
@@ -12,7 +12,7 @@ import imgProduct from "../../../../assets/UploadPhoto.png";
 import axios from 'axios';
 import { API_URL } from '../../../../functions/ApiConst';
 
-const ProductNew = () => {
+const ProductEdit = () => {
     const { id, name } = useParams<{ id: string, name: string }>();
     const [selectedCategory, setSelectedCategory] = useState<string>('');
 
@@ -40,6 +40,7 @@ const ProductNew = () => {
 
     const fetchData = async () => {
         try {
+            setToken();
             const response = await axios.get(`${API_URL}product/${id}`);
             const data = response.data.content;
             setFormData(data);
@@ -201,4 +202,4 @@ const ProductNew = () => {
     );
 };
 
-export default ProductNew;
+export default ProductEdit;

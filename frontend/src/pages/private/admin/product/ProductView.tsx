@@ -11,6 +11,7 @@ import { useState, useEffect } from "react";
 import { Product } from "./model/Product";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { setToken } from "../../../../functions/AuthApi";
 
 const ProductView = () => {
 
@@ -39,6 +40,7 @@ const ProductView = () => {
 
   const fetchData = async () => {
     try {
+      setToken();
       const response = await axios.get(`${API_URL}product/${id}`);
       const data = response.data.content;
       setTimeout(() => {
@@ -230,7 +232,7 @@ const ProductView = () => {
                           </span>
                           <div className="flex justify-between w-full items-center">
                             <span className="text-black-700 text-lg font-semibold">Precio:</span>
-                            <span className="text-black-500 text-lg">{formData.price} USD</span>
+                            <span className="text-black-500 text-lg">{parseFloat(formData.price.toString()).toFixed(2)} USD</span>
                           </div>
                         </li>
                         <li className="flex mb-2 text-base text-black-800">

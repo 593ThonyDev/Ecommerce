@@ -102,7 +102,7 @@ const ProductList = () => {
                                         </h5>
                                         <h5 className="flex justify-between text-md tracking-tight text-center text-primary-500">
                                             <span className="text-black-600 font-semibold">Valor:</span>
-                                            <span className="text-success-500 font-semibold clamp-1">USD {product.price}</span>
+                                            <span className="text-success-500 font-semibold clamp-1">USD {parseFloat(product.price.toString()).toFixed(2)}</span>
                                         </h5>
                                     </div>
                                 </div>

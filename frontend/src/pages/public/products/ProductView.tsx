@@ -78,16 +78,11 @@ const ProductView = () => {
         } else {
             const orderCode = localStorage.getItem(SESSION_ORDER_CUSTOMER);
             if (orderCode && idProduct) {
-                const response = await addProduct(orderCode, idProduct);
-                if (response) {
-                    toast.success("Producto agregado con exito!")
-                } else {
-                    toast.error("Hubo un error al agregar a tu carrito")
-                }
+                await addProduct(orderCode, idProduct);
             }
         }
     };
-    
+
 
     return (
         <div>
@@ -146,7 +141,7 @@ const ProductView = () => {
                                             </div>
                                             <div className="my-7 flex justify-between">
                                                 <p className="inline-block lg:text-4xl text-3xl font-bold text-black-700 my-auto">
-                                                    <span>${formData.price} DOLARES</span>
+                                                    <span>${formData.price.toFixed(2)} DOLARES</span>
                                                 </p>
                                             </div>
                                             <div className="flex w-full items-center justify-between">

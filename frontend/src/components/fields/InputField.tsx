@@ -41,7 +41,7 @@ const InputField: FC<InputFieldProps> = ({
         </label>
       )}
       <input
-        inputMode={`${mode || "text"}`}
+        inputMode={`${mode || "text" || null}`}
         autoComplete="off"
         value={value}
         disabled={disabled}

@@ -139,18 +139,18 @@ const CartIndex = () => {
                                         <div className="flex w-full" key={item.product.idProduct}>
                                             <div className={`rounded-3xl`}>
                                                 <div className="relative">
-                                                    <div className="absolute cursor-pointer right-4 p-1 text-lg hover:bg-danger-500/70 bg-danger-300 backdrop-blur-md text-white rounded-full ">
+                                                    <div className="absolute cursor-pointer p-1 text-lg hover:bg-danger-500/70 bg-danger-300 backdrop-blur-md text-white rounded-full ">
                                                         <BiTrash onClick={() => deleteCartItem(item.product.idProduct.toString())} />
                                                     </div>
                                                 </div>
                                                 <img src={"https://" + item.product.img1} alt="Product Image" className="mr-4 rounded-xl max-w-16 max-h-16 w-16 h-16 object-cover bg-primary-100 border border-primary-200" />
                                             </div>
-                                            <div className="grid w-full">
+                                            <div className="grid w-full -ml-2.5">
                                                 <div className="grid">
                                                     <Link
                                                         onClick={() => { setShopOpen(false) }}
                                                         to={PATH_PRODUCTO_ID + item.product.idProduct + "/" + (item.product.name?.replace(/\s+/g, '-') ?? '')}
-                                                        className="font-semibold text-primary-600 hover:text-primary-700 line-clamp-1 uppercase -mt-1">
+                                                        className="font-semibold text-primary-500 hover:text-primary-600 line-clamp-1 uppercase -mt-1">
                                                         {item.product.name}
                                                     </Link>
                                                 </div>
@@ -158,11 +158,11 @@ const CartIndex = () => {
 
                                                     <div className="flex justify-start">
                                                         <span className="text-black-600">Precio:</span>
-                                                        <span className=" font-bold text-black-600 pl-2">USD {item.price }</span>
+                                                        <span className=" font-semibold text-black-600 pl-1">${item.price.toFixed(2) }</span>
                                                     </div>
                                                     <div className="flex justify-start">
                                                         <span className="text-black-600">Total:</span>
-                                                        <span className=" font-bold text-black-600 pl-2">USD {item.price * item.quantity}</span>
+                                                        <span className=" font-semibold text-black-600 pl-1">${(item.price * item.quantity).toFixed(2)}</span>
                                                     </div>
                                                 </div>
                                                 <div className="flex justify-between -mt-1">
