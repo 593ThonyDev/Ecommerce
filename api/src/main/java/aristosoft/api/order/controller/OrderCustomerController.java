@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import aristosoft.api.order.service.OrderService;
 import aristosoft.api.response.Respuesta;
 import aristosoft.api.response.RespuestaType;
+import aristosoft.api.status.OrderStatus;
 
 @RestController
 @RequestMapping("/api/v1/order")
@@ -109,7 +110,7 @@ public class OrderCustomerController {
                             .build());
         }
     }
-    
+
     @GetMapping("/check/{idCustomer}/{orderCode}")
     public ResponseEntity<Respuesta> checkOrder(
             @PathVariable("orderCode") String orderCode,
@@ -140,6 +141,24 @@ public class OrderCustomerController {
         if (response.getType() == RespuestaType.SUCCESS) {
             return ResponseEntity.ok(Respuesta.builder()
                     .message(response.getMessage())
+                    .extracontent(response.getExtracontent())
+                    .build());
+        } else {
+            return ResponseEntity.badRequest()
+                    .body(Respuesta.builder().type(response.getType())
+                            .message(response.getMessage())
+                            .build());
+        }
+    }
+
+    @GetMapping("/list/{idCustomer}")
+    public ResponseEntity<Respuesta> getOrdersOnlineCustomers(@PathVariable("idCustomer") String idCustomer) {
+
+        Respuesta response = service.getOrderByCustomerAndStatus(Integer.parseInt(idCustomer), OrderStatus.PAID);
+
+        if (response.getType() == RespuestaType.SUCCESS) {
+            return ResponseEntity.ok(Respuesta.builder()
+                    .content(response.getContent())
                     .extracontent(response.getExtracontent())
                     .build());
         } else {

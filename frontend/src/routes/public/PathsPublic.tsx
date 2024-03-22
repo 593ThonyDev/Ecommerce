@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import { PATH_BLOG, PATH_CHECK_ORDER, PATH_HOME, PATH_LOGIN, PATH_PAYMENT, PATH_PRODUCTO, PATH_PRODUCTOS, PATH_PRODUCTOS_CATEGORY, PATH_REGISTER } from "./Paths";
+import { PATH_BLOG, PATH_CHECK_ORDER, PATH_HOME, PATH_LOGIN, PATH_MY_ORDERS, PATH_PAYMENT, PATH_PRODUCTO, PATH_PRODUCTOS, PATH_PRODUCTOS_CATEGORY, PATH_REGISTER } from "./Paths";
 
 export const PATHS_PUBLIC = {
     layout: lazy(async () => await import("../../layouts/public/PublicLayout")),
@@ -28,6 +28,10 @@ export const PATHS_PUBLIC = {
         {
             path: PATH_CHECK_ORDER,
             element: lazy(async () => await import("../../pages/public/payment/CheckOrder")),
+        },       
+        {
+            path: PATH_MY_ORDERS,
+            element: lazy(async () => await import("../../pages/public/orders/MyOrdersIndex")),
         },       
         {
             path: PATH_BLOG,

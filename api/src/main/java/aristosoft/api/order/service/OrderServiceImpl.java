@@ -569,6 +569,7 @@ public class OrderServiceImpl implements OrderService {
         if (order.getCustomer().getIdCustomer() == idCustomer && order.getStatus() == OrderStatus.CREATED
                 || order.getStatus() == OrderStatus.PAYMENT_FAILTURE) {
 
+            order.setDate(ZonedDateTime.now(ZoneId.of("America/Guayaquil")));
             order.setStatus(OrderStatus.PAID);
             repository.save(order);
 
@@ -586,6 +587,43 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    @Override
+    public Respuesta getOrderByCustomerAndStatus(Integer customer, OrderStatus status) {
+        try {
 
+            if (status == OrderStatus.DELIVERED || status == OrderStatus.DISPATCHING || status == OrderStatus.PAID) {
+
+                List<Order> orderList = repository.getOrderfindByStatusAndCustomer(status,
+                        CustomerDto.builder().idCustomer(customer).build());
+
+                List<OrderDto> orderDtoList = orderList.stream()
+                        .map(orderDetail -> modelMapper.map(orderDetail, OrderDto.class))
+                        .collect(Collectors.toList());
+
+                if (orderDtoList.isEmpty()) {
+                    return Respuesta.builder()
+                            .message("No existen registros")
+                            .type(RespuestaType.WARNING)
+                            .build();
+
+                } else {
+                    return Respuesta.builder().content(orderDtoList)
+                            .type(RespuestaType.SUCCESS)
+                            .build();
+                }
+            } else {
+                return Respuesta.builder()
+                        .message("No existen registros")
+                        .type(RespuestaType.WARNING)
+                        .build();
+            }
+
+        } catch (Exception e) {
+            return Respuesta.builder()
+                    .message("Hubo un error al obtener los datos")
+                    .type(RespuestaType.WARNING)
+                    .build();
+        }
+    }
 
 }

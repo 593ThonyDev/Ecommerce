@@ -4,6 +4,7 @@ import org.springframework.data.domain.*;
 
 import aristosoft.api.order.model.*;
 import aristosoft.api.response.Respuesta;
+import aristosoft.api.status.OrderStatus;
 
 public interface OrderService {
 
@@ -22,6 +23,8 @@ public interface OrderService {
     Respuesta deleteProduct(String orderCode, Integer fkProduct);
 
     Respuesta getOrderByCode(String orderCode, Integer fkCustomer);
+
+    Respuesta getOrderByCustomerAndStatus(Integer customer, OrderStatus status);
 
     Respuesta getOrderByCodeSuccess(String orderCode, Integer fkCustomer);
 

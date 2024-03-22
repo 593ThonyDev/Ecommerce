@@ -1,5 +1,6 @@
 package aristosoft.api.order.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,6 +13,8 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     Optional<Order> findByCode(String code);
 
     Optional<Order> findByStatusAndCustomer(OrderStatus orderStatus, CustomerDto customerDto);
+    
+    List<Order> getOrderfindByStatusAndCustomer(OrderStatus orderStatus, CustomerDto customerDto);
 
     Integer countByStatusAndCustomer(OrderStatus status, CustomerDto customerDto);
 

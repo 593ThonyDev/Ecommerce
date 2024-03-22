@@ -1,7 +1,8 @@
 import { getFullName, getPhotoProfile, getUserName, logOutNavigate } from '../../functions/AuthApi';
 import { getTwoWords } from '../../functions/Funtions';
 import { useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { PATH_MY_ORDERS } from '../../routes/public/Paths';
 
 const DropDownCustomer = () => {
     const dropdownRef = useRef<HTMLDivElement>(null);
@@ -72,11 +73,12 @@ const DropDownCustomer = () => {
                                 Editar perfil
                             </div>
                             <div className="grid w-full p-3 gap-y-1 mt-1">
-                                <div
+                                <Link to={PATH_MY_ORDERS}
+                                onClick={toggleDropdown}
                                     className='flex bg-white hover:bg-primary-50 w-full py-3 justify-center rounded-t-2xl rounded-b-md cursor-pointer'
                                 >
                                     Hitorial de compras
-                                </div>
+                                </Link>
                                 <div
                                     onClick={handleLogOut}
                                     className='flex bg-white hover:bg-primary-50 w-full py-3 justify-center rounded-b-2xl rounded-t-md cursor-pointer'
