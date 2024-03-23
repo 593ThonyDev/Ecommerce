@@ -92,7 +92,7 @@ export const PATHS_ADMIN: RouteProps = {
         // ======== Order ========
         {
             path: PATH_ORDERS_ADMIN,
-            element: lazy(async () => await import("../../../pages/private/admin/order/Order")),
+            element: lazy(async () => await import("../../../pages/private/admin/order/OrderIndex")),
         },
         // ======== User ========
         {

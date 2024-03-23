@@ -44,7 +44,7 @@ export const getAllProductsCategory = async (currentPage: number, setIsLoading: 
         const response: AxiosResponse<{ content: Product[], totalElements: number }> = await axios.get(API_URL + 'product/public/category/' + name, {
             params: {
                 page: currentPage,
-                size: 100
+                size: 12
             }
         });
         setIsLoading(false);

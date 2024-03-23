@@ -50,7 +50,7 @@ const MyOrdersIndex = () => {
                     </div>
                 </div>
                 <div className="flex">
-                    <div className="grid grid-cols-1 gap-2 w-full lg:px-16 py-3 pb-8 px-3">
+                    <div className="grid grid-cols-1 gap-2 w-full lg:px-16 pt-0 pb-8 px-3">
                         {orders.map((orden) => (
                             <CardOrder key={orden.code}
                                 code={orden.code}

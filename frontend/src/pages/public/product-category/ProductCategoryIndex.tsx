@@ -71,7 +71,8 @@ const ProductCategoryIndex = () => {
                         {
                             data.map(category => (
                                 <Link to={PATH_PRODUCTOS_CATEGORY_NAME + category.name?.replace(/\s+/g, '-')}
-                                    className="flex h-fit items-start justify-between cursor-pointer bg-white hover:rounded-xl rounded-xl" key={category.idCategory}>
+                                    className="flex h-fit items-start justify-between cursor-pointer bg-white hover:rounded-xl rounded-xl" key={category.name}
+                                    >
                                     <div className="flex items-center gap-3 p-1 w-full rounded-xl hover:bg-black-100/50">
                                         <div className="relative h-8 max-h-8 w-8 items-start justify-start rounded-full">
                                             <img src={"https://" + category.img} className="h-8 max-h-8 max-w-8 w-16 rounded-lg" />

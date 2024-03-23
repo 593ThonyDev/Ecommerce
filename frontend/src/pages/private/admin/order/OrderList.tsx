@@ -1,41 +1,43 @@
 import { FaAngleLeft, FaAngleRight } from "react-icons/fa";
-import LoaderList from "../components/LoaderList";
 import { useEffect, useState } from "react";
-import { Product } from "../model/Product";
 import { motion } from "framer-motion";
-import { getAllProductsCategory } from "../model/ProductApi";
-import ProductCard from "../components/ProductCard";
-import { useParams } from "react-router-dom";
-import { PATH_PRODUCTOS } from "../../../../routes/public/Paths";
-import NotFoundAdmin from "../../../error/NotFoundAdmin";
+import { getAllOrders } from "./model/OrderApi";
+import { OrderModel } from "./model/Order";
+import LoaderList from "./components/LoaderList";
+import CardOrder from "./components/CardOrder";
 
-const ProductListCategory = () => {
+const OrderList = () => {
 
-    const { name } = useParams();
-    const [data, setData] = useState<Product[]>([]);
+    const [data, setData] = useState<OrderModel[]>([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [totalItems, setTotalItems] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [isError, setIsError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState("");
 
-    const fetchDataAndSetState = async () => {
-        try {
-            setIsLoading(true);
-            const response = await getAllProductsCategory(currentPage, setIsLoading, name || ''); // Utilizando el operador de acceso condicional opcional (?.) o proporcionando un valor predeterminado ''
-            setData(response.content);
-            setTotalItems(response.totalElements);
-        } catch (error) {
-            console.error("Error fetching data:", error);
-            setIsError(true);
-            setIsLoading(false);
-        }
-    };
 
     useEffect(() => {
+        const fetchDataAndSetState = async () => {
+            try {
+                setIsLoading(true);
+                const response = await getAllOrders(currentPage, setIsLoading);
+                setData(response.content);
+                setTotalItems(response.totalElements);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                setIsError(true);
+                setIsLoading(false);
+                if (error instanceof Error) {
+                    setErrorMessage(error.message.toString().toUpperCase());
+                } else {
+                    setErrorMessage('Error en la solicitud. Por favor, inténtalo de nuevo más tarde');
+                }
+            }
+        };
         fetchDataAndSetState();
-    }, [currentPage, name]);
-
+    }, [currentPage]);
     const totalPages = Math.ceil(totalItems / 12);
+
     const visiblePages = 12;
     const firstVisiblePage = Math.max(0, currentPage - Math.floor(visiblePages / 2));
     const lastVisiblePage = Math.min(totalPages - 1, firstVisiblePage + visiblePages - 1);
@@ -60,7 +62,7 @@ const ProductListCategory = () => {
                         initial={{ opacity: 0.5 }}
                         animate={{ opacity: 0.5 }}
                         transition={{ duration: 0.5 }}
-                        className="grid  w-full justify-items-center lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-4 pb-4">
+                        className="grid w-full justify-items-center gap-x-4 gap-y-3 pb-4">
                         {
                             [...Array(12)].map((_, index) => (
                                 <LoaderList key={index} />
@@ -69,15 +71,29 @@ const ProductListCategory = () => {
                     </motion.div>
                 </div>
             ) : (
-                <div>
-                    < div className="grid lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-4 pb-4 " >
-                        {
-                            data.map(product => (
-                                <ProductCard key={product.idProduct} product={product}
-                                />
-                            ))
-                        }
-                    </div >
+                < div className="grid gap-x-4 gap-y-3 pb-4 w-full" >
+                    {
+                        data.map(order => (
+                            <CardOrder idOrder={order.idOrder} customer={{
+                                idCustomer: order.customer.idCustomer,
+                                fullName: order.customer.fullName,
+                                email: order.customer.email,
+                                address: order.customer.address,
+                                country: order.customer.country,
+                                zip: order.customer.zip,
+                                photo: order.customer.photo
+                            }
+                            }
+                                code={order.code}
+                                ammount={order.ammount}
+                                address={order.address}
+                                email={order.email}
+                                status={order.status}
+                                date={order.date}
+                            />
+                        ))
+                    }
+
                     {!isError && (  // Si no hay errores, muestra información de paginación
                         <div className="bg-claro mx-auto w-full my-8">
                             <div className="grid grid-cols-1  mx-auto w-full ">
@@ -95,7 +111,7 @@ const ProductListCategory = () => {
                                         <span className='font-bold p-1'>
                                             {totalItems}
                                         </span>
-                                        productos
+                                        registros
                                     </span>
                                 </div>
                                 <div className="flex justify-center pt-3">
@@ -130,10 +146,15 @@ const ProductListCategory = () => {
                         </div>
                     )}
                     {isError && (  // Si hay un error, muestra un mensaje de error
-                        <NotFoundAdmin error='404'
-                            message={"No se encontraron registros con la categoria: " + name?.toUpperCase()}
-                            link={PATH_PRODUCTOS}
-                        />
+                        <div className="flex flex-col max-h-max lg:py-36  py-16 lg:px-16 justify-center  bg-white rounded-2xl">
+                            <div className='text-9xl text-center'>
+                                🔊
+                            </div>
+                            <br />
+                            <div className=' text-3xl text-center lg:px-16 text-red-500'>
+                                {errorMessage}
+                            </div>
+                        </div>
                     )}
                 </div >
             )}
@@ -141,4 +162,4 @@ const ProductListCategory = () => {
     )
 }
 
-export default ProductListCategory;
+export default OrderList;

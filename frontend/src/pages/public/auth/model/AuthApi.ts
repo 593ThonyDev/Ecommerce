@@ -95,7 +95,6 @@ export const AuthByUsernamePassword = async (user: LoginResponse, navigate: Navi
     } catch (error: any) {
         const errorMessage = error.response?.data?.message || 'Error al realizar la operación';
         toast.error(errorMessage);
-        console.log(error)
         return false;
     }
 };

@@ -74,7 +74,7 @@ const ProductView = () => {
 
     const handleAddToCart = async (idProduct: string) => {
         if (!getToken()) {
-            toast.error("¡Debes iniciar sesion para agregar a tu orden de compra!");
+            toast.error("¡Inicia sesion para agregar a tu carrito!");
         } else {
             const orderCode = localStorage.getItem(SESSION_ORDER_CUSTOMER);
             if (orderCode && idProduct) {

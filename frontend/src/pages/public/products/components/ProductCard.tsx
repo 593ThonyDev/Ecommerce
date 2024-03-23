@@ -10,7 +10,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
 
     const handleAddToCart = async (idProduct: string) => {
         if (!getToken()) {
-            toast.error("¡Debes iniciar sesion para agregar a tu orden de compra!");
+            toast.error("¡Inicia sesion para agregar a tu carrito!");
         } else {
             const orderCode = localStorage.getItem(SESSION_ORDER_CUSTOMER);
             if (orderCode && idProduct) {
@@ -21,7 +21,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
     };
 
     return (
-        <div className="relative flex w-full max-w-xs flex-col overflow-hidden rounded-2xl bg-white border border-primary-100" key={parseInt(product.idProduct?.toString() ?? '0')}>
+        <div className="relative flex mx-auto w-full max-w-xs flex-col overflow-hidden rounded-2xl bg-white border border-primary-100" key={parseInt(product.idProduct?.toString() ?? '0')}>
             <Link
                 to={PATH_PRODUCTO_ID + product.idProduct + "/" + (product.name?.replace(/\s+/g, '-') ?? '')}
                 className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-2xl"

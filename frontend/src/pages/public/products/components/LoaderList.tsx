@@ -8,21 +8,12 @@ const LoaderList = () => {
                 </span>
             </div>
             <div className="mt-1 px-5 pb-5">
-                <div>
-                    <div className="text-xl tracking-tight bg-black-200 rounded-full mt-2 py-2 w-32 font-semibold line-clamp-1" />
+                <div className="flex justify-center py-3">
+                    <div className="text-xl tracking-tight bg-black-200 rounded-full mt-1.5 py-2 w-32 font-semibold line-clamp-1 mx-a" />
                 </div>
-                <h5 className="flex justify-between text-md tracking-tight text-center text-primary-500 pt-2">
-                    <div className="text-black-600 font-semibold">Categoria:</div>
-                    <div className="bg-black-200 h-2.5 w-16 rounded-full my-auto" />
-                </h5>
-                <h5 className="flex justify-between text-md tracking-tight text-center text-primary-500">
-                    <div className="text-black-600 font-semibold">Stock:</div>
-                    <div className="bg-black-200 h-2.5 w-20 rounded-full my-auto" />
-                </h5>
-                <h5 className="flex justify-between text-md tracking-tight text-center text-primary-500">
-                    <div className="text-black-600 font-semibold">Valor:</div>
-                    <div className="bg-black-200 h-2.5 w-16 rounded-full my-auto" />
-                </h5>
+                <div className="flex justify-center w-full text-md tracking-tight text-center text-primary-500">
+                    <div className="bg-black-200 py-5 w-full rounded-xl my-auto" />
+                </div>
             </div>
         </div>
     )

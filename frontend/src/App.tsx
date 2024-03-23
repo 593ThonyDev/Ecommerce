@@ -10,7 +10,7 @@ import { useToasterPosition } from "./components/toast/toast";
 
 
 function App() {
-  
+
   const [isLoading, setIsLoading] = useState(true);
   const toasterPosition = useToasterPosition();
 
@@ -22,20 +22,23 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Transition
-        show={isLoading}
-        enter="transition-opacity duration-500"
-        enterFrom="opacity-0"
-        enterTo="opacity-100"
-        leave="transition-opacity duration-500"
-        leaveFrom="opacity-100"
-        leaveTo="opacity-0"
-      >
-        <Loader />
-      </Transition>
-
       <Toaster position={toasterPosition} />
-      <Routes>{renderRoutes(routes)}</Routes>
+      {isLoading && (
+        <Transition
+          show={isLoading}
+          enter="transition-opacity duration-500"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="transition-opacity duration-500"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+        >
+          <Loader />
+        </Transition>
+      )}
+      {!isLoading && (
+        <Routes>{renderRoutes(routes)}</Routes>
+      )}
     </BrowserRouter>
   )
 }

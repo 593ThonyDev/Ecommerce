@@ -40,8 +40,8 @@ export const PATH_CLIENTE_ADMIN_EDIT = PATH_ADMIN_HOME + "/customer/edit/:id/:na
 export const PATH_CLIENTE_ADMIN_EDIT_ID = PATH_ADMIN_HOME + "/customer/edit/"
 
 export const PATH_ORDERS_ADMIN = PATH_ADMIN_HOME + "/orders"
-export const PATH_ORDER_ADMIN = PATH_ADMIN_HOME + "/order/:id/:code"
-export const PATH_ORDER_ADMIN_ID = PATH_ADMIN_HOME + "/order/"
+export const PATH_ORDER_ADMIN = PATH_ADMIN_HOME + "/order/:code"
+export const PATH_ORDER_ADMIN_CODE = PATH_ADMIN_HOME + "/order/"
 export const PATH_ORDER_ADMIN_EDIT = PATH_ADMIN_HOME + "/order/edit/:code"
 export const PATH_ORDER_ADMIN_EDIT_ID = PATH_ADMIN_HOME + "/order/edit/"
 

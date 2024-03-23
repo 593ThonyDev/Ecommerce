@@ -1,8 +1,11 @@
 package aristosoft.api.order.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
+
+import aristosoft.api.order.model.Order;
 import aristosoft.api.order.service.OrderService;
 import aristosoft.api.response.*;
 
@@ -13,17 +16,17 @@ public class OrderController {
     @Autowired
     private OrderService service;
 
-    // @GetMapping("/list")
-    // public ResponseEntity<Page<Order>> getAll(Pageable pageable) {
-    //     Page<Order> pagina = service.getAll(pageable);
-    //     if (pagina != null && pagina.isEmpty()) {
-    //         return ResponseEntity.noContent().build();
-    //     } else if (pagina != null) {
-    //         return ResponseEntity.ok(pagina);
-    //     } else {
-    //         return ResponseEntity.noContent().build();
-    //     }
-    // }
+    @GetMapping("/allList")
+    public ResponseEntity<Page<Order>> getAll(Pageable pageable) {
+        Page<Order> pagina = service.getAll(pageable);
+        if (pagina != null && pagina.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else if (pagina != null) {
+            return ResponseEntity.ok(pagina);
+        } else {
+            return ResponseEntity.noContent().build();
+        }
+    }
 
     @GetMapping("/{idOrder}")
     public ResponseEntity<Respuesta> getById(@PathVariable("idOrder") String idOrder) {
