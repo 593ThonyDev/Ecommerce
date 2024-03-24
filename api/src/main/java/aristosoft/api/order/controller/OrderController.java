@@ -1,5 +1,7 @@
 package aristosoft.api.order.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
@@ -44,12 +46,17 @@ public class OrderController {
         }
     }
 
-    @GetMapping("/code/{code}")
-    public ResponseEntity<Respuesta> getByCode(@PathVariable("code") String code) {
-        Respuesta response = service.getByCode(code);
+    @GetMapping("/check/{idCustomer}/{orderCode}")
+    public ResponseEntity<Respuesta> checkOrderAll(
+            @PathVariable("orderCode") String orderCode,
+            @PathVariable("idCustomer") String idCustomer) {
+
+        Respuesta response = service.getOrderByCodeAdmin(orderCode, Integer.parseInt(idCustomer));
+
         if (response.getType() == RespuestaType.SUCCESS) {
             return ResponseEntity.ok(Respuesta.builder()
                     .content(response.getContent())
+                    .extracontent(response.getExtracontent())
                     .build());
         } else {
             return ResponseEntity.badRequest()
@@ -58,7 +65,6 @@ public class OrderController {
                             .build());
         }
     }
-
     @PatchMapping("/updateStatus")
     public ResponseEntity<Respuesta> updateStatus(
             @RequestParam("idOrden") String idOrder,
@@ -75,6 +81,18 @@ public class OrderController {
                     .body(Respuesta.builder().type(response.getType())
                             .message(response.getMessage())
                             .build());
+        }
+    }
+
+    @GetMapping("/search/{searchTerm}")
+    public ResponseEntity<List<Order>> searchOrder(@PathVariable("searchTerm") String searchTerm) {
+        List<Order> lista = service.getOrderByCodeAndCustomer(searchTerm);
+        if (lista != null && lista.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        } else if (lista != null) {
+            return ResponseEntity.ok(lista);
+        } else {
+            return ResponseEntity.noContent().build();
         }
     }
 

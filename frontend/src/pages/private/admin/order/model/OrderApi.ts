@@ -16,8 +16,28 @@ export const getAllOrders = async (currentPage: number, setIsLoading: (value: bo
         });
         setIsLoading(false);
         return response.data;
-    } catch (error:any) {
+    } catch (error: any) {
         setIsLoading(false);
         return error;
+    }
+};
+
+export const getOrderByIdCode = async (id: string, code: string): Promise<OrderModel> => {
+    try {
+        setToken();
+        const response = await axios.get(`${API_URL}order/check/${id}/${code}`);
+        return response.data.content;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const searchOrder = async (value: string): Promise<OrderModel> => {
+    try {
+        setToken();
+        const response = await axios.get(`${API_URL}order/search/${value}`);
+        return response.data;
+    } catch (error) {
+        throw error;
     }
 };

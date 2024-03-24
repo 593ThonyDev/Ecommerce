@@ -181,7 +181,7 @@ const ProductView = () => {
                                 accept="image/*"
                                 id="fileInput3"
                                 style={{ display: 'none' }}
-                                onChange={(e) => handleFileChange(e, id, "img1", fetchData, toast)}
+                                onChange={(e) => handleFileChange(e, id, "img3", fetchData, toast)}
                               />
                             </div>
                             <img loading="lazy" src={formData.img3 ? "https://" + formData.img3 : ""} alt=""

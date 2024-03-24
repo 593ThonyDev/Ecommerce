@@ -6,7 +6,7 @@ import { formatDate } from "../../../../../functions/Funtions"
 
 const CardOrder: React.FC<OrderModel> = (props) => {
     return (
-        <Link to={PATH_ORDER_ADMIN_CODE + props.code} className="flex h-fit items-start justify-between cursor-pointer bg-white hover:rounded-xl rounded-xl w-full" key={1}>
+        <Link to={PATH_ORDER_ADMIN_CODE + props.customer.idCustomer + "/" + props.code} className="flex h-fit items-start justify-between cursor-pointer bg-white hover:rounded-xl rounded-xl w-full" key={1}>
             <div className="flex items-center gap-3 p-3 w-full rounded-xl hover:bg-black-100/50">
                 <div className="relative h-16 max-h-16 w-16 items-start justify-start rounded-full">
                     <img src={props.customer.photo ? "https://" + props.customer.photo : imgCustomer} className="h-16 max-h-16 max-w-16 w-16 rounded-full" />

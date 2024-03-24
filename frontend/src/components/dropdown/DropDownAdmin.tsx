@@ -47,7 +47,7 @@ const DropDownAdmin = () => {
                 {userPhoto ?
                     <div className='flex align-middle bg-primary-50 hover:bg-black-50/70 rounded-full border border-primary-100 ml-3'>
                         <div className=' my-auto px-2 lg:block hidden text-black-500'>{getTwoWords(fullName ? fullName : "")}</div>
-                        <img src={userPhoto} className=' w-10 h-10 rounded-full border border-primary-200' alt="" />
+                        <img src={userPhoto} className=' w-10 h-10 rounded-full border border-primary-200 bg-primary-200' alt="" />
                     </div>
                     :
                     null

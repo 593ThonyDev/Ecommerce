@@ -105,7 +105,7 @@ export const getOrder = (idCustomer: string, orderCode: string) => {
 
 export const checkStatusOrder = (idCustomer: string, orderCode: string) => {
     setToken();
-    return axios.get(`${API_URL}order/check/${idCustomer}/${orderCode}`)
+    return axios.get(`${API_URL}order/check-list/${idCustomer}/${orderCode}`)
         .then((response) => {
             if (response.data == null) {
                 return null;

@@ -90,7 +90,7 @@ const ProductView = () => {
                 <LoaderProductView />
             ) : (
                 formData.name?.replace(/\s+/g, '-') === name ?
-                    <section className="overflow-hidden bg-white py-8 lg:py-10 font-poppins dark:bg-gray-800">
+                    <section className="overflow-hidden bg-white lg:py-10 font-poppins dark:bg-gray-800">
                         <div className="max-w-6xl px-4  mx-auto md:px-6">
                             <div className="flex flex-wrap -mx-4 py-3">
                                 <div className="w-full px-4 md:w-1/2">
@@ -155,7 +155,7 @@ const ProductView = () => {
                                         </div>
                                         <div
                                             onClick={() => handleAddToCart(formData.idProduct ? formData.idProduct.toString() : "")}
-                                            className="flex items-center text-xl cursor-pointer justify-center w-full px-2.5 py-4 bg-warning-400 hover:bg-warning-500 text-white rounded-xl">
+                                            className="flex items-center text-xl cursor-pointer justify-center w-full px-2.5 py-4 mb-8 bg-warning-400 hover:bg-warning-500 text-white rounded-xl">
                                             <RiShoppingCartFill className="mr-4 h-6 w-8" />
                                             Agregar al carrito
                                         </div>

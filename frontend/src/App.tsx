@@ -5,7 +5,7 @@ import { routes } from "./routes/routes";
 import Loader from "./loaders/Loader";
 import { Transition } from "@headlessui/react";
 import { useEffect, useState } from "react";
-import { useToasterPosition } from "./components/toast/toast";
+import { toastStyles, useToasterPosition } from "./components/toast/toast";
 
 
 
@@ -22,7 +22,19 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Toaster position={toasterPosition} />
+      <Toaster position={toasterPosition}
+        toastOptions={{
+          loading: {        
+            className: toastStyles,
+          },
+          success: {
+            className: toastStyles,
+          },
+          error: {
+            className: toastStyles,
+          },
+        }}
+      />
       {isLoading && (
         <Transition
           show={isLoading}

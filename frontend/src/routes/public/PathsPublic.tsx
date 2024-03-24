@@ -1,7 +1,9 @@
 import { lazy } from "react";
 import { PATH_BLOG, PATH_CHECK_ORDER, PATH_HOME, PATH_LOGIN, PATH_MY_ORDERS, PATH_PAYMENT, PATH_PRODUCTO, PATH_PRODUCTOS, PATH_PRODUCTOS_CATEGORY, PATH_REGISTER } from "./Paths";
+import { RouteProps } from "../routes";
 
-export const PATHS_PUBLIC = {
+export const PATHS_PUBLIC: RouteProps = {
+    
     layout: lazy(async () => await import("../../layouts/public/PublicLayout")),
     children: [
         // ======== Inicio ========

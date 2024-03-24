@@ -22,12 +22,6 @@ export const AuthByUsernamePassword = async (user: LoginResponse, navigate: Navi
         const response = await axios.post(`${API_URL}auth/login`, formDataToSend);
         const responseData = response.data;
 
-        if (responseData.message) {
-            toast.success(responseData.message);
-        } else {
-            toast.error("Mensaje no encontrado en la respuesta");
-        }
-
         if (responseData.userDetails) {
             const userDetails = responseData.userDetails;
             user.userDetails = userDetails;

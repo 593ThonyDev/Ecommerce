@@ -5,11 +5,11 @@ export const RESTORE_PASSWORD = "/auth/restorePassword";
 
 export const PATH_NOSOTROS = "/nosotros";
 
-export const PATH_PRODUCTOS = "/productos";
-export const PATH_PRODUCTO = "/producto/:id/:name";
-export const PATH_PRODUCTOS_CATEGORY = "/producto/categoria/:name";
-export const PATH_PRODUCTOS_CATEGORY_NAME = "/producto/categoria/";
-export const PATH_PRODUCTO_ID = "/producto/";
+export const PATH_PRODUCTOS = "/products";
+export const PATH_PRODUCTO = "/product/:id/:name";
+export const PATH_PRODUCTOS_CATEGORY = "/product/category/:name";
+export const PATH_PRODUCTOS_CATEGORY_NAME = "/product/category/";
+export const PATH_PRODUCTO_ID = "/product/";
 
 export const PATH_PAYMENT = "/checkout/:orderCode";
 export const PATH_PAYMENT_CODE = "/checkout/";

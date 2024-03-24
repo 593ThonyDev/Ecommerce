@@ -111,7 +111,7 @@ public class OrderCustomerController {
         }
     }
 
-    @GetMapping("/check/{idCustomer}/{orderCode}")
+    @GetMapping("/check-list/{idCustomer}/{orderCode}")
     public ResponseEntity<Respuesta> checkOrder(
             @PathVariable("orderCode") String orderCode,
             @PathVariable("idCustomer") String idCustomer) {

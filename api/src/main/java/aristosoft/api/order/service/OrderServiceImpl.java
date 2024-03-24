@@ -44,10 +44,17 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Page<Order> getAll(Pageable pageable) {
-        Page<Order> pagina = repository.findAll(pageable);
+        // Modificar el Pageable para ordenar en forma descendente por el id
+        Pageable pageableReverse = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(),
+                Sort.by("idOrder").descending());
+
+        // Obtener la página en orden inverso
+        Page<Order> pagina = repository.findAll(pageableReverse);
+
         if (pagina.isEmpty()) {
             return null;
         }
+
         return pagina;
     }
 
@@ -624,6 +631,64 @@ public class OrderServiceImpl implements OrderService {
                     .type(RespuestaType.WARNING)
                     .build();
         }
+    }
+
+    @Override
+    public Respuesta getOrderByCodeAdmin(String orderCode, Integer fkCustomer) {
+
+        Optional<Order> orderOptional = repository.findByCode(orderCode);
+
+        if (!orderOptional.isPresent()) {
+            return Respuesta.builder()
+                    .message("No existe la orden de con ese codigo")
+                    .type(RespuestaType.WARNING)
+                    .build();
+        }
+
+        if (orderOptional.get().getCustomer().getIdCustomer() != fkCustomer) {
+            return Respuesta.builder()
+                    .message("Orden de compra no disponible")
+                    .type(RespuestaType.WARNING)
+                    .build();
+        }
+
+        // Detalles de la orden para retornar
+        Order order = Order.builder()
+                .ammount(orderOptional.get().getAmmount())
+                .date(orderOptional.get().getDate())
+                .customer(orderOptional.get().getCustomer())
+                .code(orderOptional.get().getCode())
+                .status(orderOptional.get().getStatus())
+                .build();
+
+        List<OrderDetail> orderDetails = detailRepository
+                .findByOrder(Order.builder().idOrder(orderOptional.get().getIdOrder()).build());
+
+        List<OrderDetailDto> orderDetailDtos = orderDetails.stream()
+                .map(orderDetail -> modelMapper.map(orderDetail, OrderDetailDto.class))
+                .collect(Collectors.toList());
+
+        return Respuesta.builder()
+                .extracontent(order)
+                .content(orderDetailDtos)
+                .type(RespuestaType.SUCCESS)
+                .build();
+    }
+
+    @Override
+    public List<Order> getOrderByCodeAndCustomer(String value) {
+        List<Customer> customerList = customerService.findCustomer(value);
+
+        if (customerList.isEmpty()) {
+            return null; // No se encontraron clientes con el valor proporcionado
+        }
+        Customer customer = customerList.get(0);
+        List<Order> orderList = repository.findByCodeOrCustomer(value,
+                CustomerDto.builder().idCustomer(customer.getIdCustomer()).build());
+
+        Collections.reverse(orderList);
+
+        return orderList;
     }
 
 }

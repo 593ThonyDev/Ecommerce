@@ -1,5 +1,7 @@
 package aristosoft.api.order.service;
 
+import java.util.List;
+
 import org.springframework.data.domain.*;
 
 import aristosoft.api.order.model.*;
@@ -24,9 +26,13 @@ public interface OrderService {
 
     Respuesta getOrderByCode(String orderCode, Integer fkCustomer);
 
+    List<Order> getOrderByCodeAndCustomer(String value);
+
     Respuesta getOrderByCustomerAndStatus(Integer customer, OrderStatus status);
 
     Respuesta getOrderByCodeSuccess(String orderCode, Integer fkCustomer);
+
+    Respuesta getOrderByCodeAdmin(String orderCode, Integer fkCustomer);
 
     Respuesta updateStatus(Integer idCustomer, String status);
 

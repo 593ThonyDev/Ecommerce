@@ -31,7 +31,6 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
           return <>{children}</>;
         } else {
           logOutNavigate(navigate);
-          return <Navigate to={PATH_HOME} />;
         }
       }
     } catch (error) {
