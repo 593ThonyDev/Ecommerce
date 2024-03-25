@@ -10,7 +10,7 @@ export const PATHS_ADMIN: RouteProps = {
         // ======== Inicio ========
         {
             path: PATH_ADMIN_HOME,
-            element: lazy(async () => await import("../../../pages/public/blog/Blog")),
+            element: lazy(async () => await import("../../../pages/private/admin/home/HomeIndex")),
         },
         // ======== Company ========
         {

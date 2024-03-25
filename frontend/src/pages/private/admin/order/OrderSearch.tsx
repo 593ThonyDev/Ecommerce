@@ -18,7 +18,7 @@ const OrderSearch: React.FC<Searchorder> = ({ isOpen, onClose }) => {
     const [orders, setOrders] = useState<any>([]);
 
     const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-        const value = e.target.value.trim();
+        const value = e.target.value;
         setSearchValue(value);
 
         if (value === '') {
@@ -41,7 +41,7 @@ const OrderSearch: React.FC<Searchorder> = ({ isOpen, onClose }) => {
 
     return (
         <Dialog open={isOpen} onClose={onClose} className="fixed inset-0 z-50 overflow-y-auto p-4 lg:pt-[5vh] ">
-            <Dialog.Overlay className="fixed inset-0 backdrop-blur-sm" onClick={handleCancelClick} />
+            <Dialog.Overlay className="fixed inset-0 backdrop-blur-sm overflow-hidden" onClick={handleCancelClick} />
             <Combobox onChange={() => { }}
                 as="div"
                 className="relative mx-auto max-w-xl rounded-xl bg-white ring-1 ring-primary-200 divide-y divide-primary-100 shadow-xl"
@@ -67,7 +67,7 @@ const OrderSearch: React.FC<Searchorder> = ({ isOpen, onClose }) => {
                         <>
                             {orders.length === 0 ? (
                                 <Combobox.Option
-                                    className="text-center text-black-500"
+                                    className="text-center text-black-500 py-2"
                                     value="no-results"
                                     disabled
                                 >
@@ -78,32 +78,32 @@ const OrderSearch: React.FC<Searchorder> = ({ isOpen, onClose }) => {
                                     <Combobox.Option key={order.idOrder} value={order.idOrder}>
                                         {({ active }) => (
                                             <Link to={`${PATH_ORDER_ADMIN_CODE}${order.customer.idCustomer}/${order.code}`} key={order.idOrder}>
-                                                <div className={`flex overflow-y-scroll overflow-x-scroll items-center px-2  rounded-xl cursor-default ${active ? 'bg-primary-50' : ''}`}>
+                                                <div className={`flex overflow-y-scroll items-center px-2 py-1  rounded-xl cursor-default ${active ? 'bg-primary-50' : ''}`}>
                                                     <div className="flex flex-col items-center justify-center  bg-primary-50 rounded-xl">
                                                         <img
                                                             className='rounded-lg max-h-12 max-w-12 h-12 w-12'
                                                             src={order.customer?.photo ? `https://${order.customer?.photo}` : customerPhoto}
                                                             alt={order.customer?.fullName} />
                                                     </div>
-                                                    <div className={`px-4 py-2 grid `}>
-                                                        <span className='text-black-500 font-bold line-clamp-1'>
+                                                    <div className={`px-2 py-1.5 grid `}>
+                                                        <span className='text-black-500 font-bold line-clamp-1 -my-1'>
                                                             {`${order.customer?.fullName?.toUpperCase()}`}
                                                         </span>                                                        
                                                         <div className='flex'>
-                                                            <div className="flex mr-3 items-center">
+                                                            <div className="flex mr-3 items-center ">
                                                                 <span className="text-black-700 font-bold pr-1">Estado:</span>
                                                                 <div className={`w-fit ${order.status == "DISPATCHING" || order.status == "PAID" ? "text-success-500" : order.status == "CREATED" ? "text-warning-400" : "text-danger-400"} rounded-full line-clamp-1 text-base text-black-50`}>
                                                                     {order.status == "CREATED" ? "CREADO" : order.status == "PAID" ? "Pagado" : order.status == "DISPATCHING" ? "ENVIADO" : order.status == "PAYMENT_FAILTURE" ? "PAGO FALLIDO" : order.status}
                                                                 </div>
                                                             </div>
-                                                            <div className="flex mr-3 items-center">
+                                                            <div className="flex mr-3 items-center -my-1">
                                                                 <span className="text-black-700 font-bold pr-1">Total:</span>
                                                                 <div className={`h-fit w-fit  px-2 rounded-full line-clamp-1 text-base text-black-500`}>
                                                                     {parseFloat(order.ammount).toFixed(2)}
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <span className='text-black-500 line-clamp-1'>
+                                                        <span className='text-black-500 line-clamp-1 -my-1'>
                                                             {`${formatDate(order.date)}`}
                                                         </span>
                                                     </div>

@@ -28,12 +28,13 @@ const Order = () => {
                         </div>
                     </div>
                 </div>
-                <div className="grid gap-x-1">
+                <div className="grid gap-x-1 cursor-default">
                     <div
                         onClick={openSearch}
-                        className="px-2 py-2 h-fit text-white bg-primary-400 rounded-xl hover:bg-primary-500">
-                        <div className="flex justify-center items-center flex-nowrap">
+                        className="px-1.5 py-0.5 h-fit text-white bg-primary-400 rounded-xl hover:bg-primary-500">
+                        <div className="flex justify-center items-center">
                             <FaSearch className="w-6" />
+                            <span className="uppercase text-lg pr-1">Buscar</span>
                         </div>
                     </div>
                 </div>
