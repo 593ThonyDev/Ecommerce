@@ -30,6 +30,7 @@ public class SecurityConfig {
                                                 .antMatchers("/api/v1/user/**").authenticated()
                                                 .antMatchers("/api/v1/category/public/**").permitAll()
                                                 .antMatchers("/api/v1/product/public/**").permitAll()
+                                                .antMatchers("/api/v1/hero/getData").permitAll()
                                                 .anyRequest().authenticated())
 
                                 .headers(headers -> headers

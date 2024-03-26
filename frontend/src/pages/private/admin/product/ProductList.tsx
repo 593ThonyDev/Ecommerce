@@ -80,7 +80,7 @@ const ProductList = () => {
                                     key={product.idProduct}>
                                     <Link to={PATH_PRODUCTO_ADMIN_ID + product.idProduct + "/" + product.name?.replace(/\s+/g, '-')}
                                         className="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-2xl justify-center">
-                                        <img loading="lazy" className="object-cover w-full bg-primary-50 backdrop-blur-md" src={"https://" + product.img1} alt="product image" />
+                                        <img loading="lazy" className="w-full bg-primary-50 backdrop-blur-md" src={"https://" + product.img1} alt="product image" />
                                         <span className={`absolute top-0 right-0 m-2 rounded-full backdrop-blur-md px-2 text-center text-lg text-white ${product.status === "ONLINE" ? "bg-success-500/50" : ""} ${product.status === "CREATED" ? "bg-warning-500/50" : ""} ${product.status === "OFFLINE" ? "bg-danger-500/50" : ""}`}>
                                             {product.status}
                                         </span>

@@ -5,7 +5,6 @@ export const PATH_ADMIN_HOME = "/a";
 export const PATH_ADMIN_COMPANY = PATH_ADMIN_HOME + "/company"
 export const PATH_ADMIN_COMPANY_EDIT = PATH_ADMIN_HOME + "/company/edit"
 
-export const PATH_ADMIN_HERO = PATH_ADMIN_HOME + "/hero"
 export const PATH_ADMIN_HERO_EDIT = PATH_ADMIN_HOME + "/hero/edit"
 
 export const PATH_ADMIN_ABOUT = PATH_ADMIN_HOME + "/about"

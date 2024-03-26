@@ -107,7 +107,7 @@ const ProductView = () => {
                                                     className={`block rounded-3xl ${selectedImage === "https://" + formData.img1 ? 'border border-primary-300' : 'border-primary-100/60 border'}`}
                                                     onClick={() => formData.img1 && handleClick("https://" + formData.img1)}>
                                                     <img loading="lazy" src={formData.img1 ? "https://" + formData.img1 : ""} alt=""
-                                                        className="object-cover w-full h-32 rounded-3xl " />
+                                                        className="w-full h-32 rounded-3xl " />
                                                 </div>
                                             </div>
                                             <div className="w-1/3 p-2">
@@ -115,7 +115,7 @@ const ProductView = () => {
                                                     className={`block rounded-3xl ${selectedImage === "https://" + formData.img2 ? 'border border-primary-300' : 'border-primary-100/60 border'}`}
                                                     onClick={() => formData.img2 && handleClick("https://" + formData.img2)}>
                                                     <img loading="lazy" src={formData.img2 ? "https://" + formData.img2 : ""} alt=""
-                                                        className="object-cover w-full h-32 rounded-3xl " />
+                                                        className="w-full h-32 rounded-3xl " />
                                                 </div>
                                             </div>
                                             <div className="w-1/3 p-2">
@@ -123,7 +123,7 @@ const ProductView = () => {
                                                     className={`block rounded-3xl ${selectedImage === "https://" + formData.img3 ? 'border border-primary-300' : 'border-primary-100/60 border'}`}
                                                     onClick={() => formData.img3 && handleClick("https://" + formData.img3)}>
                                                     <img loading="lazy" src={formData.img3 ? "https://" + formData.img3 : ""} alt=""
-                                                        className="object-cover w-full h-32 rounded-3xl " />
+                                                        className="w-full h-32 rounded-3xl " />
                                                 </div>
                                             </div>
                                         </div>

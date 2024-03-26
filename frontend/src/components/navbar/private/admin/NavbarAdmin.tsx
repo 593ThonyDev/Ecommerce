@@ -11,10 +11,6 @@ const NavbarAdmin = () => {
 
     const navigation = [
         {
-            name: 'Inicio',
-            href: PATH_ADMIN_HOME
-        },
-        {
             name: 'Empresa',
             href: PATH_ADMIN_COMPANY
         },
