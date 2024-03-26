@@ -61,7 +61,7 @@ const Home = () => {
             <LoaderHome />
         ) : (
             <React.Fragment>
-                <div className="bg-primary-50 flex relative z-20 items-center overflow-hidden rounded-3xl my-4">
+                <div className="bg-primary-50 lg:bg-primary-100 flex relative z-20 items-center overflow-hidden rounded-3xl my-4">
                     <div className="container mx-auto lg:px-6 pl-3 flex relative flex-col-reverse sm:flex-row">
                         <div className="sm:w-2/3 lg:w-3/5 flex flex-col relative z-20 lg:pt-8">
                             <span className="w-28 h-2 bg-warning-500 mb-0"/>

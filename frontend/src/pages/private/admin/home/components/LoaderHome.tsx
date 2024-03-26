@@ -1,6 +1,6 @@
 const LoaderHome = () => {
     return (
-        <div className="animate-pulse rounded-3xl bg-primary-50 lg:bg-primary-50 flex relative z-20 items-center overflow-hidden my-4">
+        <div className="animate-pulse rounded-3xl bg-primary-50 lg:bg-primary-100 flex relative z-20 items-center overflow-hidden my-4">
             <div className="container mx-auto flex relative py-4  flex-col-reverse sm:flex-row">
                 <div className="sm:w-2/3 lg:w-3/5 flex flex-col relative z-20 lg:pt-4 lg:pl-6 px-3">
                     <span className="w-28 h-2 bg-warning-500 mb-4" />

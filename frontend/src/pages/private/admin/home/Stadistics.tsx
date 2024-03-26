@@ -5,7 +5,7 @@ import { Link } from "react-router-dom"
 
 const Stadistics = () => {
     return (
-        <div className="grid lg:grid-cols-3 gap-4 pb-3 cursor-default">
+        <div className="grid lg:grid-cols-3 md:grid-cols-3 gap-4 lg:pb-3 cursor-default">
             <div className="relative flex flex-col justify-center overflow-hidden rounded-3xl">
                 <div
                     className="group relative overflow-hidden bg-white lg:bg-primary-100 px-6 pt-5 pb-6 transition-all duration-300 sm:mx-auto sm:max-w-sm sm:rounded-lg">
