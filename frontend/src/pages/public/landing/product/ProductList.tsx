@@ -18,7 +18,7 @@ const ProductList = () => {
             try {
                 setIsLoading(true);
                 const response = await getAllProducts(currentPage, setIsLoading);
-                setData(response.content);
+                setData(response.content.slice(0, 8));
                 setTotalItems(response.totalElements);
             } catch (error) {
                 console.error("Error fetching data:", error);
@@ -48,7 +48,7 @@ const ProductList = () => {
                         transition={{ duration: 0.5 }}
                         className="grid w-full justify-items-center lg:grid-cols-4 md:grid-cols-3 gap-x-4 gap-y-4 pb-4">
                         {
-                            [...Array(12)].map((_, index) => (
+                            [...Array(8)].map((_, index) => (
                                 <LoaderList key={index} />
                             ))
                         }

@@ -11,9 +11,9 @@ import { createOrder } from "../../../pages/public/cart/model/CartApi";
 import toast from "react-hot-toast";
 
 const Navbar = () => {
+
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
     const location = useLocation();
-
 
     const navigation = [
         { name: 'Productos', href: PATH_PRODUCTOS },
@@ -41,10 +41,10 @@ const Navbar = () => {
 
     useEffect(() => {
         createNewOrder();
-      }, []);
+    }, []);
 
     return (
-        <header className="h-16 sm:h-16 flex items-center z-30 w-full sticky top-0 bg-primary-50 border-b border-primary-100 outline-none">
+        <header className={`h-16 sm:h-16 flex items-center z-30 w-full sticky top-0 bg-primary-50 outline-none border-b border-primary-100`}>
             <div className="container mx-auto lg:px-6 md:px-2 px-1 flex items-center justify-between">
                 <div className="flex items-center justify-center">
                     <div onClick={() => setMobileMenuOpen(true)} className="relative inline-flex items-center p-3 lg:hidden lg:ml-4 md:ml-2 hover:bg-black-100/50 px-3 rounded-full text-sm font-medium text-center text-black-300">
@@ -62,7 +62,7 @@ const Navbar = () => {
                             </Link>
                         ))}
                     </nav>
-                    <div className="z-50 relative inline-flex items-center px-3 text-sm font-medium text-center text-success-200 rounded-lg">
+                    <div className="z-50 relative inline-flex items-center px-1 text-sm font-medium text-center text-success-200 rounded-lg">
                         {getToken() ? (
                             <div className="flex justify-center content-center my-auto">
                                 {!location.pathname.includes(PATH_PAYMENT_CODE) ? (
@@ -101,7 +101,7 @@ const Navbar = () => {
                         </div>
                     </div>
                     <div className="mt-6 flow-root">
-                        <div className="-my-6 divide-y divide-primary-200">
+                        <div className={`-my-6  divide-primary-200 ${getToken() ? null : " divide-y-primary-200"}`}>
                             <div className="space-y-2 py-6">
                                 {navigation.map((item) => (
                                     <Link

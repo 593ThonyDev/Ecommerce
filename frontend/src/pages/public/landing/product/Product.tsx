@@ -6,15 +6,11 @@ const Product = () => {
 
 
     return (
-        <div className=" bg-primary-50 lg:px-5">
+        <div className=" bg-primary-50 lg:px-5 py-5">
             <div className="flex w-full justify-center h-full grid-cols-1 xl:grid-cols-1 2xl:grid-cols-6  rounded-2xl">
-
                 <div className="col-span-1 h-fit w-full xl:col-span-1 2xl:col-span-5 mb-2 px-5">
-                    <div className="flex justify-venter z-20 py-2 bg-primary-50">
+                    <div className="flex justify-venter z-20 py-2 bg-primary-50 pb-4">
                         <div className="md:text-center text-center justify-center w-full lg:px-0 px-2">
-                            <p className="mb-2 text-lg font-semibold text-primary-500 dark:text-gray-400">
-                                Productos
-                            </p>
                             <h2 className="pb-2 text-2xl font-bold text-primary-900 md:text-4xl dark:text-gray-300">
                                 Nuestros productos estrella
                             </h2>
@@ -34,7 +30,7 @@ const Product = () => {
                 </div>
             </div>
             <div className="flex justify-center">
-                <Link to={PATH_PRODUCTOS} className="flex items-center mb-8 justify-center rounded-xl bg-primary-500 px-3 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700">
+                <Link to={PATH_PRODUCTOS} className="flex items-center my-3 mb-5 justify-center rounded-xl bg-primary-500 hover:bg-primary-400 px-3 py-2.5 text-center text-sm font-medium text-white hover:bg-gray-700">
                     <span className="mr-3 text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                             className="w-5 h-5 bi bi-arrow-right-circle-fill" viewBox="0 0 16 16">

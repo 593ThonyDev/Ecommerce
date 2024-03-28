@@ -15,20 +15,15 @@ const ProductCategory = () => {
     };
 
     return (
-        <div className=" bg-primary-50 lg:px-5">
-            <div className="grid h-full grid-cols-1 xl:grid-cols-1 2xl:grid-cols-6  rounded-2xl">
-                <div className="hidden sticky top-20 px-2 lg:grid grid-cols h-fit lg:border-r-2 border-primary-50">
-                    <div className=" pb-4 text-md font-bold text-black-400">Filtrar por categorias</div>
-                    <ProductCategoryIndex />
-                </div>
-
+        <div className=" bg-primary-50 lg:px-8">
+            <div className="grid h-full grid-cols-1 rounded-2xl">
                 <div className="col-span-1 h-fit w-full xl:col-span-1 2xl:col-span-5 mb-2 px-5">
-                    <div className="flex justify-between z-20 py-2 bg-primary-50">
+                    <div className="flex justify-between z-20 py-2 bg-primary-50 pb-5">
                         <div className="lg:px-0">
                             <h2 className=" text-xl font-bold text-primary-900">
                                 Prods. con categoria <span className="font-semibold text-primary-500">"{name?.replace("-", " ")}"</span>
                             </h2>
-                            <div className="flex flex-row-reverse w-32 mt-1 overflow-hidden rounded">
+                            <div className="flex flex-row-reverse w-32 mt-1 mb-1 overflow-hidden rounded">
                                 <div className="flex-1 h-2 bg-primary-200">
                                 </div>
                                 <div className="flex-1 h-2 bg-primary-400">
@@ -48,6 +43,10 @@ const ProductCategory = () => {
                     <div className="flex justify-center w-full">
                         <ProductListCategory />
                     </div>
+                </div>
+                <div className="px-2 lg:grid grid-cols h-fit lg:border-r-2 border-primary-50">
+                    <div className=" pb-4 text-md font-bold text-black-400 px-2">Filtrar por categorias</div>
+                    <ProductCategoryIndex />
                 </div>
             </div>
             {isSearchOpen && (

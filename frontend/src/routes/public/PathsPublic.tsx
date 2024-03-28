@@ -1,5 +1,5 @@
 import { lazy } from "react";
-import { PATH_BLOG, PATH_CHECK_ORDER, PATH_HOME, PATH_LOGIN, PATH_MY_ORDERS, PATH_PAYMENT, PATH_PRODUCTO, PATH_PRODUCTOS, PATH_PRODUCTOS_CATEGORY, PATH_REGISTER } from "./Paths";
+import { PATH_BLOG, PATH_CHECK_ORDER, PATH_HOME, PATH_LOGIN, PATH_MY_ORDERS, PATH_NOSOTROS, PATH_PAYMENT, PATH_PRODUCTO, PATH_PRODUCTOS, PATH_PRODUCTOS_CATEGORY, PATH_REGISTER } from "./Paths";
 import { RouteProps } from "../routes";
 
 export const PATHS_PUBLIC: RouteProps = {
@@ -34,6 +34,10 @@ export const PATHS_PUBLIC: RouteProps = {
         {
             path: PATH_MY_ORDERS,
             element: lazy(async () => await import("../../pages/public/orders/MyOrdersIndex")),
+        },       
+        {
+            path: PATH_NOSOTROS,
+            element: lazy(async () => await import("../../pages/public/about/AboutIndex")),
         },       
         {
             path: PATH_BLOG,

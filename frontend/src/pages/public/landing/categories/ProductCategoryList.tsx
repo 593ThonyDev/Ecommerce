@@ -42,7 +42,7 @@ const ProductCategoryList = () => {
                         initial={{ opacity: 0.5 }}
                         animate={{ opacity: 0.5 }}
                         transition={{ duration: 0.5 }}
-                        className="relative -mb-16 lg:mx-48 mt-5 backdrop-blur-md">
+                        className="relative -mb-16 lg:mx-48 mt-5 backdrop-blur-md z-10">
                         {
                             <div className="container flex flex-row justify-around mx-auto bg-primary-200 md:rounded-3xl lg:rounded-3xl pb-6 lg:py-1 py-5 backdrop-blur-md">
                                 <div className="max-w-[1640px] m-auto">
